@@ -51,10 +51,11 @@ initialize_game([ ' w ',' x ',' w ',' x ',' w ',' x ',' w ',' x ',
 % Print the grid of Pawn
 printBoard(Board) :-	
 	write('  | 1   2   3   4   5   6   7   8 |'), nl,
-	write('  |---|---|---|---|---|---|---|---|'), nl,
-	printLine(Board, 'a'),
-	write('  |-------------------------------|'), nl.
+	printCase,
+	printLine(Board, 'a').
 
+printCase :-
+	write('  |---|---|---|---|---|---|---|---|'), nl.
 
 % Stop when all line had been display
 printLine(_, 'i') :- !.
@@ -66,7 +67,7 @@ printLine(Board, Line) :-
 
 % Call the print of the next line
 printLinePawn(Board, Line, 0) :- 
-	nl,
+	nl, printCase,
 	char_code(Line, Code), 
 	NewCode is Code + 1, 
 	char_code(NewChar, NewCode),
