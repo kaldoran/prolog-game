@@ -18,15 +18,31 @@ isEmpty('   ').
 startGame :-
 	initialize_game(Board),
 	printBoard(Board),
-	askMove(Square),
-	nth1(Square, Board, Value),
-	write('Value of Square : '), write(Value),
-	isEndGame(Board, Winner).
+	write('From '),
+	askMove(From),
+	write('To '),
+	askMove(To),
+	nth1(From, Board, Value),
+	move(Board, From, To, Value, NewBoard),
+	printBoard(NewBoard),
+	isEndGame(NewBoard, _).
 
 isEndGame(Board, Winner) :-
 	isPawn(Looser),
 	invert_player(Looser, Winner),
 	member(Looser, Board), !.
+
+move([], _, _, _, _) :- !.
+move([_|Board], 1, To, Pawn, ['   '|NewBoard]) :-
+	NewTo is To - 1,
+	move(Board, 0, NewTo, Pawn, NewBoard).
+move([_|Board], From, 1, Pawn, [Pawn|NewBoard]) :-
+	NewFrom is From - 1,
+	move(Board, NewFrom, 0, Pawn, NewBoard).
+move([X|Board], From, To, Pawn, [X|NewBoard]) :-
+	NewFrom is From - 1,
+	NewTo is To - 1,
+	move(Board, NewFrom, NewTo, Pawn, NewBoard).
 
 % Ask a move to the player and check it
 askMove(Square) :-
@@ -63,9 +79,9 @@ initialize_game([ ' w ',' x ',' w ',' x ',' w ',' x ',' w ',' x ',' w ', ' x ',
 			 	  ' w ',' x ',' w ',' x ',' w ',' x ',' w ',' x ',' w ', ' x ',
 				  '   ',' w ','   ',' w ','   ',' w ','   ',' w ','   ', ' w ',
 				  ' w ','   ',' w ','   ',' w ','   ',' w ','   ',' w ', '   ',
-				  '   ',' w ','   ',' w ','   ',' w ','   ',' w ','   ', ' w ',
-				  ' w ','   ',' w ','   ',' w ','   ',' w ','   ',' w ', '   ',
-				  '   ',' w ','   ',' w ','   ',' w ','   ',' w ','   ', ' w '
+				  ' o ',' w ',' o ',' w ',' o ',' w ',' o ',' w ',' o ', ' w ',
+				  ' w ',' o ',' w ',' o ',' w ',' o ',' w ',' o ',' w ', ' o ',
+				  ' o ',' w ',' o ',' w ',' o ',' w ',' o ',' w ',' o ', ' w '
 				 ] ).
 
 % Print the grid of Pawn
