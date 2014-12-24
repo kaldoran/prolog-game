@@ -29,18 +29,36 @@ startGame :-
 	printBoard(NewBoard).
 	%isEndGame(NewBoard, _)
 
+%% -------------------------- %%
+%% Verification de fin du jeu %%
+%% -------------------------- %%
 isEndGame(Board, Winner) :-
 	isPawn(Looser),
 	invert_player(Looser, Winner),
 	member(Looser, Board), !.
 
+%% --------------- %%
+%% Ajouter un pion %%
+%% --------------- %%
 addPawn(Board, To, Pawn, NewBoard) :-
 	move(Board, 0, To, Pawn, NewBoard).
 
-replaceByQueen(Board, Square, Pawn, NewBoard) :-
-	queen(Pawn, Queen),
-	move(Board, Square, Square, Queen, NewBoard).
+%% --------------- %%
+%% Retirer un pion %%
+%% --------------- %%
+removePawn(Board, Square, NewBoard) :-
+	move(Board, Square, 0, NewBoard).
 
+%% ---------------------------------------------------------------------- %%
+%% Avant de faire le move, si e pion arrivera sur le bord, faire une dame %%
+%% ---------------------------------------------------------------------- %%
+move(Board, From, To, Pawn, NewBoard) :-
+	( Pawn =:= ' x '-> To >= 90; To =< 10),
+	NewBoard is [],
+	queen(Pawn, Queen),
+	move(Board, From, To, Queen, NewBoard).
+
+% Ensuite on peut faire le move
 move([], _, _, _, _) :- !.
 move([_|Board], 1, To, Pawn, ['   '|NewBoard]) :-
 	NewTo is To - 1,
@@ -53,6 +71,9 @@ move([X|Board], From, To, Pawn, [X|NewBoard]) :-
 	NewTo is To - 1,
 	move(Board, NewFrom, NewTo, Pawn, NewBoard).
 
+%% ------------------------------- %%
+%% Verification du l action joueur %%
+%% ------------------------------- %%
 isValide(Board, From, To) :-
 	From \== To,
 	nth1(From, Board, Pawn),
@@ -67,8 +88,9 @@ isValide(_, From, To, ' o ') :-
 	To is From - 11, !; % Diagonal haut gauche
 	To is From - 9, !.  % Diagonal haut droite
 	
-
-% Ask a move to the player and check it
+%% ------------------------------------- %%
+%% Ask a move to the player and check it %%
+%% ------------------------------------- %%
 askMove(Square) :-
 	write('[Row, Column] ? '),
 	read(RowColumn), check(RowColumn), 
@@ -76,6 +98,9 @@ askMove(Square) :-
 	writeDebug(' Square N° [+1 Cause nth need +1]:'), writeDebug(Square), 
 	nl.
 
+%% ------------------------------------- %%
+%% Check if the movement is on the board %%
+%% ------------------------------------- %%
 check([Row, Column]) :-
 	checkColumn(Column),
 	checkRow(Row).
@@ -91,6 +116,9 @@ checkRow(Row) :-
 	CodeA =< Code,
 	CodeI > Code, !.
 
+%% --------------------------------------------- %%
+%% Convert column and Row into the square number %%
+%% --------------------------------------------- %%
 convert([Row, Column], Square) :-
 	char_code(Row, Code),
 	char_code('a', CodeA),
@@ -110,7 +138,9 @@ initialize_game([ ' w ',' x ',' w ',' x ',' w ',' x ',' w ',' x ',' w ',' x ',
 				  ' o ',' w ',' o ',' w ',' o ',' w ',' o ',' w ',' o ',' w '
 				 ] ).
 
-% Print the grid of Pawn
+%% ----------------------------- %%
+%% Affichage de la grille de jeu %%
+%% ----------------------------- %%
 printBoard(Board) :-	
 	write('  | 1   2   3   4   5   6   7   8   9   10|'), nl,
 	printCase,
