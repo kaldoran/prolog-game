@@ -1,11 +1,17 @@
 startGame :-
 	initialize_game(Board),
 	printBoard(Board),
-	write('Column ?'),
-	read(Column), checkColumn(Column), nl,
-	write('Row ?'),
-	read(Row), checkRow(Row), nl.
+	askColumn,
+	askRow.
 
+askColumn :-
+	write('Column ? '),
+	read(Column), checkColumn(Column), nl.
+
+askRow :-
+	write('Row ? '),
+	read(Row), checkRow(Row), nl.
+	
 checkColumn(Column) :-
 	Column > 0,
 	Column < 9.
