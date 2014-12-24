@@ -1,72 +1,88 @@
+debug('yes').
+
+writeDebug(X) :-
+	debug('yes'),
+	write(X).
+
+isPawn(' x ').
+isPawn(' o ').
+isBlack(' n ').
+isEmpty('   ').
+
 startGame :-
 	initialize_game(Board),
 	printBoard(Board),
-	askColumn,
-	askRow.
+	askMove.
 
-askColumn :-
-	write('Column ? '),
-	read(Column), checkColumn(Column), nl.
+% Ask a move to the player and check it
+askMove :-
+	write('[Column, Row] ? '),
+	read(ColumnRow), check(ColumnRow), nl.
 
-askRow :-
-	write('Row ? '),
-	read(Row), checkRow(Row), nl.
-	
+check([Column, Row]) :-
+	checkColumn(Column),
+	checkRow(Row).
+
 checkColumn(Column) :-
+	writeDebug(Column),
 	Column > 0,
 	Column < 9.
 
 
 checkRow(Row) :-
+	writeDebug(Row),
 	char_code(Row, Code),
 	char_code('a', CodeA),
 	char_code('i', CodeI),
 	CodeA =< Code,
 	Code > CodeI, !.
 
-checkRow(Row) :-
-	char_code(Row, Code),
-	char_code('A', CodeA),
-	char_code('I', CodeI),
-	CodeA =< Code,
-	Code > CodeI.
-
-
-initialize_game([ n , x , n , x , n , x , n , x ,
-				  x , n , x , n , x , n , x , n ,
-			 	  n , x , n , x , n , x , n , x ,
-				  '  ', n ,' ', n ,' ', n ,' ', n ,
-				  n ,' ', n ,' ', n ,' ', n ,' ',
-				  o , n , o , n , o , n , o , n ,
-				  n , o , n , o , n , o , n , o ,
-				  o , n , o , n , o , n , o , n 
+% the grid
+initialize_game([ ' n ',' x ',' n ',' x ',' n ',' x ',' n ',' x ',
+				  ' x ',' n ',' x ',' n ',' x ',' n ',' x ',' n ',
+			 	  ' n ',' x ',' n ',' x ',' n ',' x ',' n ',' x ',
+				  '   ',' n ','   ',' n ','   ',' n ','   ',' n ',
+				  ' n ','   ',' n ','   ',' n ','   ',' n ','   ',
+				  ' o ',' n ',' o ',' n ',' o ',' n ',' o ',' n ',
+				  ' n ',' o ',' n ',' o ',' n ',' o ',' n ',' o ',
+				  ' o ',' n ',' o ',' n ',' o ',' n ',' o ',' n '
 				 ] ).
 
+% Print the grid of Pawn
 printBoard(Board) :-	
 	write('  | 1   2   3   4   5   6   7   8 |'), nl,
 	write('  |---|---|---|---|---|---|---|---|'), nl,
-	printLine(Board, 'A'),
+	printLine(Board, 'a'),
 	write('  |-------------------------------|'), nl.
 
-printLine(_, 'I') :- !.
-printLine(Board, Line) :-
-	char_code(Line, Code) ,
+
+% Stop when all line had been display
+printLine(_, 'i') :- !.
+
+% Print a Line of the board
+printLine(Board, Line) :- 
 	write(Line), write(' |'),
-	printLinePawn(Board, Line, 8), nl,
-	NewCode is Code + 1,
+	printLinePawn(Board, Line, 8).
+
+% Call the print of the next line
+printLinePawn(Board, Line, 0) :- 
+	nl,
+	char_code(Line, Code), 
+	NewCode is Code + 1, 
 	char_code(NewChar, NewCode),
-	printLine(Board, NewChar).
+	printLine(Board, NewChar), !.
 
-
-printLinePawn(_, _, 0) :- !.
-printLinePawn(Board, _, Pawn) :- 
-	write(' x |'),
+% Print a line Pawn by Pawn
+printLinePawn([X|L], Line, Pawn) :-
+	write(X),
+	write('|'),
 	NewPawn is Pawn - 1,
-	printLinePawn(Board, _, NewPawn).
+	printLinePawn(L, Line, NewPawn).
 	
-
+% Invert the current player
 invert_player('x', 'o').
 invert_player('o', 'x').
 
-king('o', 'O').
-king('x', 'X').
+% Transforme a Pawn into Queen Pawn
+queen('o', 'O').
+queen('x', 'X').
