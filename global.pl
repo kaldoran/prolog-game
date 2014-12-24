@@ -4,11 +4,12 @@ writeDebug(X) :-
 	debug('yes'),
 	write(X).
 
-isPawn(' x ').
-isPawn(' o ').
-isPawn(' O ').
-isPawn(' X ').
 
+isPawn(X) :-
+	isRegularPawn(X); isQueen(X).
+
+isRegularPawn(' x ').
+isRegularPawn(' o ').
 isQueen(' O ').
 isQueen(' X ').
 
@@ -23,9 +24,10 @@ startGame :-
 	write('To '),
 	askMove(To),
 	nth1(From, Board, Value),
+	isValide(Board, From, To),
 	move(Board, From, To, Value, NewBoard),
-	printBoard(NewBoard),
-	isEndGame(NewBoard, _).
+	printBoard(NewBoard).
+	%isEndGame(NewBoard, _)
 
 isEndGame(Board, Winner) :-
 	isPawn(Looser),
@@ -50,6 +52,21 @@ move([X|Board], From, To, Pawn, [X|NewBoard]) :-
 	NewFrom is From - 1,
 	NewTo is To - 1,
 	move(Board, NewFrom, NewTo, Pawn, NewBoard).
+
+isValide(Board, From, To) :-
+	From \== To,
+	nth1(From, Board, Pawn),
+	isRegularPawn(Pawn),
+	nth1(To, Board, '   '),
+	isValide(Board, From, To, Pawn).
+
+isValide(_, From, To, ' x ') :-
+	To is From + 11, !; % 10 + 1 Diagonal bas droite
+	To is From + 9, !.  % 10 - 1 Diagonal bas gauche
+isValide(_, From, To, ' o ') :-
+	To is From - 11, !; % Diagonal haut gauche
+	To is From - 9, !.  % Diagonal haut droite
+	
 
 % Ask a move to the player and check it
 askMove(Square) :-
@@ -81,14 +98,16 @@ convert([Row, Column], Square) :-
 	Square is RowMove * 10 + Column.
 
 % the grid
-initialize_game([ ' w ',' x ',' w ',' x ',' w ',' x ',' w ',' x ',' w ', ' x ',
-				  ' x ',' w ',' x ',' w ',' x ',' w ',' x ',' w ',' x ', ' w ',
-			 	  ' w ',' x ',' w ',' x ',' w ',' x ',' w ',' x ',' w ', ' x ',
-				  '   ',' w ','   ',' w ','   ',' w ','   ',' w ','   ', ' w ',
-				  ' w ','   ',' w ','   ',' w ','   ',' w ','   ',' w ', '   ',
-				  ' o ',' w ',' o ',' w ',' o ',' w ',' o ',' w ',' o ', ' w ',
-				  ' w ',' o ',' w ',' o ',' w ',' o ',' w ',' o ',' w ', ' o ',
-				  ' o ',' w ',' o ',' w ',' o ',' w ',' o ',' w ',' o ', ' w '
+initialize_game([ ' w ',' x ',' w ',' x ',' w ',' x ',' w ',' x ',' w ',' x ',
+				  ' x ',' w ',' x ',' w ',' x ',' w ',' x ',' w ',' x ',' w ',
+			 	  ' w ',' x ',' w ',' x ',' w ',' x ',' w ',' x ',' w ',' x ',
+				  ' x ',' w ',' x ',' w ',' x ',' w ',' x ',' w ',' x ',' w ',
+				  ' w ','   ',' w ','   ',' w ','   ',' w ','   ',' w ','   ',
+				  '   ',' w ','   ',' w ','   ',' w ','   ',' w ','   ',' w ',
+				  ' w ',' o ',' w ',' o ',' w ',' o ',' w ',' o ',' w ',' o ',
+				  ' o ',' w ',' o ',' w ',' o ',' w ',' o ',' w ',' o ',' w ',
+				  ' w ',' o ',' w ',' o ',' w ',' o ',' w ',' o ',' w ',' o ',
+				  ' o ',' w ',' o ',' w ',' o ',' w ',' o ',' w ',' o ',' w '
 				 ] ).
 
 % Print the grid of Pawn
@@ -101,7 +120,7 @@ printCase :-
 	write('  |---|---|---|---|---|---|---|---|---|---|'), nl.
 
 % Stop when all line had been display
-printLine(_, 'i') :- !.
+printLine(_, 'k') :- !.
 
 % Print a Line of the board
 printLine(Board, Line) :- 
