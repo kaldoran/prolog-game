@@ -32,6 +32,13 @@ isEndGame(Board, Winner) :-
 	invert_player(Looser, Winner),
 	member(Looser, Board), !.
 
+addPawn(Board, To, Pawn, NewBoard) :-
+	move(Board, 0, To, Pawn, NewBoard).
+
+replaceByQueen(Board, Square, Pawn, NewBoard) :-
+	queen(Pawn, Queen),
+	move(Board, Square, Square, Queen, NewBoard).
+
 move([], _, _, _, _) :- !.
 move([_|Board], 1, To, Pawn, ['   '|NewBoard]) :-
 	NewTo is To - 1,
