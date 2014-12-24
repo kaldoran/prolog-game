@@ -1,9 +1,10 @@
-debug('yes').
+debug('no').
 
 writeDebug(X) :-
 	debug('yes'),
 	write(X).
 
+writeDebug(_).
 
 isPawn(X) :-
 	isRegularPawn(X); isQueen(X).
@@ -16,18 +17,30 @@ isQueen(' X ').
 isBlack(' n ').
 isEmpty('   ').
 
-startGame :-
+playX :-
 	initialize_game(Board),
+	play(Board, ' x ').
+
+playO :-
+	initialize_game(Board),
+	play(Board, ' o ').
+
+play(Board, _) :-
+	isEndGame(Board, Winner),
+	write('The Winner Is : '),
+	write(Winner).
+
+play(Board, Pawn) :-
 	printBoard(Board),
-	write('From '),
-	askMove(From),
-	write('To '),
-	askMove(To),
+	write('Time to play : '), write(Pawn), nl,
+	askMoveFrom(From, Board, Pawn),
+	askMoveTo(To, Board, Pawn),
 	nth1(From, Board, Value),
-	isValide(Board, From, To),
+	isValide(Board, From, To, Pawn),
 	move(Board, From, To, Value, NewBoard),
-	printBoard(NewBoard).
-	%isEndGame(NewBoard, _)
+	invert_player(Pawn, NewPawn),
+	play(NewBoard, NewPawn).
+
 
 %% -------------------------- %%
 %% Verification de fin du jeu %%
@@ -35,7 +48,8 @@ startGame :-
 isEndGame(Board, Winner) :-
 	isPawn(Looser),
 	invert_player(Looser, Winner),
-	member(Looser, Board), !.
+	(member(Looser, Board), !, fail; true).
+
 
 %% --------------- %%
 %% Ajouter un pion %%
@@ -52,20 +66,22 @@ removePawn(Board, Square, NewBoard) :-
 %% ---------------------------------------------------------------------- %%
 %% Avant de faire le move, si e pion arrivera sur le bord, faire une dame %%
 %% ---------------------------------------------------------------------- %%
-move(Board, From, To, Pawn, NewBoard) :-
-	( Pawn =:= ' x '-> To >= 90; To =< 10),
-	NewBoard is [],
-	queen(Pawn, Queen),
-	move(Board, From, To, Queen, NewBoard).
+%% BESOIN D UN REWORK SUR CA.
+
+% move(Board, From, To, Pawn, NewBoard) :-
+%	NewBoard is [],
+%	( Pawn = ' x '-> To >= 90; To =< 10),
+%	queen(Pawn, Queen),
+%	move(Board, From, To, Queen, NewBoard).
 
 % Ensuite on peut faire le move
 move([], _, _, _, _) :- !.
 move([_|Board], 1, To, Pawn, ['   '|NewBoard]) :-
 	NewTo is To - 1,
-	move(Board, 0, NewTo, Pawn, NewBoard).
+	move(Board, 0, NewTo, Pawn, NewBoard), !.
 move([_|Board], From, 1, Pawn, [Pawn|NewBoard]) :-
 	NewFrom is From - 1,
-	move(Board, NewFrom, 0, Pawn, NewBoard).
+	move(Board, NewFrom, 0, Pawn, NewBoard), !.
 move([X|Board], From, To, Pawn, [X|NewBoard]) :-
 	NewFrom is From - 1,
 	NewTo is To - 1,
@@ -91,19 +107,38 @@ isValide(_, From, To, ' o ') :-
 %% ------------------------------------- %%
 %% Ask a move to the player and check it %%
 %% ------------------------------------- %%
-askMove(Square) :-
+
+askMoveFrom(From, Board, Pawn) :-
+	write('From '),
+	askMove(From, Board, Pawn).
+
+askMoveFrom(From, Board, Pawn) :-
+	nl, write('[WARNING] : Illegal Move. Play Again !'), nl,
+	askMoveFrom(From, Board, Pawn).
+
+askMoveTo(To, Board, _) :-
+	write('To '),
+	askMove(To, Board, '   ').
+
+askMoveTo(To, Board, _) :-
+	nl, write('[WARNING] : Illegal Move. Play Again !'), nl,
+	askMoveTo(To, Board, '   ').
+
+askMove(Square, Board, PlayPawn) :-
 	write('[Row, Column] ? '),
-	read(RowColumn), check(RowColumn), 
+	read(RowColumn), 
 	convert(RowColumn, Square), 
-	writeDebug(' Square N° [+1 Cause nth need +1]:'), writeDebug(Square), 
-	nl.
+	writeDebug(' Square N° [+1 Cause nth need +1]: '), writeDebug(Square), nl, 
+	check(RowColumn, Square, Board, PlayPawn). 
 
 %% ------------------------------------- %%
 %% Check if the movement is on the board %%
 %% ------------------------------------- %%
-check([Row, Column]) :-
+check([Row, Column], Square, Board, PlayPawn) :-
 	checkColumn(Column),
-	checkRow(Row).
+	checkRow(Row),
+	nth1(Square, Board, Pawn),
+	PlayPawn = Pawn.
 
 checkColumn(Column) :-
 	Column > 0,
