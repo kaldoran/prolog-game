@@ -36,8 +36,8 @@ play(Board, Pawn) :-
 	askMoveFrom(From, Board, Pawn),
 	askMoveTo(To, Board, Pawn),
 	nth1(From, Board, Value),
-	isValide(Board, From, To, Pawn),
-	move(Board, From, To, Value, NewBoard),
+	(isValide(Board, From, To, Pawn), move(Board, From, To, Value, NewBoard);
+	isValideEat(Board, From, Between, To, Pawn), removePawn(Board, Between, TmpBoard), move(TmpBoard, From, To, Value, NewBoard)),
 	invert_player(Pawn, NewPawn),
 	play(NewBoard, NewPawn).
 
@@ -61,7 +61,7 @@ addPawn(Board, To, Pawn, NewBoard) :-
 %% Retirer un pion %%
 %% --------------- %%
 removePawn(Board, Square, NewBoard) :-
-	move(Board, Square, 0, NewBoard).
+	move(Board, Square, 0, '   ',NewBoard).
 
 %% ---------------------------------------------------------------------- %%
 %% Avant de faire le move, si e pion arrivera sur le bord, faire une dame %%
@@ -100,10 +100,21 @@ isValide(Board, From, To) :-
 isValide(_, From, To, ' x ') :-
 	To is From + 11, !; % 10 + 1 Diagonal bas droite
 	To is From + 9, !.  % 10 - 1 Diagonal bas gauche
+
 isValide(_, From, To, ' o ') :-
 	To is From - 11, !; % Diagonal haut gauche
 	To is From - 9, !.  % Diagonal haut droite
-	
+
+isValideEat(Board, From, Between, To, Pawn) :-
+	(Between is From + 11; 
+	Between is From + 9; 
+	Between is From - 11;
+	Between is From - 9),
+	invert_player(Pawn, Enemi),
+	nth1(Between, Board, Enemi),
+	isValide(Board, Between, To, Pawn).
+
+
 %% ------------------------------------- %%
 %% Ask a move to the player and check it %%
 %% ------------------------------------- %%
