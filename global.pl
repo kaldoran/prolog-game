@@ -6,6 +6,8 @@ writeDebug(X) :-
 
 isPawn(' x ').
 isPawn(' o ').
+isPawn(' O ').
+isPawn(' X ').
 isBlack(' n ').
 isEmpty('   ').
 
@@ -14,7 +16,13 @@ startGame :-
 	printBoard(Board),
 	askMove(Square),
 	nth1(Square, Board, Value),
-	write('Value of Square : '), write(Value).
+	write('Value of Square : '), write(Value),
+	isEndGame(Board, Winner).
+
+isEndGame(Board, Winner) :-
+	invert_player(Looser, Winner),
+	isPawn(Looser),
+	member(Looser, Board), !.
 
 % Ask a move to the player and check it
 askMove(Square) :-
@@ -51,9 +59,9 @@ initialize_game([ ' w ',' x ',' w ',' x ',' w ',' x ',' w ',' x ',' w ', ' x ',
 			 	  ' w ',' x ',' w ',' x ',' w ',' x ',' w ',' x ',' w ', ' x ',
 				  '   ',' w ','   ',' w ','   ',' w ','   ',' w ','   ', ' w ',
 				  ' w ','   ',' w ','   ',' w ','   ',' w ','   ',' w ', '   ',
-				  ' o ',' w ',' o ',' w ',' o ',' w ',' o ',' w ',' o ', ' w ',
-				  ' w ',' o ',' w ',' o ',' w ',' o ',' w ',' o ',' w ', ' o ',
-				  ' o ',' w ',' o ',' w ',' o ',' w ',' o ',' w ',' o ', ' w '
+				  '   ',' w ','   ',' w ','   ',' w ','   ',' w ','   ', ' w ',
+				  ' w ','   ',' w ','   ',' w ','   ',' w ','   ',' w ', '   ',
+				  '   ',' w ','   ',' w ','   ',' w ','   ',' w ','   ', ' w '
 				 ] ).
 
 % Print the grid of Pawn
@@ -89,9 +97,9 @@ printLinePawn([X|L], Line, Pawn) :-
 	printLinePawn(L, Line, NewPawn).
 	
 % Invert the current player
-invert_player('x', 'o').
-invert_player('o', 'x').
+invert_player(' x ', ' o ').
+invert_player(' o ', ' x ').
 
 % Transforme a Pawn into Queen Pawn
-queen('o', 'O').
-queen('x', 'X').
+queen(' o ', ' O ').
+queen(' x ', ' X ').
