@@ -8,6 +8,10 @@ isPawn(' x ').
 isPawn(' o ').
 isPawn(' O ').
 isPawn(' X ').
+
+isQueen(' O ').
+isQueen(' X ').
+
 isBlack(' n ').
 isEmpty('   ').
 
@@ -20,8 +24,8 @@ startGame :-
 	isEndGame(Board, Winner).
 
 isEndGame(Board, Winner) :-
-	invert_player(Looser, Winner),
 	isPawn(Looser),
+	invert_player(Looser, Winner),
 	member(Looser, Board), !.
 
 % Ask a move to the player and check it
