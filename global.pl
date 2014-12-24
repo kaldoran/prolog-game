@@ -12,26 +12,27 @@ isEmpty('   ').
 startGame :-
 	initialize_game(Board),
 	printBoard(Board),
-	askMove.
+	askMove(Square),
+	nth1(Square, Board, Value),
+	write('Value of Square : '), write(Value).
 
 % Ask a move to the player and check it
-askMove :-
+askMove(Square) :-
 	write('[Row, Column] ? '),
 	read(RowColumn), check(RowColumn), 
 	convert(RowColumn, Square), 
-	write(' Square N°:'), write(Square), nl.
+	writeDebug(' Square N° [+1 Cause nth need +1]:'), writeDebug(Square), 
+	nl.
 
 check([Row, Column]) :-
 	checkColumn(Column),
 	checkRow(Row).
 
 checkColumn(Column) :-
-	writeDebug(Column),
 	Column > 0,
 	Column =< 10.
 
 checkRow(Row) :-
-	writeDebug(Row),
 	char_code(Row, Code),
 	char_code('a', CodeA),
 	char_code('k', CodeI),
@@ -42,8 +43,7 @@ convert([Row, Column], Square) :-
 	char_code(Row, Code),
 	char_code('a', CodeA),
 	RowMove is Code - CodeA,
-	ColumnMove is Column - 1,
-	Square is RowMove * 10 + ColumnMove.
+	Square is RowMove * 10 + Column.
 
 % the grid
 initialize_game([ ' w ',' x ',' w ',' x ',' w ',' x ',' w ',' x ',' w ', ' x ',
