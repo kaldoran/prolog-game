@@ -16,10 +16,12 @@ startGame :-
 
 % Ask a move to the player and check it
 askMove :-
-	write('[Column, Row] ? '),
-	read(ColumnRow), check(ColumnRow), nl.
+	write('[Row, Column] ? '),
+	read(RowColumn), check(RowColumn), 
+	convert(RowColumn, Square), 
+	write(' Square N°:'), write(Square), nl.
 
-check([Column, Row]) :-
+check([Row, Column]) :-
 	checkColumn(Column),
 	checkRow(Row).
 
@@ -28,14 +30,20 @@ checkColumn(Column) :-
 	Column > 0,
 	Column =< 10.
 
-
 checkRow(Row) :-
 	writeDebug(Row),
 	char_code(Row, Code),
 	char_code('a', CodeA),
 	char_code('k', CodeI),
 	CodeA =< Code,
-	Code > CodeI, !.
+	CodeI > Code, !.
+
+convert([Row, Column], Square) :-
+	char_code(Row, Code),
+	char_code('a', CodeA),
+	RowMove is Code - CodeA,
+	ColumnMove is Column - 1,
+	Square is RowMove * 10 + ColumnMove.
 
 % the grid
 initialize_game([ ' w ',' x ',' w ',' x ',' w ',' x ',' w ',' x ',' w ', ' x ',
