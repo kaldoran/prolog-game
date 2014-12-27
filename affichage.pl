@@ -1,3 +1,5 @@
+%% Author : Reynaud Nicolas
+
 %% ----------------------------- %%
 %% Affichage de la grille de jeu %%
 %% ----------------------------- %%

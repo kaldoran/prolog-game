@@ -1,3 +1,5 @@
+%% Author : Reynaud Nicolas
+
 debug('no').
 
 writeDebug(X) :-
@@ -8,7 +10,12 @@ writeDebug(_).
 
 isPawn(X) :-
 	isRegularPawn(X); isQueen(X).
-
+	
+isX(' x ').
+isX(' X ').
+isO(' o ').
+isO(' O ').
+    
 isRegularPawn(' x ').
 isRegularPawn(' o ').
 isQueen(' O ').
@@ -25,7 +32,6 @@ invert_player(' o ', ' x ').
 queen(' o ', ' O ').
 queen(' x ', ' X ').
 
-
 %% --------------------------------------------- %%
 %% Convert column and Row into the square number %%
 %% --------------------------------------------- %%
@@ -38,9 +44,9 @@ convert([Row, Column], Square) :-
 
 % the grid
 initialize_game([ ' w ',' x ',' w ',' x ',' w ',' x ',' w ',' x ',' w ',' x ',
-				  ' x ',' w ',' x ',' w ',' x ',' w ',' x ',' w ',' x ',' w ',
-			 	  ' w ',' x ',' w ',' x ',' w ',' x ',' w ',' x ',' w ',' x ',
-				  ' x ',' w ',' x ',' w ',' x ',' w ',' x ',' w ',' x ',' w ',
+				  ' X ',' w ',' x ',' w ',' x ',' w ',' x ',' w ',' x ',' w ',
+			 	  ' w ','   ',' w ',' x ',' w ',' x ',' w ',' x ',' w ',' x ',
+				  ' x ',' w ','   ',' w ',' x ',' w ',' x ',' w ',' x ',' w ',
 				  ' w ','   ',' w ','   ',' w ','   ',' w ','   ',' w ','   ',
 				  '   ',' w ','   ',' w ','   ',' w ','   ',' w ','   ',' w ',
 				  ' w ',' o ',' w ',' o ',' w ',' o ',' w ',' o ',' w ',' o ',
