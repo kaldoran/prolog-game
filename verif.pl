@@ -29,7 +29,7 @@ isValideSpecial(_, From, To, ' o ') :-
 
 %% Validation Reine
 %% ---------------- %%
-isValideSpecial(_, From, To, Pawn) :-
+isValideSpecial(Board, From, To, Pawn) :-
     isQueen(Pawn),
     Distance is abs(From - To),
     ( mod(Distance, 11) =:= 0, 
@@ -47,28 +47,28 @@ isValideDiagBR(Board, From, To, Pawn) :-
     From < To,
     FromBis is From + 11,    
     nth1(FromBis, Board, '   '),
-    isValideDiagBR(_, FromBis, To, Pawn), !.
+    isValideDiagBR(Board, FromBis, To, Pawn), !.
    
 isValideDiagBL(_, To, To, _).
 isValideDiagBL(Board, From, To, Pawn) :-
     From < To,
     FromBis is From + 9,
     nth1(FromBis, Board, '   '),
-    isValideDiagBL(_, FromBis, To, Pawn), !.
+    isValideDiagBL(Board, FromBis, To, Pawn), !.
     
 isValideDiagTR(_, To, To, _).
 isValideDiagTR(Board, From, To, Pawn) :-
     From > To,
     FromBis is From - 9,
     nth1(FromBis, Board, '   '),
-    isValideDiagTR(_, FromBis, To, Pawn), !.
+    isValideDiagTR(Board, FromBis, To, Pawn), !.
     
 isValideDiagTL(_, To, To, _).
 isValideDiagTL(Board, From, To, Pawn) :-
     From > To,
     FromBis is From - 11,
     nth1(FromBis, Board, '   '),
-    isValideDiagTL(_, FromBis, To, Pawn), !.
+    isValideDiagTL(Board, FromBis, To, Pawn), !.
 %% -------------------------------- %%
     
 %% ------------------------------- %%

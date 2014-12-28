@@ -42,13 +42,14 @@ play(Board, Pawn) :-
 	( 
 	    iPlay(Pawn),
 	    askMove(From, To, Board, Pawn),
+	    nth(From, Board, PawnMove),
 	    (
-	        isValide(Board, From, To, Pawn), 
-	        move(Board, From, To, Pawn, NewBoard);
+	        isValide(Board, From, To, PawnMove), 
+	        move(Board, From, To, PawnMove, NewBoard);
 	    
-	        isValideEat(Board, From, Between, To, Pawn),
+	        isValideEat(Board, From, Between, To, PawnMove),
 	        removePawn(Board, Between, TmpBoard),
-	        move(TmpBoard, From, To, Pawn, NewBoard),
+	        move(TmpBoard, From, To, PawnMove, NewBoard),
             printBoard(NewBoard),
             (askEndMove; play(NewBoard, EnemiPawn)),
             (existNextEat(Board, To, Pawn) ->  
@@ -60,7 +61,8 @@ play(Board, Pawn) :-
 	    ;
 	  
         playIA(Board, From, To, Pawn), 
-        move(Board, From, To, Pawn, NewBoard),
+        nth(From, Board, PawnMove),
+        move(Board, From, To, PawnMove, NewBoard),
         play(NewBoard, EnemiPawn)
     ),
     play(NewBoard, EnemiPawn).
