@@ -6,8 +6,8 @@
 :- include('verif.pl').
 
 clear :- clearX, clearO.
-clearX :- iPlay(' x '), retract(iPlay(' x ')); true.
-clearO :- iPlay(' o '), retract(iPlay(' o ')); true.
+clearX :- retract(iPlay(' x ')); true.
+clearO :- retract(iPlay(' o ')); true.
 
 play :- 
     initialize_game(Board),
@@ -49,22 +49,20 @@ play(Board, Pawn) :-
 	    
 	        isValideEat(Board, From, Between, To, Pawn),
 	        removePawn(Board, Between, TmpBoard),
-	        move(TmpBoard, From, To, Pawn, NewBoard)
-	    ),
-	    ( 
-	        printBoard(NewBoard),
-	        askEndMove, 
-	        (existNextEat(Board, To, Pawn) ->  
-	            play(NewBoard, Pawn), !;
-	            
-	            write(' Tu m\'a pris pour un jambon ? tu as plus de coup possible'), nl, play(NewBoard, EnemiPawn), nl
-	        )
-	    ) 
-	  ;
+	        move(TmpBoard, From, To, Pawn, NewBoard),
+            printBoard(NewBoard),
+            (askEndMove ; play(NewBoard, EnemiPawn)), 
+            (existNextEat(Board, To, Pawn) ->  
+                play(NewBoard, Pawn), !;
+                
+                write(' Tu m\'a pris pour un jambon ? tu as plus de coup possible'), nl, play(NewBoard, EnemiPawn), nl
+            )
+        )
+	    ;
 	  
-	  playIA(Board, From, To, Pawn), 
-	  move(Board, From, To, Pawn, NewBoard),
-	  play(NewBoard, EnemiPawn)
-	).
+        playIA(Board, From, To, Pawn), 
+        move(Board, From, To, Pawn, NewBoard),
+        play(NewBoard, EnemiPawn)
+    ).
 	  
 	  
