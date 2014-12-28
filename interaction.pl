@@ -22,6 +22,12 @@ askMove(Square, Board, PlayPawn) :-
 	convert(RowColumn, Square), 
 	writeDebug(' Square N° [+1 Cause nth need +1]: '), writeDebug(Square), nl, 
 	check(RowColumn, Square, Board, PlayPawn). 
+
+askEndMove :-
+    write('Do you have any extra move ? [y]es or [N]o or [e]xit.'), nl,
+    read(Answer),
+    ( Answer = 'y', true; Answer = 'e', halt; fail).
+    
 	
 %% ---------------------------------------------------------------------- %%
 %% Avant de faire le move, si e pion arrivera sur le bord, faire une dame %%
