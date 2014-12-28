@@ -135,3 +135,14 @@ existValideEat(Board, From, Between, To, Pawn) :-
 	invert_player(Pawn, Enemi),
 	nth1(Between, Board, Enemi),
 	existValide(Board, From, Between, Pawn).
+	
+	
+existNextEat(Board, From, Pawn) :-
+    findall(Place, nth1(Place, Board, '   '), BlankSpace),
+    existNextValideEat(Board, From, Pawn, BlankSpace).
+
+existNextValideEat(_, _, _, []) :- fail, !.
+
+existNextValideEat(Board, From, Pawn, [To|BlankSpace]) :-
+    existValideEat(Board, From, _, To, Pawn), !;
+    existNextValideEat(Board, From, Pawn, BlankSpace).

@@ -5,21 +5,25 @@
 :- include('interaction.pl').
 :- include('verif.pl').
 
-:- retract(iPlay(' x ')).
-:- retract(iPlay(' o ')).
+clear :- clearX, clearO, true.
+clearX :- iPlay(' x '), retract(iPlay(' x ')).
+clearO :- iPlay(' o '), retract(iPlay(' o ')).
 
 play :- 
     initialize_game(Board),
+    clear,
     asserta(iPlay(' x ')), asserta(iPlay(' o ')),
     play(Board, ' x ').
     
 playX :-
 	initialize_game(Board),
+	clear,
 	asserta(iPlay(' x ')),
 	play(Board, ' x ').                 % les X commencent toujours
 
 playO :-
 	initialize_game(Board), 
+	clear,
 	asserta(iPlay(' o ')), 
 	play(Board, ' x ').
 
@@ -50,6 +54,7 @@ play(Board, Pawn) :-
 	    ),
 	    ( 
 	        askEndMove, 
+	        existNextEat(Board, To, Pawn), 
 	        play(NewBoard, Pawn), !;
 	        
 	        play(NewBoard, EnemiPawn)

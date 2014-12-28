@@ -1,4 +1,9 @@
-- Gestion des dames
-- Gestion des coups possible
-- IA
-- 
+- Gestion des dames [ Fait a 50 % impossible de sauter un pion ]
+- IA                [ commencé ]
+- Gerer la verifi qu'un coup est possible a partir du dernier pion joué. [ idée trouvé ]
+( findall Blankspace ( c.f ia ) )
+Puis existValideEat(Board, 31, Between, To, ' x ').
+To depuis blanc space ( 31 est le dernier coup joué ).
+
+Afficher le board apres avoir jouer le move
+puis ensuite demander si autre coup
