@@ -26,23 +26,30 @@ askMove(Square, Board, PlayPawn) :-
 %% ---------------------------------------------------------------------- %%
 %% Avant de faire le move, si e pion arrivera sur le bord, faire une dame %%
 %% ---------------------------------------------------------------------- %%
-%% BESOIN D UN REWORK SUR CA.
 
-% move(Board, From, To, Pawn, NewBoard) :-
-%	NewBoard is [],
-%	( Pawn = ' x '-> To >= 90; To =< 10),
-%	queen(Pawn, Queen),
-%	move(Board, From, To, Queen, NewBoard).
-
+move(Board, From, To, Pawn, NewBoard) :-
+	( To >= 90; To =< 10),
+	queen(Pawn, Queen),
+	doMove(Board, From, To, Queen, NewBoard), !.
+	
+move(Board, From, To, Pawn, NewBoard) :-
+    doMove(Board, From, To, Pawn, NewBoard).
+    
 % Ensuite on peut faire le move
-move([], _, _, _, _) :- !.
-move([_|Board], 1, To, Pawn, ['   '|NewBoard]) :-
+doMove([], _, _, _, _) :- !.
+doMove([_|Board], 1, To, Pawn, ['   '|NewBoard]) :-
 	NewTo is To - 1,
-	move(Board, 0, NewTo, Pawn, NewBoard), !.
-move([_|Board], From, 1, Pawn, [Pawn|NewBoard]) :-
+	doMove(Board, 0, NewTo, Pawn, NewBoard), !.
+doMove([_|Board], From, 1, Pawn, [Pawn|NewBoard]) :-
 	NewFrom is From - 1,
 	move(Board, NewFrom, 0, Pawn, NewBoard), !.
-move([X|Board], From, To, Pawn, [X|NewBoard]) :-
+doMove([X|Board], From, To, Pawn, [X|NewBoard]) :-
 	NewFrom is From - 1,
 	NewTo is To - 1,
-	move(Board, NewFrom, NewTo, Pawn, NewBoard).
+	doMove(Board, NewFrom, NewTo, Pawn, NewBoard).
+	
+%% --------------- %%
+%% Retirer un pion %%
+%% --------------- %%
+removePawn(Board, Square, NewBoard) :-
+	move(Board, Square, 0, '   ',NewBoard).

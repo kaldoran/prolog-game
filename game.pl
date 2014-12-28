@@ -28,6 +28,6 @@ play(Board, Pawn) :-
 	askMoveFrom(From, Board, Pawn),
 	askMoveTo(To, Board, Pawn),
 	nth1(From, Board, Value),
-	(isValide(Board, From, To, Pawn), move(Board, From, To, Value, NewBoard);
+	(isValide(Board, From, To, Value), move(Board, From, To, Value, NewBoard);
 	isValideEat(Board, From, Between, To, Pawn), removePawn(Board, Between, TmpBoard), move(TmpBoard, From, To, Value, NewBoard)),
-	play(NewBoard, NewPawn).
+	play(NewBoard, EnemiPawn).
