@@ -34,12 +34,12 @@ minmax(Board, Pawn, Depth) :-
 
 
 
-seekMoves(_, _, 
+seekMoves(_, _, _, 0).
 seekMoves(Board, [To|BlankSpace], Pawn, Depth) :-
     findall(Place, existValideEat(Board, Place, Between, To, ' x '), ResultEat),
     findall(Place, existValide(Board, Place, To, ' x ', Result),
     applyMoves(Board, ResultEat, To, MaxVal, Pawn, Depth),
-    applyMoves(Board, Result, To, MaxVal, Pawn, Depth)
+    applyMoves(Board, Result, To, MaxVal, Pawn, Depth),
     seekMoves(NewBoard, BlankSpace, Pawn, Depth).
 
 applyMoves(Board, [], _, MaxVal, _, _).

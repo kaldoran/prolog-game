@@ -13,7 +13,7 @@ play :-
     initialize_game(Board),
     clear,
     asserta(iPlay(' x ')), asserta(iPlay(' o ')),
-    play(Board, ' x ').
+    play(Board, ' o ').
     
 playX :-
 	initialize_game(Board),
@@ -42,7 +42,6 @@ play(Board, Pawn) :-
 	( 
 	    iPlay(Pawn),
 	    askMove(From, To, Board, Pawn),
-	    nth1(From, Board, Pawn),
 	    (
 	        isValide(Board, From, To, Pawn), 
 	        move(Board, From, To, Pawn, NewBoard);
@@ -51,11 +50,11 @@ play(Board, Pawn) :-
 	        removePawn(Board, Between, TmpBoard),
 	        move(TmpBoard, From, To, Pawn, NewBoard),
             printBoard(NewBoard),
-            (askEndMove ; play(NewBoard, EnemiPawn)), 
+            (askEndMove; play(NewBoard, EnemiPawn)),
             (existNextEat(Board, To, Pawn) ->  
                 play(NewBoard, Pawn), !;
                 
-                write(' Tu m\'a pris pour un jambon ? tu as plus de coup possible'), nl, play(NewBoard, EnemiPawn), nl
+                write(' Tu m\'a pris pour un jambon ? tu as plus de coup possible'), nl
             )
         )
 	    ;
@@ -63,6 +62,7 @@ play(Board, Pawn) :-
         playIA(Board, From, To, Pawn), 
         move(Board, From, To, Pawn, NewBoard),
         play(NewBoard, EnemiPawn)
-    ).
+    ),
+    play(NewBoard, EnemiPawn).
 	  
 	  
