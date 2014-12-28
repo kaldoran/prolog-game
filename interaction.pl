@@ -1,28 +1,18 @@
 %% Author : Reynaud Nicolas
 
-askMoveFrom(From, Board, Pawn) :-
-	write('From '),
-	askMove(From, Board, Pawn).
+askMove(From, To, Board, PlayPawn) :-
+	write('From - To [Row, Column] - [Row, Column] ? '),
+	read(RowColumnFrom - RowColumnTo), 
+	convert(RowColumnFrom, From), 
+	convert(RowColumnTo, To), 
+	writeDebug(' Square N° [+1 Cause nth need +1]: '), writeDebug(From), write(' - '), writeDebug(To), nl, 
+	check(RowColumnFrom, From, Board, PlayPawn),
+	check(RowColumnTo, To, Board, '   '). 
 
-askMoveFrom(From, Board, Pawn) :-
-	nl, write('[WARNING] : Illegal Move. Play Again !'), nl,
-	askMoveFrom(From, Board, Pawn).
-
-askMoveTo(To, Board, _) :-
-	write('To '),
-	askMove(To, Board, '   ').
-
-askMoveTo(To, Board, _) :-
-	nl, write('[WARNING] : Illegal Move. Play Again !'), nl,
-	askMoveTo(To, Board, '   ').
-
-askMove(Square, Board, PlayPawn) :-
-	write('[Row, Column] ? '),
-	read(RowColumn), 
-	convert(RowColumn, Square), 
-	writeDebug(' Square N° [+1 Cause nth need +1]: '), writeDebug(Square), nl, 
-	check(RowColumn, Square, Board, PlayPawn). 
-
+askMove(From, To, Board, PlayPawn) :-
+    write('[WARNING] : Illegal Move. Play Again !'), nl,
+	askMove(From, To, Board, PlayPawn).
+	
 askEndMove :-
     write('Do you have any extra move ? [y]es or [N]o or [e]xit.'), nl,
     read(Answer),
