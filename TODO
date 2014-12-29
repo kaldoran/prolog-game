@@ -1,4 +1,4 @@
-- Gestion des dames [ Fait a 50 % impossible de sauter un pion ]
+- Gestion des dames [ Fait a 80 % impossible de sauter plusieurs pion ]
 - IA                [ commencé ]
 
-- Corriger moveLeft(Board, Pawn) Ligne 146 de verif.pl
+- Corriger existValideEat Ligne 256 de verif.pl

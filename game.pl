@@ -52,7 +52,7 @@ play(Board, Pawn) :-
 	        move(TmpBoard, From, To, PawnMove, NewBoard),
             printBoard(NewBoard),
             (askEndMove; play(NewBoard, EnemiPawn)),
-            (existNextEat(Board, To, Pawn) ->  
+            (existNextEat(NewBoard, To, PawnMove) ->  
                 play(NewBoard, Pawn), !;
                 
                 write(' Tu m\'a pris pour un jambon ? tu as plus de coup possible'), nl

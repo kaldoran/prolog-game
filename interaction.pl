@@ -32,7 +32,7 @@ move(Board, From, To, Pawn, NewBoard) :-
     doMove(Board, From, To, Pawn, NewBoard).
     
 % Ensuite on peut faire le move
-doMove([], _, _, _, _).
+doMove([], _, _, _, []).
 	
 doMove([_|Board], 1, To, Pawn, ['   '|NewBoard]) :-
 	NewTo is To - 1,

@@ -168,7 +168,7 @@ seekPawnBetweenBR(Board, From, Between, To, Queen) :-
 seekPawnBetweenBR(Board, From, Between, To, Queen) :-
     From < To,
     Between is From + 11,
-    checkPawnBetween(Board, _, Between, To, Queen).
+    checkPawnBetween(Board, From, Between, To, Queen).
        
 seekPawnBetweenBL(Board, From, Between, To, Queen):-
     From < To,
@@ -179,7 +179,7 @@ seekPawnBetweenBL(Board, From, Between, To, Queen):-
 seekPawnBetweenBL(Board, From, Between, To, Queen) :-
     From < To,
     Between is From + 9,
-    checkPawnBetween(Board, _, Between, To, Queen).
+    checkPawnBetween(Board, From, Between, To, Queen).
        
 seekPawnBetweenTR(Board, From, Between, To, Queen) :-
     From > To,
@@ -190,7 +190,7 @@ seekPawnBetweenTR(Board, From, Between, To, Queen) :-
 seekPawnBetweenTR(Board, From, Between, To, Queen) :-
     From > To,
     Between is From - 9,
-    checkPawnBetween(Board, _, Between, To, Queen).
+    checkPawnBetween(Board, From, Between, To, Queen).
     
 seekPawnBetweenTL(Board, From, Between, To, Queen) :-
     From > To,
@@ -201,7 +201,7 @@ seekPawnBetweenTL(Board, From, Between, To, Queen) :-
 seekPawnBetweenTL(Board, From, Between, To, Queen) :-
     From > To,
     Between is From - 11,
-    checkPawnBetween(Board, _, Between, To, Queen).
+    checkPawnBetween(Board, From, Between, To, Queen).
     
 %% -------------------------------- %%
 	
@@ -270,5 +270,7 @@ existNextEat(Board, From, Pawn) :-
 existNextValideEat(_, _, _, []) :- fail, !.
 
 existNextValideEat(Board, From, Pawn, [To|BlankSpace]) :-
+    Distance is abs(From - To),
+    ( mod(Distance, 11) =:= 0; mod(Distance, 9) =:= 0), 
     isValideEat(Board, From, _, To, Pawn), !;
     existNextValideEat(Board, From, Pawn, BlankSpace).
