@@ -6,9 +6,9 @@ isEndGame(Board, Winner) :-
 	(member(Looser, Board), !, fail; true).
 	
 	
-%% -------------------------------- %%
-%% Verification Dame - A TRAVAILLER %%
-%% -------------------------------- %%
+%% ----------------- %%
+%% Verification Dame %%
+%% ----------------- %%
      
 isValide(Board, From, To, Pawn) :-
 	From \== To,
@@ -76,8 +76,12 @@ isValideDiagTL(Board, From, To, Pawn) :-
 %% ------------------------------- %%
 
 
+%% Validation saut pion 
+%% -------------------- %%
 isValideEat(Board, From, Between, To, Pawn) :-
+    isRegularPawn(Pawn),
     Between is From + 11,
+    To is Between + 11,
     invert_player(Pawn, EnemiPawn),
     nth1(Between, Board, Enemi),
     (
@@ -87,7 +91,9 @@ isValideEat(Board, From, Between, To, Pawn) :-
 	isValideDiagBR(Board, Between, To, Pawn).
 	
 isValideEat(Board, From, Between, To, Pawn) :-
+    isRegularPawn(Pawn),
     Between is From + 9,
+    To is Between + 9,
     invert_player(Pawn, EnemiPawn),
     nth1(Between, Board, Enemi),
     (
@@ -97,7 +103,9 @@ isValideEat(Board, From, Between, To, Pawn) :-
 	isValideDiagBL(Board, Between, To, Pawn).
 	
 isValideEat(Board, From, Between, To, Pawn) :-
+    isRegularPawn(Pawn),
     Between is From - 9,
+    To is Between - 9,
     invert_player(Pawn, EnemiPawn),
     nth1(Between, Board, Enemi),
     (
@@ -107,7 +115,9 @@ isValideEat(Board, From, Between, To, Pawn) :-
 	isValideDiagTR(Board, Between, To, Pawn).
 	
 isValideEat(Board, From, Between, To, Pawn) :-
+    isRegularPawn(Pawn),
     Between is From - 11,
+    To is Between - 11,
     invert_player(Pawn, EnemiPawn),
     nth1(Between, Board, Enemi),
     (
@@ -115,6 +125,85 @@ isValideEat(Board, From, Between, To, Pawn) :-
 	    EnemiPawn = Enemi
 	),
 	isValideDiagTL(Board, Between, To, Pawn).
+
+%% Validation saut Reine
+%% --------------------- %%
+isValideEat(Board, From, Between, To, Queen) :-
+    isQueen(Queen),
+    seekPawnBetween(Board, From, Between, To, Queen),
+    removePawn(Board, Between, NewBoard),
+    isValideSpecial(NewBoard, From, To, Queen).
+    
+seekPawnBetween(Board, From, Between, To, Queen) :-
+    isQueen(Queen),
+    Distance is abs(From - To),
+    ( mod(Distance, 11) =:= 0, 
+      ( seekPawnBetweenTL(Board, From, Between, To, Queen); 
+        seekPawnBetweenBR(Board, From, Between, To, Queen)
+      );                                                %% OR
+      mod(Distance, 9) =:= 0,
+      ( seekPawnBetweenTR(Board, From, Between, To, Queen); 
+        seekPawnBetweenBL(Board, From, Between, To, Queen)
+      );                                                %% OR
+      fail), !.
+
+checkPawnBetween(Board, _, Between, _, Queen) :-
+    number(Between),
+    queen(Pawn, Queen),
+    invert_player(Pawn, EnemiPawn),
+    (   
+        nth1(Between, Board, EnemiPawn);
+        
+        queen(EnemiPawn, QueenEnemiPawn),
+        nth1(Between, Board, QueenEnemiPawn)
+    ), !.
+    
+        
+seekPawnBetweenBR(Board, From, Between, To, Queen) :-
+    From < To,
+    FromBis is From + 11,    
+    nth1(FromBis, Board, '   '),
+    seekPawnBetweenBR(Board, FromBis, Between, To, Queen) , !.
+
+seekPawnBetweenBR(Board, From, Between, To, Queen) :-
+    From < To,
+    Between is From + 11,
+    checkPawnBetween(Board, _, Between, To, Queen).
+       
+seekPawnBetweenBL(Board, From, Between, To, Queen):-
+    From < To,
+    FromBis is From + 9,
+    nth1(FromBis, Board, '   '),
+    seekPawnBetweenBL(Board, FromBis, Between, To, Queen) , !.
+    
+seekPawnBetweenBL(Board, From, Between, To, Queen) :-
+    From < To,
+    Between is From + 9,
+    checkPawnBetween(Board, _, Between, To, Queen).
+       
+seekPawnBetweenTR(Board, From, Between, To, Queen) :-
+    From > To,
+    FromBis is From - 9,
+    nth1(FromBis, Board, '   '),
+    seekPawnBetweenTR(Board, FromBis, Between, To, Queen) , !.
+    
+seekPawnBetweenTR(Board, From, Between, To, Queen) :-
+    From > To,
+    Between is From - 9,
+    checkPawnBetween(Board, _, Between, To, Queen).
+    
+seekPawnBetweenTL(Board, From, Between, To, Queen) :-
+    From > To,
+    FromBis is From - 11,
+    nth1(FromBis, Board, '   '),
+    seekPawnBetweenTL(Board, FromBis, Between, To, Queen) , !.
+    
+seekPawnBetweenTL(Board, From, Between, To, Queen) :-
+    From > To,
+    Between is From - 11,
+    checkPawnBetween(Board, _, Between, To, Queen).
+    
+%% -------------------------------- %%
 	
 %% ------------------------------------- %%
 %% Check if the movement is on the board %%

@@ -42,9 +42,9 @@ convert([Row, Column], Square) :-
 	RowMove is Code - CodeA,
 	Square is RowMove * 10 + Column.
 
-% the grid 13 -31
+% the grid
 initialize_game([ ' w ',' O ',' w ',' x ',' w ',' x ',' w ',' x ',' w ',' x ',
-				  ' x ',' w ','   ',' w ',' x ',' w ',' x ',' w ',' x ',' w ',
+				  ' x ',' w ',' X ',' w ',' x ',' w ',' x ',' w ',' x ',' w ',
 			 	  ' w ',' x ',' w ','   ',' w ',' x ',' w ',' x ',' w ',' x ',
 				  ' x ',' w ',' x ',' w ','   ',' w ',' x ',' w ',' x ',' w ',
 				  ' w ',' o ',' w ',' o ',' w ','   ',' w ','   ',' w ','   ',
