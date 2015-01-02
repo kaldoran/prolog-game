@@ -80,51 +80,19 @@ isValideDiagTL(Board, From, To, Pawn) :-
 %% -------------------- %%
 isValideEat(Board, From, Between, To, Pawn) :-
     isRegularPawn(Pawn),
-    Between is From + 11,
-    To is Between + 11,
+    ( 
+        Between is From + 11, To is Between + 11;
+        Between is From + 9,  To is Between + 9;
+        Between is From - 9,  To is Between - 9;
+        Between is From - 11, To is Between - 11
+    ),
     invert_player(Pawn, EnemiPawn),
     nth1(Between, Board, Enemi),
     (
 	    queen(EnemiPawn, Enemi); 
 	    EnemiPawn = Enemi
-	),
-	isValideDiagBR(Board, Between, To, Pawn).
-	
-isValideEat(Board, From, Between, To, Pawn) :-
-    isRegularPawn(Pawn),
-    Between is From + 9,
-    To is Between + 9,
-    invert_player(Pawn, EnemiPawn),
-    nth1(Between, Board, Enemi),
-    (
-	    queen(EnemiPawn, Enemi); 
-	    EnemiPawn = Enemi
-	),
-	isValideDiagBL(Board, Between, To, Pawn).
-	
-isValideEat(Board, From, Between, To, Pawn) :-
-    isRegularPawn(Pawn),
-    Between is From - 9,
-    To is Between - 9,
-    invert_player(Pawn, EnemiPawn),
-    nth1(Between, Board, Enemi),
-    (
-	    queen(EnemiPawn, Enemi); 
-	    EnemiPawn = Enemi
-	),
-	isValideDiagTR(Board, Between, To, Pawn).
-	
-isValideEat(Board, From, Between, To, Pawn) :-
-    isRegularPawn(Pawn),
-    Between is From - 11,
-    To is Between - 11,
-    invert_player(Pawn, EnemiPawn),
-    nth1(Between, Board, Enemi),
-    (
-	    queen(EnemiPawn, Enemi); 
-	    EnemiPawn = Enemi
-	),
-	isValideDiagTL(Board, Between, To, Pawn).
+	).
+
 
 %% Validation saut Reine
 %% --------------------- %%
@@ -151,11 +119,10 @@ checkPawnBetween(Board, _, Between, _, Queen) :-
     number(Between),
     queen(Pawn, Queen),
     invert_player(Pawn, EnemiPawn),
-    (   
-        nth1(Between, Board, EnemiPawn);
-        
-        queen(EnemiPawn, QueenEnemiPawn),
-        nth1(Between, Board, QueenEnemiPawn)
+    nth1(Between, Board, Enemi),
+    (      
+        queen(EnemiPawn, Enemi);
+        Enemi = EnemiPawn
     ), !.
     
         
@@ -229,14 +196,10 @@ checkRow(Row) :-
 %% Check if a move exist from a position %%
 %% ------------------------------------- %%
 
-                                                                    %% !!!!!!!!!!!!!!!
-                                                                    %% A MODIFIER !!!!
-                                                                    %% !!!!!!!!!!!!!!!
 moveLeft(Board, Pawn) :-
     nth(To, Board, '   '),
     (existValide(Board, _, To, Pawn); existValideEat(Board, _, _, To, Pawn)), !.
-                                                                    %% !!!!!!!!!!!!!!!
-                                                                    
+                                                                   
 existValide(Board, From, To, Pawn) :-
     isX(Pawn),
 	(From is To - 11; 
@@ -249,19 +212,20 @@ existValide(Board, From, To, Pawn) :-
 	From is To + 9),
 	nth1(From, Board, Pawn). 
 
-
-                                                                    %% !!!!!!!!!!!!!!!
-                                                                    %% A MODIFIER !!!!
-                                                                    %% !!!!!!!!!!!!!!!
 existValideEat(Board, From, Between, To, Pawn) :-
-	(Between is To + 11; 
-	Between is To + 9; 
-	Between is To - 11;
-	Between is To - 9),
-	invert_player(Pawn, Enemi),
-	nth1(Between, Board, Enemi),
-	existValide(Board, From, Between, Pawn).
-                                                                    %% !!!!!!!!!!!!!!!
+	(
+	    Between is To + 11, From is Between + 11; 
+	    Between is To + 9, From is Between + 9; 
+	    Between is To - 11, From is Between - 11;
+	    Between is To - 9, From is Between - 9
+	),
+    invert_player(Pawn, EnemiPawn),
+    nth1(Between, Board, Enemi),
+    (
+	    queen(EnemiPawn, Enemi); 
+	    EnemiPawn = Enemi
+	),
+	nth1(From, Board, Pawn).
 	
 existNextEat(Board, From, Pawn) :-
     findall(Place, nth1(Place, Board, '   '), BlankSpace),
