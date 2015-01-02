@@ -40,32 +40,29 @@ eval(Board, Valeur, Pawn) :-
     
 % On cherche tout les coup, pour ce faire on cherche les cases vides
 
-max(A, B, A) :-
-    A >= B, !.
-max(_, B, B).
-
-min(A, B, A) :-
-    B >= A, !.
-min(_, B, B).
-
 findPlay(Board, Pawn, Depth, From, To) :-
+    iPlay(Pawn),
+    min(Board, Pawn, Depth, Eval, From, To);
+    max(Board, Pawn, Depth, Eval, From, To).
 
-    minmax(Board, Pawn, Depth, Eval, From, To), write(Eval).
-
-minmax(Board, Pawn, 0, Eval, _, _) :-
+min(Board, Pawn, 0, Eval, _, _) :-
     eval(Board, Eval, Pawn).
-   
-minmax(Board, Pawn, Depth, Eval, From, To) :-
+    
+min(Board, Pawn, Depth, Eval, From, To) :-
+    findAllMove(Board, Pawn, AllMoves),
+    max(Board, Pawn, Depth, Eval, From, To).
+    
+max(Board, Pawn, 0, Eval, _, _) :-
+    eval(Board, Eval, Pawn).
+    
+max(Board, Pawn, Depth, Eval, From, To) :-
+    findAllMove(Board, Pawn, AllMoves),
+    min(Board, Pawn, Depth, Eval, From, To).
+
+
+applyMoves(Board, [[From, To]|AllMoves], Pawn, Depth, [From, To]) :-
     true.
-        
-applyMoves(Board, [From|Result], To, MaxVal, Pawn, Depth, From) :-
-    NewDepth is Depth - 1,
-    move(Board, From, To, Pawn, NewBoard),
-    minmax(NewBoard, Pawn, NewDepth, From, To),
-    ( Valeur > MaxValue -> 
-        applyMoves(Board, Result, To, Valeur, Pawn, Depth);
-        applyMoves(Board, Result, To, MaxValue, Pawn, Depth)
-    ).
+
     
     
     
