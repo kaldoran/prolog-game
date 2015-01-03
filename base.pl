@@ -1,16 +1,24 @@
 %% Author : Reynaud Nicolas
 
+
 debug('yes').
 
+% Write '+X' if debug mod is on
+% ----------------------------- %
 writeDebug(X) :-
 	debug('yes'),
 	write(X), !.
 
+% Else write nothing
+% ------------------ %
 writeDebug(_).
 
+% Check if '+X' is a Pawn
+% I.E if it's a regular Pawn or a Queen
+% ------------------------------------- %
 isPawn(X) :-
 	isRegularPawn(X); isQueen(X).
-	
+
 isX(' x ').
 isX(' X ').
 isO(' o ').
@@ -21,14 +29,14 @@ isRegularPawn(' o ').
 isQueen(' O ').
 isQueen(' X ').
 
-isBlack(' n ').
-isEmpty('   ').
 
 % Invert the current player
+% ------------------------- %
 invert_player(' x ', ' o ').
 invert_player(' o ', ' x ').
 
 % Transforme a Pawn into Queen Pawn
+% --------------------------------- %
 queen(' o ', ' O ').
 queen(' x ', ' X ').
 
@@ -46,9 +54,9 @@ convert([Row, Column], Square) :-
 initialize_game([ ' w ',' x ',' w ',' x ',' w ',' x ',' w ',' x ',' w ',' x ',
 				  ' x ',' w ',' x ',' w ',' x ',' w ',' x ',' w ',' x ',' w ',
 			 	  ' w ',' x ',' w ',' x ',' w ',' x ',' w ',' X ',' w ',' x ',
-				  ' x ',' w ',' o ',' w ',' x ',' w ',' x ',' w ',' x ',' w ',
-				  ' w ',' o ',' w ','   ',' w ','   ',' w ','   ',' w ','   ',
-				  '   ',' w ','   ',' w ','   ',' w ','   ',' w ','   ',' w ',
+				  ' x ',' w ',' x ',' w ',' x ',' w ',' x ',' w ',' x ',' w ',
+				  ' w ',' o ',' w ',' x ',' w ',' x ',' w ',' x ',' w ',' x ',
+				  '   ',' w ',' x ',' w ',' x ',' w ',' x ',' w ',' x ',' w ',
 				  ' w ',' o ',' w ',' o ',' w ',' o ',' w ',' o ',' w ',' o ',
 				  ' o ',' w ',' o ',' w ',' o ',' w ',' o ',' w ',' o ',' w ',
 				  ' w ',' o ',' w ',' o ',' w ',' o ',' w ',' o ',' w ',' o ',
