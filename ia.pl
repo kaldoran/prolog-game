@@ -63,9 +63,7 @@ max(Board, Pawn, Depth, Eval, From, To) :-
 applyMoves(Board, [[From, To]|AllMoves], Pawn, Depth, [From, To]) :-
     true.
 
-    
-    
-    
+        
 findAllMove(Board, Pawn, AllMoves) :-
     findall(Place, nth1(Place, Board, '   '), BlankSpace),
     seekMoves(Board, BlankSpace, Pawn, AllMoves).
