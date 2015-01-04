@@ -23,6 +23,11 @@ askEndMove :-
 %% Avant de faire le move, si e pion arrivera sur le bord, faire une dame %%
 %% ---------------------------------------------------------------------- %%
 
+mutliMove(Board, [], _, Board) :- !.
+multiMove(Board, [From, To|MultiMove], Pawn, NewBoard) :-
+    move(Board, From, To, Pawn, TmpBoard),
+    multiMove(TmpBoard, MultiMove, Pawn, NewBoard).
+
 move(Board, From, To, Pawn, NewBoard) :-
 	( To >= 90; To =< 10),
 	queen(Pawn, Queen),

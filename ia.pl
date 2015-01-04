@@ -55,8 +55,8 @@ findPlay(Board, Pawn, Depth, BestMove) :-
     seekMin(Eval, AllMoves, BestMove).
 
 simulateMin(_, _, [], _, []) :- !.
-simulateMin(Board, Pawn, [[From, To]|AllMoves], Depth, [EvalBis|Eval]) :-
-    move(Board, From, To, Pawn, NewBoard),
+simulateMin(Board, Pawn, [Move|AllMoves], Depth, [EvalBis|Eval]) :-
+    multiMove(Board, Move, Pawn, NewBoard),
     NewDepth is Depth - 1,
     min(NewBoard, Pawn, NewDepth, EvalBis),
     simulateMin(Board, Pawn, AllMoves, Depth, Eval).
