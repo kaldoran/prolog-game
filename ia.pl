@@ -47,24 +47,37 @@ seekMin([X, Y|Eval], [_|AllMoves], BestMove) :-
     X > Y, seekMin([Y|Eval], AllMoves, BestMove), !.
 seekMin([X, _|Eval], [A, _|AllMoves], BestMove) :-
     seekMin([X|Eval], [A|AllMoves], BestMove).
+
+seekMax(_, [BestMove], BestMove) :- !.
+seekMax([X, Y|Eval], [_|AllMoves], BestMove) :-
+    X > Y, seekMax([X|Eval], AllMoves, BestMove), !.
+seekMax([_, Y|Eval], [A, _|AllMoves], BestMove) :-
+    seekMax([Y|Eval], [A|AllMoves], BestMove).
     
+ 
 findPlay(Board, Pawn, Depth, BestMove) :-
     findAllMove(Board, Pawn, AllMoves),
-    write(AllMoves),
     simulateMin(Board, Pawn, AllMoves, Depth, Eval),
-    seekMin(Eval, AllMoves, BestMove),
-    write(Eval).
+    (
+        iPlay(Pawn), seekMin(Eval, AllMoves, BestMove); 
 
-simulateMin(_, _, [], _, []) :- !.
-simulateMin(Board, Pawn, [Move|AllMoves], Depth, [EvalBis|Eval]) :-
+        seekMax(Eval, AllMoves, BestMove)
+    ).
+
+simulate(_, _, [], _, []) :- !.
+simulate(Board, Pawn, [Move|AllMoves], Depth, [EvalBis|Eval]) :-
     multiMove(Board, Move, Pawn, NewBoard),
     NewDepth is Depth - 1,
-    min(NewBoard, Pawn, NewDepth, EvalBis),
-    simulateMin(Board, Pawn, AllMoves, Depth, Eval).
+    invert_player(Pawn, EnemyPawn),
+    (
+        iPlay(Pawn), min(NewBoard, EnemyPawn, NewDepth, EvalBis);
+
+        max(NewBoard, EnemyPawn, NewDepth, EvalBis)
+    ),
+    simulate(Board, Pawn, AllMoves, Depth, Eval).
 
 
 min(Board, Pawn, 0, Eval) :-
-    printBoard(Board),
     eval(Board, Eval, Pawn), !.
 
 min(Board, _, _, Eval) :-
@@ -73,7 +86,7 @@ min(Board, _, _, Eval) :-
 
 min(Board, Pawn, Depth, Eval) :-
     findAllMove(Board, Pawn, AllMoves),
-    simulateMin(Board, Pawn, AllMoves, Depth, EvalList),
+    simulate(Board, Pawn, AllMoves, Depth, EvalList),
     min_list(EvalList, Eval).
 
 max(Board, Pawn, 0, Eval) :-
@@ -85,7 +98,7 @@ max(Board, _, _, Eval) :-
 
 max(Board, Pawn, Depth, Eval) :-
     findAllMove(Board, Pawn, AllMoves),
-    simulateMin(Board, Pawn, AllMoves, Depth, EvalList),        % Remplacer par simulateMax ( ou changer smiluate avec un param en plus pour savoir si c'est min ou max)
+    simulate(Board, Pawn, AllMoves, Depth, EvalList), 
     max_list(EvalList, Eval).
 
 
@@ -168,7 +181,7 @@ seekMoves(Board, [To|BlankSpace], Pawn, AllMoves) :-
 
 allMoves([], _, []).
 
-allMoves([[From, Between]|Result], To, [[From, Between, To]|AllMoves]) :-
+allMoves([[From, Between]|Result], To, [[[From, Between, To]]|AllMoves]) :-
     allMoves(Result, To, AllMoves), !.
 
 allMoves([From|Result], To, [[From, To]|AllMoves]) :-

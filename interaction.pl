@@ -29,6 +29,11 @@ multiMove(Board, [From, To|MultiMove], Pawn, NewBoard) :-
     move(Board, From, To, Pawn, TmpBoard),
     multiMove(TmpBoard, MultiMove, Pawn, NewBoard).
 
+multiMove(Board, [[From, Between, To]|MultiMove], Pawn, NewBoard) :-
+    move(Board, From, To, Pawn, TmpBoard),
+    removePawn(TmpBoard, Between, TmpBoardBis),
+    multiMove(TmpBoardBis, MultiMove, Pawn, NewBoard).
+
 move(Board, From, To, Pawn, NewBoard) :-
 	( To >= 90; To =< 10),
 	queen(Pawn, Queen),

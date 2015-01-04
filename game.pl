@@ -59,7 +59,7 @@ play(Board, Pawn) :-
             )
         )
 	    ;
-	  
+	  	write('IA had done her move.'), nl, 
         findPlay(Board, Pawn, 1, Moves), 
         multiMove(Board, Moves, Pawn, NewBoard),
         play(NewBoard, EnemiPawn)

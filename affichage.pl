@@ -3,7 +3,8 @@
 %% ----------------------------- %%
 %% Affichage de la grille de jeu %%
 %% ----------------------------- %%
-printBoard(Board) :-	
+printBoard(Board) :-
+	writeDebug(Board), nl,	
 	write('  | 1   2   3   4   5   6   7   8   9   10|'), nl,
 	printCase,
 	printLine(Board, 'a').
