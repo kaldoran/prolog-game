@@ -48,11 +48,12 @@ seekMin([X, Y|Eval], [_|AllMoves], BestMove) :-
 seekMin([X, _|Eval], [A, _|AllMoves], BestMove) :-
     seekMin([X|Eval], [A|AllMoves], BestMove).
     
-
 findPlay(Board, Pawn, Depth, BestMove) :-
     findAllMove(Board, Pawn, AllMoves),
+    write(AllMoves),
     simulateMin(Board, Pawn, AllMoves, Depth, Eval),
-    seekMin(Eval, AllMoves, BestMove).
+    seekMin(Eval, AllMoves, BestMove),
+    write(Eval).
 
 simulateMin(_, _, [], _, []) :- !.
 simulateMin(Board, Pawn, [Move|AllMoves], Depth, [EvalBis|Eval]) :-
@@ -63,77 +64,86 @@ simulateMin(Board, Pawn, [Move|AllMoves], Depth, [EvalBis|Eval]) :-
 
 
 min(Board, Pawn, 0, Eval) :-
+    printBoard(Board),
     eval(Board, Eval, Pawn), !.
 
 min(Board, _, _, Eval) :-
     isEndGame(Board, Winner),
     evalEndGame(Eval, Winner), !.
 
-
+min(Board, Pawn, Depth, Eval) :-
+    findAllMove(Board, Pawn, AllMoves),
+    simulateMin(Board, Pawn, AllMoves, Depth, EvalList),
+    min_list(EvalList, Eval).
 
 max(Board, Pawn, 0, Eval) :-
     eval(Board, Eval, Pawn), !.
     
-max(Board, Pawn, _, Eval) :-
+max(Board, _, _, Eval) :-
     isEndGame(Board, Winner),
     evalEndGame(Eval, Winner).
 
-
-
-
-
-
-
-
-
-
-findPlay(Board, Pawn, Depth, From, To) :-
-    iPlay(Pawn),
-    invert_player(Pawn, EnemyPawn),
-    minmax(Board, EnemyPawn, Depth, 9999999, [From, To]).
-    
-findPlay(Board, Pawn, Depth, From, To) :-
-    minmax(Board, Pawn, Depth, -9999999, [From, To]).
-
-minmax(Board, Pawn, 0, Eval, _) :-
-    eval(Board, Eval, Pawn).
-    
-minmax(Board, Pawn, Depth, Eval, [From, To]) :-
+max(Board, Pawn, Depth, Eval) :-
     findAllMove(Board, Pawn, AllMoves),
-    applyMoves(Board, AllMoves, Pawn, Depth, [From, To], Eval).
-    
-applyMoves(Board, _, _, _, _, Eval) :-
-    isEndGame(Board, Winner),
-    evalEndGame(Eval, Winner).
-    
-applyMoves(_, [], _, _, _, _).
-   
-applyMoves(Board, [[From, To]|AllMoves], Pawn, Depth, Best, Eval) :-
-    iPlay(Pawn),
-    invert_player(Pawn, EnemyPawn),
-    move(Board, From, To, Pawn, NewBoard),
-    NewDepth is Depth - 1,
-    applyMoves(Board, AllMoves, Pawn, Depth, [FromBis, ToBis], EvalBis),
-    (
-        EvalBis >= Eval, Best = [FromBis, ToBis];
-        
-        EvalBis < Eval, Best = [From, To]
-    ),
-    minmax(NewBoard, EnemyPawn, NewDepth, Eval, BestBis).
-    
-applyMoves(Board, [[From, To]|AllMoves], Pawn, Depth, [From, To], Eval) :-
-    \+ iPlay(Pawn),
-    invert_player(Pawn, EnemyPawn),
-    move(Board, From, To, Pawn, NewBoard),
-    NewDepth is Depth - 1,
-    applyMoves(Board, AllMoves, Pawn, Depth, [FromBis, ToBis], EvalBis),
-    (
-        Eval >= EvalBis, Best = [FromBis, ToBis];
-        
-        Eval < EvalBis, Best = [From, To]
-    ),
-    minmax(NewBoard, EnemyPawn, NewDepth, Eval, BestBis).
+    simulateMin(Board, Pawn, AllMoves, Depth, EvalList),        % Remplacer par simulateMax ( ou changer smiluate avec un param en plus pour savoir si c'est min ou max)
+    max_list(EvalList, Eval).
 
+
+
+
+
+
+
+
+
+
+% findPlay(Board, Pawn, Depth, From, To) :-
+%    iPlay(Pawn),
+%    invert_player(Pawn, EnemyPawn),
+%    minmax(Board, EnemyPawn, Depth, 9999999, [From, To]).
+    
+%findPlay(Board, Pawn, Depth, From, To) :-
+%    minmax(Board, Pawn, Depth, -9999999, [From, To]).
+
+%minmax(Board, Pawn, 0, Eval, _) :-
+%    eval(Board, Eval, Pawn).
+    
+%minmax(Board, Pawn, Depth, Eval, [From, To]) :-
+%    findAllMove(Board, Pawn, AllMoves),
+%    applyMoves(Board, AllMoves, Pawn, Depth, [From, To], Eval).
+    
+%applyMoves(Board, _, _, _, _, Eval) :-
+%    isEndGame(Board, Winner),
+%    evalEndGame(Eval, Winner).
+    
+%applyMoves(_, [], _, _, _, _).
+   
+%applyMoves(Board, [[From, To]|AllMoves], Pawn, Depth, Best, Eval) :-
+%    iPlay(Pawn),
+%    invert_player(Pawn, EnemyPawn),
+%    move(Board, From, To, Pawn, NewBoard),
+%    NewDepth is Depth - 1,
+%    applyMoves(Board, AllMoves, Pawn, Depth, [FromBis, ToBis], EvalBis),
+%    (
+%        EvalBis >= Eval, Best = [FromBis, ToBis];
+%        
+%        EvalBis < Eval, Best = [From, To]
+%    ),
+%    minmax(NewBoard, EnemyPawn, NewDepth, Eval, BestBis).
+    
+%applyMoves(Board, [[From, To]|AllMoves], Pawn, Depth, [From, To], Eval) :-
+%    \+ iPlay(Pawn),
+%    invert_player(Pawn, EnemyPawn),
+%    move(Board, From, To, Pawn, NewBoard),
+%    NewDepth is Depth - 1,
+%    applyMoves(Board, AllMoves, Pawn, Depth, [FromBis, ToBis], EvalBis),
+%    (
+%       Eval >= EvalBis, Best = [FromBis, ToBis];
+%        
+%        Eval < EvalBis, Best = [From, To]
+%    ),
+%    minmax(NewBoard, EnemyPawn, NewDepth, Eval, BestBis).
+%
 
 
 
@@ -148,7 +158,7 @@ findAllMove(Board, Pawn, AllMoves) :-
 
 seekMoves(_, [], _, []).
 seekMoves(Board, [To|BlankSpace], Pawn, AllMoves) :-
-    findall(Place, existValideEat(Board, Place, _, To, Pawn), ResultEat),
+    findall([Place, Between], existValideEat(Board, Place, Between, To, Pawn), ResultEat),
     findall(Place, existValide(Board, Place, To, Pawn), ResultValide),
     allMoves(ResultValide, To, AllMovesValide),
     allMoves(ResultEat, To, AllMovesEat),
@@ -157,9 +167,14 @@ seekMoves(Board, [To|BlankSpace], Pawn, AllMoves) :-
     append(AllMovesGlobale, AllMovesSeek, AllMoves).
 
 allMoves([], _, []).
+
+allMoves([[From, Between]|Result], To, [[From, Between, To]|AllMoves]) :-
+    allMoves(Result, To, AllMoves), !.
+
 allMoves([From|Result], To, [[From, To]|AllMoves]) :-
     allMoves(Result, To, AllMoves).
-    
+
+
 %% Puis : Essai move depuis valideMove
 %% Calcul
 %% Best of Calcule

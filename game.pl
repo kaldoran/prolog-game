@@ -13,7 +13,7 @@ play :-
     initialize_game(Board),
     clear,
     asserta(iPlay(' x ')), asserta(iPlay(' o ')),
-    play(Board, ' o ').
+    play(Board, ' x ').
     
 playX :-
 	initialize_game(Board),
@@ -60,9 +60,8 @@ play(Board, Pawn) :-
         )
 	    ;
 	  
-        playIA(Board, From, To, Pawn), 
-        nth(From, Board, PawnMove),
-        move(Board, From, To, PawnMove, NewBoard),
+        findPlay(Board, Pawn, 1, Moves), 
+        multiMove(Board, Moves, Pawn, NewBoard),
         play(NewBoard, EnemiPawn)
     ),
     play(NewBoard, EnemiPawn).
