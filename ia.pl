@@ -57,12 +57,12 @@ seekMax([_, Y|Eval], [A, _|AllMoves], BestMove) :-
  
 findPlay(Board, Pawn, Depth, BestMove) :-
     findAllMove(Board, Pawn, AllMoves),
-    simulateMin(Board, Pawn, AllMoves, Depth, Eval),
+    simulate(Board, Pawn, AllMoves, Depth, Eval),
     (
         iPlay(Pawn), seekMin(Eval, AllMoves, BestMove); 
 
         seekMax(Eval, AllMoves, BestMove)
-    ).
+    ), !.
 
 simulate(_, _, [], _, []) :- !.
 simulate(Board, Pawn, [Move|AllMoves], Depth, [EvalBis|Eval]) :-
