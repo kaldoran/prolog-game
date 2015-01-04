@@ -1,5 +1,8 @@
 %% Author : Reynaud Nicolas
 
+% Check on the '+Board' if there is a Winner
+% If there is one '-Winner' is set
+% ------------------------------------------ %
 isEndGame(Board, Winner) :-
 	isPawn(Looser),
 	invert_player(Looser, Winner),

@@ -1,26 +1,31 @@
 %% Author : Reynaud Nicolas
 
-%% ----------------------------- %%
-%% Affichage de la grille de jeu %%
-%% ----------------------------- %%
+% Print the '+Board'
+% ------------------ %
 printBoard(Board) :-
 	writeDebug(Board), nl,	
 	write('  | 1   2   3   4   5   6   7   8   9   10|'), nl,
 	printCase,
 	printLine(Board, 'a').
 
+% Print a Line
+% ------------ %
 printCase :-
 	write('  |---|---|---|---|---|---|---|---|---|---|'), nl.
 
-% Stop when all line had been display
+% Stop the newt letter is 'k'
+% -------------------------- %
 printLine(_, 'k') :- !.
 
-% Print a Line of the board
+% Print a Line of the '+Board'
+% '+Line' is the number of the line
+% --------------------------------- %
 printLine(Board, Line) :- 
 	write(Line), write(' |'),
 	printLinePawn(Board, Line, 0).
 
-% Call the print of the next line
+% Call the print of the next line when the line is end
+% ---------------------------------------------------- %
 printLinePawn(Board, Line, 10) :- 
 	nl, printCase,
 	char_code(Line, Code), 
@@ -29,6 +34,7 @@ printLinePawn(Board, Line, 10) :-
 	printLine(Board, NewChar), !.
 
 % Print a line Pawn by Pawn
+% ------------------------- %
 printLinePawn([X|L], Line, Pawn) :-
 	write(X),
 	write('|'),

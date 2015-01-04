@@ -1,1 +1,4 @@
-- IA                [ fait a 50 % ]
+- IA                [ fait a 70 % ]
+- Generate multi jump
+
+- Change Verif.pl isEndGame(Board, Winner) 

@@ -1,7 +1,5 @@
 %% Author : Reynaud Nicolas
 
-:- include('game.pl').
-
 evalEndGame(100, Pawn) :-
     iPlay(Pawn), !.
     
@@ -102,69 +100,6 @@ max(Board, Pawn, Depth, Eval) :-
     max_list(EvalList, Eval).
 
 
-
-
-
-
-
-
-
-
-% findPlay(Board, Pawn, Depth, From, To) :-
-%    iPlay(Pawn),
-%    invert_player(Pawn, EnemyPawn),
-%    minmax(Board, EnemyPawn, Depth, 9999999, [From, To]).
-    
-%findPlay(Board, Pawn, Depth, From, To) :-
-%    minmax(Board, Pawn, Depth, -9999999, [From, To]).
-
-%minmax(Board, Pawn, 0, Eval, _) :-
-%    eval(Board, Eval, Pawn).
-    
-%minmax(Board, Pawn, Depth, Eval, [From, To]) :-
-%    findAllMove(Board, Pawn, AllMoves),
-%    applyMoves(Board, AllMoves, Pawn, Depth, [From, To], Eval).
-    
-%applyMoves(Board, _, _, _, _, Eval) :-
-%    isEndGame(Board, Winner),
-%    evalEndGame(Eval, Winner).
-    
-%applyMoves(_, [], _, _, _, _).
-   
-%applyMoves(Board, [[From, To]|AllMoves], Pawn, Depth, Best, Eval) :-
-%    iPlay(Pawn),
-%    invert_player(Pawn, EnemyPawn),
-%    move(Board, From, To, Pawn, NewBoard),
-%    NewDepth is Depth - 1,
-%    applyMoves(Board, AllMoves, Pawn, Depth, [FromBis, ToBis], EvalBis),
-%    (
-%        EvalBis >= Eval, Best = [FromBis, ToBis];
-%        
-%        EvalBis < Eval, Best = [From, To]
-%    ),
-%    minmax(NewBoard, EnemyPawn, NewDepth, Eval, BestBis).
-    
-%applyMoves(Board, [[From, To]|AllMoves], Pawn, Depth, [From, To], Eval) :-
-%    \+ iPlay(Pawn),
-%    invert_player(Pawn, EnemyPawn),
-%    move(Board, From, To, Pawn, NewBoard),
-%    NewDepth is Depth - 1,
-%    applyMoves(Board, AllMoves, Pawn, Depth, [FromBis, ToBis], EvalBis),
-%    (
-%       Eval >= EvalBis, Best = [FromBis, ToBis];
-%        
-%        Eval < EvalBis, Best = [From, To]
-%    ),
-%    minmax(NewBoard, EnemyPawn, NewDepth, Eval, BestBis).
-%
-
-
-
-
-
-
-
-
 findAllMove(Board, Pawn, AllMoves) :-
     findall(Place, nth1(Place, Board, '   '), BlankSpace),
     seekMoves(Board, BlankSpace, Pawn, AllMoves).
@@ -186,12 +121,3 @@ allMoves([[From, Between]|Result], To, [[[From, Between, To]]|AllMoves]) :-
 
 allMoves([From|Result], To, [[From, To]|AllMoves]) :-
     allMoves(Result, To, AllMoves).
-
-
-%% Puis : Essai move depuis valideMove
-%% Calcul
-%% Best of Calcule
-
-
-    
-

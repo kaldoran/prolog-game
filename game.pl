@@ -4,34 +4,49 @@
 :- include('affichage.pl').
 :- include('interaction.pl').
 :- include('verif.pl').
+:- include('ia.pl').
 
+% Clear the assert prédicate
+% -------------------------- %
 clear :- clearX, clearO.
 clearX :- retract(iPlay(' x ')); true.
 clearO :- retract(iPlay(' o ')); true.
 
+%% ------------ Note : X always start the game
+
+% Launch this predicate to play 2 V 2
+% ----------------------------------- %
 play :- 
     initialize_game(Board),
     clear,
     asserta(iPlay(' x ')), asserta(iPlay(' o ')),
     play(Board, ' x ').
-    
+
+% Launch this predicate to play Vs IA, Ia play ' o ', you play ' x '
+% ----------------------------------------------------------------- %
 playX :-
 	initialize_game(Board),
 	clear,
 	asserta(iPlay(' x ')),
-	play(Board, ' x ').                 % les X commencent toujours
+	play(Board, ' x ').
 
+% Launch this predicate to play Vs IA, Ia play ' x ', you play ' o '
+% ----------------------------------------------------------------- %
 playO :-
 	initialize_game(Board), 
 	clear,
 	asserta(iPlay(' o ')), 
 	play(Board, ' x ').
 
+% Check if there is a winner on the '+Board', if there is, write the winner
+% ------------------------------------------------------------------------- %
 play(Board, _) :-
 	isEndGame(Board, Winner),
 	write('The Winner Is : '),
 	write(Winner), !.
 	
+% Alternative predicate if there is no winner then play on the '+Board' with '+Pawn'
+% --------------------------------------------------------------------------------- %
 play(Board, Pawn) :-
 	printBoard(Board),
     invert_player(Pawn, EnemiPawn), 
