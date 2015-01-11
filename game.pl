@@ -73,9 +73,10 @@ play(Board, Pawn) :-
                 write(' Tu m\'a pris pour un jambon ? tu as plus de coup possible'), nl
             )
         )
-	    ;
-	  	write('IA had done her move.'), nl, 
-        findPlay(Board, Pawn, 4, Moves), 
+	    ; 
+        findPlay(Board, Pawn, 1, Moves),
+        write('IA had done her move.'), nl, 
+        write('Move : '), write(Moves),
         multiMove(Board, Moves, Pawn, NewBoard),
         play(NewBoard, EnemiPawn)
     ),

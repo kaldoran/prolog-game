@@ -112,21 +112,23 @@ seekMoves(Board, [To|BlankSpace], Pawn, AllMoves) :-
     allMovesEat(Board, Pawn, ResultEat, To, AllMovesEat),
     append(AllMovesValide, AllMovesEat, AllMovesGlobale),
     seekMoves(Board, BlankSpace, Pawn, AllMovesSeek),
-    append(AllMovesGlobale, AllMovesSeek, AllMoves).
+    append(AllMovesGlobale, AllMovesSeek, AllMoves), !.
+    
+% seekMoves(Board, [_|BlankSpace], Pawn, AllMoves) :-
+%     seekMoves(Board, BlankSpace, Pawn, AllMoves), !.
 
-allMovesEat(_, [], _, [[]]).
+allMovesEat(_, _, [], _, []).
 
 allMovesEat(Board, Pawn, [[From, Between]|Result], To, All) :-
     multiMove(Board, [[From, Between, To]], Pawn, NewBoard),
     seekMultiMove(NewBoard, To, Pawn, MultiMove),
     append([[From, Between, To]], MultiMove, MultiEat),
-    allMovesEat(Board, Result, To, AllMoves), 
+    allMovesEat(Board, Pawn, Result, To, AllMoves), 
     append(AllMoves, [MultiEat], All), !.
 
 
 seekMultiMove(Board, From, Pawn, [[From, Between, To]|MultiMove]) :-
     existValideEatFrom(Board, From, Between, To, Pawn),
-    write(Between), nl, write(To),
     multiMove(Board, [[From, Between, To]], Pawn, NewBoard),
     seekMultiMove(NewBoard, To, Pawn, MultiMove).
     
