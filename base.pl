@@ -1,5 +1,4 @@
-%% Author : Reynaud Nicolas
-
+%% Author : Reynaud Nicolas (Kaldoran)
 
 debug('no').
 

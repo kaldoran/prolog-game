@@ -1,4 +1,4 @@
-%% Author : Reynaud Nicolas
+%% Author : Reynaud Nicolas (Kaldoran)
 
 :- include('base.pl').
 :- include('affichage.pl').
@@ -75,7 +75,7 @@ play(Board, Pawn) :-
         )
 	    ;
 	  	write('IA had done her move.'), nl, 
-        findPlay(Board, Pawn, 1, Moves), 
+        findPlay(Board, Pawn, 4, Moves), 
         multiMove(Board, Moves, Pawn, NewBoard),
         play(NewBoard, EnemiPawn)
     ),

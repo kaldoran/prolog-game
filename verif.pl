@@ -1,4 +1,4 @@
-%% Author : Reynaud Nicolas
+%% Author : Reynaud Nicolas (Kaldoran)
 
 % Check on the '+Board' if there is a Winner
 % If there is one '-Winner' is set
@@ -229,6 +229,21 @@ existValideEat(Board, From, Between, To, Pawn) :-
 	    EnemiPawn = Enemi
 	),
 	nth1(From, Board, Pawn).
+	
+existValideEatFrom(Board, From, Between, To, Pawn) :-
+	(
+	    Between is From + 11, To is Between + 11; 
+	    Between is From + 9, To is Between + 9; 
+	    Between is From - 11, To is Between - 11;
+	    Between is From - 9, To is Between - 9
+	),
+    invert_player(Pawn, EnemiPawn),
+    nth1(Between, Board, Enemi),
+    (
+	    queen(EnemiPawn, Enemi); 
+	    EnemiPawn = Enemi
+	),
+	nth1(To, Board, '   ').
 	
 existNextEat(Board, From, Pawn) :-
     findall(Place, nth1(Place, Board, '   '), BlankSpace),

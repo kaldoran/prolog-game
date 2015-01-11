@@ -1,4 +1,4 @@
-%% Author : Reynaud Nicolas
+%% Author : Reynaud Nicolas (Kaldoran)
 
 % Print the '+Board'
 % ------------------ %

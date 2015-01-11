@@ -1,4 +1,4 @@
-%% Author : Reynaud Nicolas
+%% Author : Reynaud Nicolas (Kaldoran)
 
 evalEndGame(100, Pawn) :-
     iPlay(Pawn), !.
@@ -108,16 +108,33 @@ seekMoves(_, [], _, []).
 seekMoves(Board, [To|BlankSpace], Pawn, AllMoves) :-
     findall([Place, Between], existValideEat(Board, Place, Between, To, Pawn), ResultEat),
     findall(Place, existValide(Board, Place, To, Pawn), ResultValide),
-    allMoves(ResultValide, To, AllMovesValide),
-    allMoves(ResultEat, To, AllMovesEat),
+    allMovesVal(ResultValide, To, AllMovesValide),
+    allMovesEat(Board, Pawn, ResultEat, To, AllMovesEat),
     append(AllMovesValide, AllMovesEat, AllMovesGlobale),
     seekMoves(Board, BlankSpace, Pawn, AllMovesSeek),
     append(AllMovesGlobale, AllMovesSeek, AllMoves).
 
-allMoves([], _, []).
+allMovesEat(_, [], _, [[]]).
 
-allMoves([[From, Between]|Result], To, [[[From, Between, To]]|AllMoves]) :-
-    allMoves(Result, To, AllMoves), !.
+allMovesEat(Board, Pawn, [[From, Between]|Result], To, All) :-
+    multiMove(Board, [[From, Between, To]], Pawn, NewBoard),
+    seekMultiMove(NewBoard, To, Pawn, MultiMove),
+    append([[From, Between, To]], MultiMove, MultiEat),
+    allMovesEat(Board, Result, To, AllMoves), 
+    append(AllMoves, [MultiEat], All), !.
 
-allMoves([From|Result], To, [[From, To]|AllMoves]) :-
+
+seekMultiMove(Board, From, Pawn, [[From, Between, To]|MultiMove]) :-
+    existValideEatFrom(Board, From, Between, To, Pawn),
+    write(Between), nl, write(To),
+    multiMove(Board, [[From, Between, To]], Pawn, NewBoard),
+    seekMultiMove(NewBoard, To, Pawn, MultiMove).
+    
+seekMultiMove(_, _, _, []).
+
+allMovesVal([], _, []).
+allMovesVal(_,[From|Result], To, [[From, To]|AllMoves]) :-
     allMoves(Result, To, AllMoves).
+    
+
+    

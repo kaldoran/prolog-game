@@ -1,4 +1,4 @@
-%% Author : Reynaud Nicolas
+%% Author : Reynaud Nicolas (Kaldoran)
 
 % Ask a move on the '+Board', with the '+PlayPawn'
 % Output the '-From', '-To', to move pawn From to To
