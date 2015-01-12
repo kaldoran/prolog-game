@@ -199,10 +199,13 @@ checkRow(Row) :-
 %% Check if a move exist from a position %%
 %% ------------------------------------- %%
 
+                                                                        %% ========= %%
+                                                                        %% A CHANGER %%
+                                                                        %% ========= %%
 moveLeft(Board, Pawn) :-
     nth(To, Board, '   '),
     (existValide(Board, _, To, Pawn); existValideEat(Board, _, _, To, Pawn)), !.
-                                                                   
+                                                                        %% ========= %%                                                 
 existValide(Board, From, To, Pawn) :-
     isX(Pawn),
 	(From is To - 11; 
