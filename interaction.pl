@@ -31,12 +31,6 @@ askEndMove :-
 % --------------- %
 multiMove(Board, [], _, Board).
 
-% Apply '+MultiMove' on the '+Board' with the '+Pawn'
-% Output the '-NewBoard'
-% --------------------------------------------------- %
-multiMove(Board, [From, To], Pawn, NewBoard) :-
-    move(Board, From, To, Pawn, NewBoard).
-
 % Alternative for a MultiMove with a jump
 % Same input / Output as previous 
 % --------------------------------------- %
@@ -44,6 +38,12 @@ multiMove(Board, [[From, Between, To]|MultiMove], Pawn, NewBoard) :-
     move(Board, From, To, Pawn, TmpBoard),
     removePawn(TmpBoard, Between, TmpBoardBis),
     multiMove(TmpBoardBis, MultiMove, Pawn, NewBoard).
+    
+% Apply '+MultiMove' on the '+Board' with the '+Pawn'
+% Output the '-NewBoard'
+% --------------------------------------------------- %
+multiMove(Board, [From, To], Pawn, NewBoard) :-
+    move(Board, From, To, Pawn, NewBoard).
 
 % Apply the Move but first, change the pawn to a Queen if needed 
 % -------------------------------------------------------------- %
