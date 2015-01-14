@@ -105,11 +105,11 @@ isValideEat(Board, From, Between, To, Pawn) :-
         Between is From - 9,  To is Between - 9;
         Between is From - 11, To is Between - 11
     ),
-    invert_player(Pawn, EnemiPawn),
-    nth1(Between, Board, Enemi),
+    invert_player(Pawn, EnemyPawn),
+    nth1(Between, Board, Enemy),
     (
-	    queen(EnemiPawn, Enemi); 
-	    EnemiPawn = Enemi
+	    queen(EnemyPawn, Enemy); 
+	    EnemyPawn = Enemy
 	).
 
 
@@ -122,7 +122,7 @@ isValideEat(Board, From, Between, To, Queen) :-
     removePawn(Board, Between, NewBoard),
     isValideSpecial(NewBoard, From, To, Queen).
 
-%% Look the the enemi pawn to '+Queen' between '+From' and '+To'
+%% Look the the enemy pawn to '+Queen' between '+From' and '+To'
 %% On the '+Board'
 %% ------------------------------------------------------------- %%
 seekPawnBetween(Board, From, Between, To, Queen) :-
@@ -139,16 +139,16 @@ seekPawnBetween(Board, From, Between, To, Queen) :-
       fail), !.
 
 %% Check if the pawn on the '+Between' square 
-%% is enemi of '+Queen' on '+Board'
+%% is enemy of '+Queen' on '+Board'
 %% ------------------------------------------ %%
 checkPawnBetween(Board, _, Between, _, Queen) :-
     number(Between),
     queen(Pawn, Queen),
-    invert_player(Pawn, EnemiPawn),
-    nth1(Between, Board, Enemi),
+    invert_player(Pawn, EnemyPawn),
+    nth1(Between, Board, Enemy),
     (      
-        queen(EnemiPawn, Enemi);
-        Enemi = EnemiPawn
+        queen(EnemyPawn, Enemy);
+        Enemy = EnemyPawn
     ), !.
     
 
@@ -247,9 +247,6 @@ checkRow(Row) :-
 %% Check if a move exist from a position %%
 %% ------------------------------------- %%
 
-                                                                        %% ========= %%
-                                                                        %% A CHANGER %%
-                                                                        %% ========= %%
 moveLeft(Board, Pawn) :-
     findall(Place, nth1(Place, Board, '   '), BlankSpace),
     checkMoveLeft(Board, BlankSpace, Pawn).
@@ -287,11 +284,11 @@ existValideEat(Board, From, Between, To, Pawn) :-
 	    Between is To - 11, From is Between - 11;
 	    Between is To - 9, From is Between - 9
 	),
-    invert_player(Pawn, EnemiPawn),
-    nth1(Between, Board, Enemi),
+    invert_player(Pawn, EnemyPawn),
+    nth1(Between, Board, Enemy),
     (
-	    queen(EnemiPawn, Enemi); 
-	    EnemiPawn = Enemi
+	    queen(EnemyPawn, Enemy); 
+	    EnemyPawn = Enemy
 	),
 	nth1(From, Board, Pawn).
 
@@ -305,11 +302,11 @@ existValideEatFrom(Board, From, Between, To, Pawn) :-
 	    Between is From - 11, To is Between - 11;
 	    Between is From - 9, To is Between - 9
 	),
-    invert_player(Pawn, EnemiPawn),
-    nth1(Between, Board, Enemi),
+    invert_player(Pawn, EnemyPawn),
+    nth1(Between, Board, Enemy),
     (
-	    queen(EnemiPawn, Enemi); 
-	    EnemiPawn = Enemi
+	    queen(EnemyPawn, Enemy); 
+	    EnemyPawn = Enemy
 	),
 	nth1(To, Board, '   ').
 

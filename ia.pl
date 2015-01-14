@@ -10,11 +10,11 @@ evalEndGame(-100, _).
 
     
 eval(Board, Value, Pawn) :-
-    invert_player(Pawn, EnemiPawn),
+    invert_player(Pawn, EnemyPawn),
     findall(Pawn, member(Pawn, Board), ResultP), 
-    findall(EnemiPawn, member(EnemiPawn, Board), ResultE), 
+    findall(EnemyPawn, member(EnemyPawn, Board), ResultE), 
     queen(Pawn, QueenP),
-    queen(EnemiPawn, QueenE),
+    queen(EnemyPawn, QueenE),
     findall(QueenP, member(QueenP, Board), ResultPQ),
     findall(QueenE, member(QueenE, Board), ResultEQ),
     length(ResultP, LP),

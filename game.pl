@@ -49,14 +49,14 @@ play(Board, _) :-
 % --------------------------------------------------------------------------------- %
 play(Board, Pawn) :-
 	printBoard(Board),
-    invert_player(Pawn, EnemiPawn), 
+    invert_player(Pawn, EnemyPawn), 
 	( 
 	    (
 	        moveLeft(Board, Pawn);
 	        queen(Pawn, Queen), moveLeft(Board, Queen)
 	    ) -> 
 	        write('Time to play : '), write(Pawn), nl;
-	        write(Pawn), write(' ne peux pas jouer.'), nl, play(Board, EnemiPawn), !, nl
+	        write(Pawn), write(' ne peux pas jouer.'), nl, play(Board, EnemyPawn), !, nl
 	),
 	( 
 	    iPlay(Pawn),
@@ -70,7 +70,7 @@ play(Board, Pawn) :-
 	        removePawn(Board, Between, TmpBoard),
 	        move(TmpBoard, From, To, PawnMove, NewBoard),
             printBoard(NewBoard),
-            (askEndMove; play(NewBoard, EnemiPawn)),
+            (askEndMove; play(NewBoard, EnemyPawn)),
             (existNextEat(NewBoard, To, PawnMove) ->  
                 play(NewBoard, Pawn), !;
                 
@@ -78,15 +78,15 @@ play(Board, Pawn) :-
             )
         )
 	    ; 
-        findPlay(Board, Pawn, 1, Moves),
+        findPlay(Board, Pawn, , Moves),
         write('IA had done her move.'), nl, 
         write('Move : '), write(Moves),
         multiMove(Board, Moves, Pawn, NewBoard),
-        play(NewBoard, EnemiPawn), !;
+        play(NewBoard, EnemyPawn), !;
         
         write('L\'ia ne peux pas jouer'), nl, 
-        play(Board, EnemiPawn), !
+        play(Board, EnemyPawn), !
     ),
-    play(NewBoard, EnemiPawn), !.
+    play(NewBoard, EnemyPawn), !.
 	  
 	  
