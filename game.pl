@@ -50,9 +50,13 @@ play(Board, _) :-
 play(Board, Pawn) :-
 	printBoard(Board),
     invert_player(Pawn, EnemiPawn), 
-	( moveLeft(Board, Pawn) -> 
-	    write('Time to play : '), write(Pawn), nl;
-	    write(Pawn), write(' ne peux pas jouer.'), nl, play(Board, EnemiPawn), nl
+	( 
+	    (
+	        moveLeft(Board, Pawn);
+	        queen(Pawn, Queen), moveLeft(Board, Queen)
+	    ) -> 
+	        write('Time to play : '), write(Pawn), nl;
+	        write(Pawn), write(' ne peux pas jouer.'), nl, play(Board, EnemiPawn), !, nl
 	),
 	( 
 	    iPlay(Pawn),
@@ -78,8 +82,11 @@ play(Board, Pawn) :-
         write('IA had done her move.'), nl, 
         write('Move : '), write(Moves),
         multiMove(Board, Moves, Pawn, NewBoard),
-        play(NewBoard, EnemiPawn)
+        play(NewBoard, EnemiPawn), !;
+        
+        write('L\'ia ne peux pas jouer'), nl, 
+        play(Board, EnemiPawn), !
     ),
-    play(NewBoard, EnemiPawn).
+    play(NewBoard, EnemiPawn), !.
 	  
 	  

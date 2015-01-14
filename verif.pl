@@ -6,7 +6,9 @@
 isEndGame(Board, Winner) :-
 	isPawn(Looser),
 	invert_player(Looser, Winner),
-	(member(Looser, Board), !, fail; true).
+    \+ member(Looser, Board),
+    queen(Looser, QueenLooser),
+    \+ member(QueenLooser, Board), !.
 	
 	
 %% ------------------------ %%
@@ -249,9 +251,13 @@ checkRow(Row) :-
                                                                         %% A CHANGER %%
                                                                         %% ========= %%
 moveLeft(Board, Pawn) :-
-    nth(To, Board, '   '),
-    (existValide(Board, _, To, Pawn); existValideEat(Board, _, _, To, Pawn)), !.
-                                                                        %% ========= %%                                                 
+    findall(Place, nth1(Place, Board, '   '), BlankSpace),
+    checkMoveLeft(Board, BlankSpace, Pawn).
+
+checkMoveLeft(Board, [To|BlankSpace], Pawn) :-
+     existValide(Board, _, To, Pawn), !;
+     existValideEat(Board, _, _, To, Pawn), !;
+     checkMoveLeft(Board, BlankSpace, Pawn).                                              
 %% Try to find a '-From' Position available according to the '+To'
 %% And the '+Pawn' on the '+Board'
 %% --------------------------------------------------------------- %%
