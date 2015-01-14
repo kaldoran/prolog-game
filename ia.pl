@@ -8,35 +8,22 @@ evalEndGame(100, Pawn) :-
     
 evalEndGame(-100, _).
 
+eval(Board, Value, Pawn) :-
+    isX(Pawn),
+    findall(X, (member(X, Board), isX(X)), ResultX),
+    findall(O, (member(O, Board), isO(O)), ResultO),
+    length(ResultX, LRX),
+    length(ResultO, LRO),
+    Value is LRX - LRO, !.
     
 eval(Board, Value, Pawn) :-
-    invert_player(Pawn, EnemyPawn),
-    findall(Pawn, member(Pawn, Board), ResultP), 
-    findall(EnemyPawn, member(EnemyPawn, Board), ResultE), 
-    queen(Pawn, QueenP),
-    queen(EnemyPawn, QueenE),
-    findall(QueenP, member(QueenP, Board), ResultPQ),
-    findall(QueenE, member(QueenE, Board), ResultEQ),
-    length(ResultP, LP),
-    length(ResultE, LE), 
-    length(ResultPQ, LPQ),
-    length(ResultEQ, LEQ), 
-    TotalP is LP + LPQ,
-    TotalE is LE + LEQ,
-    ( 
-        iPlay(' x '), 
-            ( Pawn = ' x ' -> 
-                Value is TotalP - TotalE; 
-                Value is TotalE - TotalP
-            )
-        ;
-        iPlay(' o '), 
-            ( Pawn = ' o ' -> 
-                Value is TotalP - TotalE; 
-                Value is TotalE - TotalP
-            )
-    ).
-    
+    isO(Pawn),
+    findall(X, (member(X, Board), isX(X)), ResultX),
+    findall(O, (member(O, Board), isO(O)), ResultO),
+    length(ResultX, LRX),
+    length(ResultO, LRO),
+    Value is LRO - LRX, !.
+        
 
 %% Return best Move
 %% ---------------- %

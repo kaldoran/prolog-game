@@ -70,7 +70,11 @@ play(Board, Pawn) :-
 	        removePawn(Board, Between, TmpBoard),
 	        move(TmpBoard, From, To, PawnMove, NewBoard),
             printBoard(NewBoard),
-            (askEndMove; play(NewBoard, EnemyPawn)),
+            (
+                askEndMove; 
+                
+                play(NewBoard, EnemyPawn)
+            ),
             (existNextEat(NewBoard, To, PawnMove) ->  
                 play(NewBoard, Pawn), !;
                 
@@ -78,7 +82,7 @@ play(Board, Pawn) :-
             )
         )
 	    ; 
-        findPlay(Board, Pawn, , Moves),
+        findPlay(Board, Pawn, 3, Moves),
         write('IA had done her move.'), nl, 
         write('Move : '), write(Moves),
         multiMove(Board, Moves, Pawn, NewBoard),
