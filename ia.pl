@@ -1,5 +1,8 @@
 %% Author : Reynaud Nicolas (Kaldoran)
 
+%% evalEndGame is called for give the Eval of and ending point
+%% According to the '+Pawn'
+%% ----------------------------------------------------------- %%
 evalEndGame(100, Pawn) :-
     iPlay(Pawn), !.
     
@@ -34,18 +37,9 @@ eval(Board, Value, Pawn) :-
             )
     ).
     
-% On cherche tout les coup, pour ce faire on cherche les cases vides
-
-% seekMin([5, 8, 100, 522, 1, 8], [[1, 2], [2, 3], [3, 4], [4, 5], [5, 6], [6, 7]], Best).
 
 %% Return best Move
 %% ---------------- %
-seekMin(_, [BestMove], BestMove) :- !.
-seekMin([X, Y|Eval], [_|AllMoves], BestMove) :-
-    X > Y, seekMin([Y|Eval], AllMoves, BestMove), !.
-seekMin([X, _|Eval], [A, _|AllMoves], BestMove) :-
-    seekMin([X|Eval], [A|AllMoves], BestMove).
-
 seekMax(_, [BestMove], BestMove) :- !.
 seekMax([X, Y|Eval], [_|AllMoves], BestMove) :-
     X > Y, seekMax([X|Eval], AllMoves, BestMove), !.
@@ -56,11 +50,7 @@ seekMax([_, Y|Eval], [A, _|AllMoves], BestMove) :-
 findPlay(Board, Pawn, Depth, BestMove) :-
     findAllMove(Board, Pawn, AllMoves),
     simulate(Board, Pawn, AllMoves, Depth, Eval),
-    (
-        iPlay(Pawn), seekMin(Eval, AllMoves, BestMove); 
-
-        seekMax(Eval, AllMoves, BestMove)
-    ), !.
+    seekMax(Eval, AllMoves, BestMove), !.
 
 simulate(_, _, [], _, []) :- !.
 simulate(Board, Pawn, [Move|AllMoves], Depth, [EvalBis|Eval]) :-
@@ -68,7 +58,7 @@ simulate(Board, Pawn, [Move|AllMoves], Depth, [EvalBis|Eval]) :-
     NewDepth is Depth - 1,
     invert_player(Pawn, EnemyPawn),
     (
-        iPlay(Pawn), min(NewBoard, EnemyPawn, NewDepth, EvalBis);
+        iPlay(Pawn), min(NewBoard, EnemyPawn, NewDepth, EvalBis);       %% If its the human turn to simulate
 
         max(NewBoard, EnemyPawn, NewDepth, EvalBis)
     ),
