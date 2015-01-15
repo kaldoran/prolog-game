@@ -79,10 +79,10 @@ revertConvert([Row, Column], Square) :-
 
 % the default grid
 % ---------------- %
-initialize_game([ ' w ',' x ',' w ',' x ',' w ',' x ',' w ',' x ',' w ',' x ',
-				  ' x ',' w ',' x ',' w ',' x ',' w ',' x ',' w ',' x ',' w ',
-			 	  ' w ',' x ',' w ',' x ',' w ',' x ',' w ',' x ',' w ',' x ',
-				  ' x ',' w ',' x ',' w ',' x ',' w ',' x ',' w ',' x ',' w ',
+initialize_game([ ' w ',' X ',' w ',' x ',' w ',' x ',' w ',' x ',' w ',' x ',
+				  ' x ',' w ','   ',' w ',' x ',' w ','   ',' w ',' x ',' w ',
+			 	  ' w ',' x ',' w ',' o ',' w ',' o ',' w ',' x ',' w ',' x ',
+				  ' x ',' w ',' x ',' w ','   ',' w ',' x ',' w ',' x ',' w ',
 				  ' w ','   ',' w ','   ',' w ','   ',' w ','   ',' w ','   ',
 				  '   ',' w ','   ',' w ','   ',' w ','   ',' w ','   ',' w ',
 				  ' w ',' o ',' w ',' o ',' w ',' o ',' w ',' o ',' w ',' o ',

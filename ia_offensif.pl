@@ -1,3 +1,4 @@
+%% Author : Laoussing Kevin (KevL974)
 
 findAllRaid(Pawn, Board, ResultR) :-
 	findAllRaidBRDiagonal(Pawn, Board, Board, 0, ResultBRD),
