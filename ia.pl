@@ -11,6 +11,9 @@ evalEndGame(-100, _).
 %% Evaluate the '+Board' according to the '+Pawn'
 %% And output the evaluation of the board in '-Value'
 %% ------------------------------------------------- %%
+
+% Heuristic about the number of pawns
+% ----------------------------------- %
 eval(Board, Value, Pawn, 1) :-
     isX(Pawn),
     findall(X, (member(X, Board), isX(X)), ResultX),
@@ -28,9 +31,13 @@ eval(Board, Value, Pawn, 1) :-
     Value is LRO - LRX, !.
 
 
+%% Heuristic about the stategic positions
+%% -------------------------------------- %%
 eval(Board, Value, Pawn, 2) :- 
     valueBoard(Board, 1, Value, Pawn).
 
+%% Heuristic about the fragility defensive of the adversary
+%% -------------------------------------------------------- %%
 eval(Board, Value, Pawn, 3) :-
     isX(Pawn),
     findAllRaid(Pawn, Board, ResultRX),
