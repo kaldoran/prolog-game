@@ -43,7 +43,7 @@ playO :-
 play(Board, _) :-
 	isEndGame(Board, Winner),
 	write('The Winner Is : '),
-	write(Winner), !.
+	write(Winner), nl, halt.
 	
 % Alternative predicate if there is no winner then play on the '+Board' with '+Pawn'
 % --------------------------------------------------------------------------------- %

@@ -38,7 +38,7 @@ multiMove(Board, [[From, Between, To]|MultiMove], NewBoard) :-
     nth(From, Board, Pawn),
     move(Board, From, To, Pawn, TmpBoard),
     removePawn(TmpBoard, Between, TmpBoardBis),
-    multiMove(TmpBoardBis, MultiMove, Pawn, NewBoard).
+    multiMove(TmpBoardBis, MultiMove, NewBoard).
     
 % Apply '+MultiMove' on the '+Board' with the '+Pawn'
 % Output the '-NewBoard'

@@ -50,10 +50,10 @@ convert([Row, Column], Square) :-
 	Square is RowMove * 10 + Column.
 
 % the grid
-initialize_game([ ' w ',' X ',' w ','   ',' w ','   ',' w ','   ',' w ','   ',
-				  '   ',' w ','   ',' w ','   ',' w ','   ',' w ','   ',' w ',
-			 	  ' w ','   ',' w ',' o ',' w ','   ',' w ','   ',' w ','   ',
-				  '   ',' w ',' o ',' w ','   ',' w ','   ',' w ','   ',' w ',
+initialize_game([ ' w ',' x ',' w ',' x ',' w ',' x ',' w ',' x ',' w ',' x ',
+				  ' x ',' w ',' x ',' w ',' x ',' w ',' x ',' w ',' x ',' w ',
+			 	  ' w ',' x ',' w ',' x ',' w ',' x ',' w ',' x ',' w ',' x ',
+				  ' x ',' w ',' x ',' w ',' x ',' w ',' x ',' w ',' x ',' w ',
 				  ' w ','   ',' w ','   ',' w ','   ',' w ','   ',' w ','   ',
 				  '   ',' w ','   ',' w ','   ',' w ','   ',' w ','   ',' w ',
 				  ' w ',' o ',' w ',' o ',' w ',' o ',' w ',' o ',' w ',' o ',
