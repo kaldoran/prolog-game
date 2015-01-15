@@ -1,18 +1,5 @@
 
-eval(Board, Value, Pawn, 3) :-
-    isX(Pawn),
-    findAllRaid(Pawn, Board, Value, ResultRX),
-    findAllRaid((X, isO(X)), Board, Value, ResultRO),
-    Value is ResultRX - ResultRO, !.
-    
-eval(Board, Value, Pawn, 3) :-
-    isO(Pawn),
-    findAllRaid(Pawn, Board, Value, ResultRX),
-    findAllRaid((O, isO(O)), Board, Value, ResultRO),
-    Value is ResultRO - ResultRX, !.
-
-
-findAllRaid(Pawn, Board, Value, ResultR) :-
+findAllRaid(Pawn, Board, ResultR) :-
 	findAllRaidBRDiagonal(Pawn, Board, Board, ResultBRD),
 	findAllRaidBLDiagonal(Pawn, Board, Board, ResultBLD),
 	findAllRaidHRDiagonal(Pawn, Board, Board, ResultHRD),
@@ -23,55 +10,55 @@ findAllRaid(Pawn, Board, Value, ResultR) :-
 
 % finds all Raid in bottom left diagonal (+Pawn, +Board, +Value, -ResultBLD)%
 %--------------------------------------------------------------------------%
-findAllRaidBLDiagonal(Pawn, Board, Board, Value, ResultBLD) :-
+findAllRaidBLDiagonal(_Pawn, Board, Board, Value, ResultBLD) :-
 	length(Board, len),
 	len < 22,
 	ResultBLD is Value.
 
 findAllRaidBLDiagonal(	Pawn,
-						[Head|Board],
+						[_|Board],
 						[I1, _, _, _, _ , _, _, _, _, I2, _, _, _, _, _ , _, _, _, I3|_],
 						Value, 
-						ResultBRD) :-
+						ResultBLD) :-
 	isX(Pawn),
 	isX(I1),
 	isO(I2),
 	isBlankSpace(I3),
-	newValue is Value +1,
-	findAllRaidBLDiagonal(Pawn, Board, Board, NewValue, ResultBLD)
+	NewValue is Value +1,
+	findAllRaidBLDiagonal(Pawn, Board, Board, NewValue, ResultBLD).
 	
 
 findAllRaidBLDiagonal(	Pawn,
-						[Head|Board],
+						[_|Board],
 						[I1, _, _, _, _ , _, _, _, _, I2, _, _, _, _, _ , _, _, _, I3|_],
 						Value, 
-						ResultBRD) :-
+						ResultBLD) :-
 	
 	isO(Pawn),
 	isO(I1),
 	isX(I2),
 	isBlankSpace(I3),
-	newValue is Value +1,
+	NewValue is Value +1,
 	findAllRaidBLDiagonal(Pawn, Board, Board, NewValue, ResultBLD).
 
 findAllRaidBLDiagonal(	Pawn,
-						[Head|Board],
-						[I1, _, _, _, _ , _, _, _, _, I2, _, _, _, _, _ , _, _, _, I3|_],
+						[_|Board],
+						_Board,
 						Value, 
-						ResultBRD) :-
-	findAllRaidBLDiagonal(Pawn, Board, Board, NewValue, ResultBLD).
+						ResultBLD) :-
+	findAllRaidBLDiagonal(Pawn, Board, Board, Value, ResultBLD).
 
 
 
 % finds all Raid in bottom right diagonal (+Pawn, +Board, +Value, -ResultBRD)%
 %---------------------------------------------------------------------------%
-findAllRaidBRDiagonal(	Pawn, Board, Board, Value, ResultBRD) :-
+findAllRaidBRDiagonal(	_Pawn, Board, Board, Value, ResultBRD) :-
 	length(Board, len),
 	len < 24,
 	ResultBRD is Value.			
 
 findAllRaidBRDiagonal(	Pawn, 
-						[Head|Board],
+						[_|Board],
 						[I1, _, _, _, _ , _, _, _, _, _, _, I2, _, _, _ , _, _, _, I3|_],
 						Value, 
 						ResultBRD) :-
@@ -80,11 +67,11 @@ findAllRaidBRDiagonal(	Pawn,
 	isX(I1),
 	isO(I2),
 	isBlankSpace(I3),
-	newValue is Value +1,
+	NewValue is Value +1,
 	findAllRaidBRDiagonal(Pawn, Board, Board, NewValue, ResultBRD).
 
 findAllRaidBRDiagonal(	Pawn, 
-						[Head|Board],
+						[_|Board],
 						[I1, _, _, _, _ , _, _, _, _, _, _, I2, _, _, _ , _, _, _, I3|_],
 						Value, 
 						ResultBRD) :-
@@ -93,20 +80,20 @@ findAllRaidBRDiagonal(	Pawn,
 	isO(I1),
 	isX(I2),
 	isBlankSpace(I3),
-	newValue is Value +1,
+	NewValue is Value +1,
 	findAllRaidBRDiagonal(Pawn, Board, Board, NewValue, ResultBRD).
 
 findAllRaidBRDiagonal(	Pawn, 
-						[Head|Board],
-						[I1, _, _, _, _ , _, _, _, _, _, _, I2, _, _, _ , _, _, _, I3|_],
+						[_|Board],
+						_Board,
 						Value, 
 						ResultBRD) :-
 	
-	findAllRaidBRDiagonal(Pawn, Board, Board, NewValue, ResultBRD).
+	findAllRaidBRDiagonal(Pawn, Board, Board, Value, ResultBRD).
 
 % finds all Raid in bottom left diagonal (+Pawn, +Board, +Value, -ResultHLD)%
 %--------------------------------------------------------------------------%
-findAllRaidHLDiagonal(Pawn, Board, Board, Value, ResultHLD) :-
+findAllRaidHLDiagonal(_Pawn, Board, Board, Value, ResultHLD) :-
 	length(Board, len),
 	len < 24,
 	ResultHLD is Value.			
@@ -115,39 +102,39 @@ findAllRaidHLDiagonal(	Pawn,
 						[_|Board],
 						[I3, _, _, _, _, _, _, _, _, I2, _, _, _, _, _, _, _, _, I1|_],
 						Value, 
-						ResultHRD) :-
+						ResultHLD) :-
 	
 	isX(Pawn),
 	isX(I1),
 	isO(I2),
 	isBlankSpace(I3),
-	newValue is Value +1,
+	NewValue is Value +1,
 	findAllRaidHLDiagonal(Pawn, Board, Board, NewValue, ResultHLD).
 
 findAllRaidHLDiagonal(	Pawn, 
 					[_|Board],
 					[I3, _, _, _, _, _, _, _, _, I2, _, _, _, _, _, _, _, _, I1|_],
 					Value, 
-					ResultHRD) :-
+					ResultHLD) :-
 	
 	isO(Pawn),
 	isO(I1),
 	isX(I2),
 	isBlankSpace(I3),
-	newValue is Value +1,
+	NewValue is Value +1,
 	findAllRaidHLDiagonal(Pawn, Board, Board, NewValue, ResultHLD).
 
 findAllRaidHLDiagonal(	Pawn, 
 					[_|Board],
-					[I3, _, _, _, _, _, _, _, _, I2, _, _, _, _, _, _, _, _, I1|_],
+					_Board,
 					Value, 
-					ResultHRD) :-
+					ResultHLD) :-
 	
-	findAllRaidHLDiagonal(Pawn, Board, Board, NewValue, ResultHLD).
+	findAllRaidHLDiagonal(Pawn, Board, Board, Value, ResultHLD).
 
 % finds all Raid in hight right diagonal (+Pawn, +Board, +Value, -ResultHRD)%
 %---------------------------------------------------------------------------%
-findAllRaidBRDiagonal(	Pawn, Board,  Board, Value, ResultBRD) :-
+findAllRaidHRDiagonal( _Pawn, Board,  Board, Value, ResultHRD) :-
 	length(Board, len),
 	len < 24,
 	ResultHRD is Value.			
@@ -162,7 +149,7 @@ findAllRaidHRDiagonal(	Pawn,
 	isX(I1),
 	isO(I2),
 	isBlankSpace(I3),
-	newValue is Value +1,
+	NewValue is Value +1,
 	findAllRaidHRDiagonal(Pawn, Board, Board, NewValue, ResultHRD).
 
 findAllRaidHRDiagonal(	Pawn, 
@@ -175,13 +162,13 @@ findAllRaidHRDiagonal(	Pawn,
 	isO(I1),
 	isX(I2),
 	isBlankSpace(I3),
-	newValue is Value +1,
+	NewValue is Value +1,
 	findAllRaidHRDiagonal(Pawn, Board, Board, NewValue, ResultHRD).
 
 findAllRaidHRDiagonal(	Pawn, 
 					[_|Board],
-					[I3, _, _, _, _ , _, _, _, _, _, _, I2, _, _, _ , _, _, _, I1|_],
+					_Board,
 					Value, 
 					ResultHRD) :-
 	
-	findAllRaidHRDiagonal(Pawn, Board, Board, NewValue, ResultHRD).
+	findAllRaidHRDiagonal(Pawn, Board, Board, Value, ResultHRD).
