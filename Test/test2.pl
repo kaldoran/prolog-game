@@ -20,7 +20,7 @@ initialize_game_test([ ' w ',' x ',' w ',' x ',' w ',' x ',' w ',' x ',' w ',' x
 				      ] ).
 
 
-test :-
+test2 :-
     initialize_game_test(Board), 
     printBoard(Board),
     findPlay(Board, ' x ', 1, Moves, 1), 

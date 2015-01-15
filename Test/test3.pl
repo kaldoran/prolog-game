@@ -15,7 +15,7 @@ initialize_game_test([ ' w ',' x ',' w ',' x ',' w ',' x ',' w ',' x ',' w ',' x
 				       ' o ',' w ',' o ',' w ',' o ',' w ',' o ',' w ',' o ',' w '
 				      ] ).
 
-test :-
+test3 :-
     initialize_game_test(Board), 
     printBoard(Board),
     findPlay(Board, ' x ', 1, Moves, 1), 
