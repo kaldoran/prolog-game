@@ -41,7 +41,7 @@ playO :-
 	askAI(AI),
 	play(Board, ' x ', AI).
 
-% Launch this predicate to watch a match AI vs AI
+% Launch this predicate to watch a battle AI vs AI
 % ----------------------------------------------- %
 playAIvsAI:-
 	initialize_game(Board), 
@@ -51,7 +51,8 @@ playAIvsAI:-
 	printBoard(Board),
 	playAIs(Board, AIB, AIW).
 	
-	
+% Recursive predicate for the AI vs AI battle
+% ------------------------------------------- %
 playAIs(Board, AIB, AIW):-   
 	asserta(iPlay(' o ')),   
     findPlay(Board, ' x ', 1, Moves, AIB),
