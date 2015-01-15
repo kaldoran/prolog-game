@@ -32,7 +32,7 @@ eval(Board, Value, Pawn, 2) :-
 
 valueBoard([Sqr], _, 0, _):- \+isPawn(Sqr),!.    
 valueBoard([Sqr], _, 6, Pawn):-isSameColor(Sqr,Pawn), !.
-valueBoard([_], _, -6, _):-write('0.3- '),!.
+valueBoard([_], _, -6, _):-!.
 valueBoard([Sqr|RestBoard], Pos, Value, Pawn):- \+isPawn(Sqr),Pos2 is Pos + 1, valueBoard(RestBoard, Pos2, Value, Pawn), !.
 valueBoard([Sqr|RestBoard], Pos, Value, Pawn):-isSameColor(Sqr,Pawn),Pos2 is Pos + 1, valueSqr(Pos,ValueSqr), valueBoard(RestBoard, Pos2, Value2, Pawn), Value is Value2 + ValueSqr, !.
 valueBoard([Sqr|RestBoard], Pos, Value, Pawn):-Pos2 is Pos + 1, valueSqr(Pos,ValueSqr), valueBoard(RestBoard, Pos2, Value2, Pawn), Value is Value2 - ValueSqr,!.
