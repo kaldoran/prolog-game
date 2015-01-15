@@ -41,7 +41,7 @@ printLinePawn([X|L], Line, Pawn) :-
 	NewPawn is Pawn + 1,
 	printLinePawn(L, Line, NewPawn).
 	
-print(From, To) :-
+printFT(From, To) :-
     revertConvert([RowFrom, ColumnFrom], From),
     revertConvert([RowTo, ColumnTo], To),
     write('Move From : ['),
