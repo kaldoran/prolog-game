@@ -81,6 +81,7 @@ play(Board, _, _) :-
 % Alternative predicate if there is no winner then play on the '+Board' with '+Pawn'
 % --------------------------------------------------------------------------------- %
 play(Board, Pawn, AI) :-
+    printBoard(Board), 
     invert_player(Pawn, EnemyPawn), 
 	( 
 	    (
@@ -115,10 +116,9 @@ play(Board, Pawn, AI) :-
         )
 	    ; 
         findPlay(Board, Pawn, 1, Moves, AI),
-
-        write('AI had done her move.'), nl,
+        printIaMove(Moves),
         multiMove(Board, Moves, NewBoard),
-        printBoard(NewBoard), 
+        write('AI had done her move.'), nl,
         play(NewBoard, EnemyPawn, AI), !;
         
         write('AI cannot play'), nl, 

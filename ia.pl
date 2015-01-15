@@ -1,16 +1,16 @@
 %% Author : Reynaud Nicolas (Kaldoran)
 
-%% evalEndGame is called for give the Eval of and ending point
-%% According to the '+Pawn'
-%% ----------------------------------------------------------- %%
+% evalEndGame is called for give the Eval of and ending point
+% According to the '+Pawn'
+% ----------------------------------------------------------- %
 evalEndGame(100, Pawn) :-
     iPlay(Pawn), !.
     
 evalEndGame(-100, _).
 
-%% Evaluate the '+Board' according to the '+Pawn'
-%% And output the evaluation of the board in '-Value'
-%% ------------------------------------------------- %%
+% Evaluate the '+Board' according to the '+Pawn'
+% And output the evaluation of the board in '-Value'
+% ------------------------------------------------- %
 
 % Heuristic about the number of pawns
 % ----------------------------------- %
@@ -30,8 +30,9 @@ eval(Board, Value, Pawn, 1) :-
     length(ResultO, LRO),
     Value is LRO - LRX, !.
 
+
 % Heuristic about the stategic positions
-% -------------------------------------- %
+%% -------------------------------------- %%
 eval(Board, Value, Pawn, 2) :- 
     valueBoard(Board, 1, Value, Pawn).
 
@@ -49,9 +50,9 @@ eval(Board, Value, Pawn, 3) :-
     findAllRaid((O, isO(O)), Board, ResultRO),
     Value is ResultRO - ResultRX, !.
     
-%% Evaluate the '+Board' according to the sqares' values
-%% And output the evaluation of the board in '-Value'
-%% ----------------------------------------------------- %%
+% Evaluate the '+Board' according to the sqares' values
+% And output the evaluation of the board in '-Value'
+% ----------------------------------------------------- %%
 valueBoard([Sqr], _, 0, _):- 
     \+isPawn(Sqr),!.    
     
@@ -74,8 +75,8 @@ valueBoard([_|RestBoard], Pos, Value, Pawn):-
     valueBoard(RestBoard, Pos2, Value2, Pawn),
     Value is Value2 - 10,!.
 
-%% Associate values to the squares
-%% ------------------------------- %%
+% Associate values to the squares
+% ------------------------------- %
 valueSqr(Pos,6):-
     member(Pos,[2,4,6,8,10,91,93,95,97,99]),!.
     
@@ -95,28 +96,30 @@ valueSqr(Pos,1):-
     member(Pos,[46,55]).
         
 
-%% Look for the max of '+Eval' and '+AllMove'
-%% Matching the '+Eval' best move with his '+AllMove' move
-%% And put it into '-BestMove'
-%% ------------------------------------------------------- %%
-seekMax(_, [BestMove], BestMove) :- !.
-seekMax([X, Y|Eval], [_|AllMoves], BestMove) :-
-    X > Y, seekMax([X|Eval], AllMoves, BestMove), !.
-seekMax([_, Y|Eval], [A, _|AllMoves], BestMove) :-
-    seekMax([Y|Eval], [A|AllMoves], BestMove).
+% Look for the max of '+Eval' and '+AllMove'
+% Matching the '+Eval' best move with his '+AllMove' move
+% And put it into '-BestMove'
+% ------------------------------------------------------- %
+seekMin(_, [BestMove], BestMove) :- !.
+seekMin([X, Y|Eval], [_|AllMoves], BestMove) :-
+    X > Y, seekMin([Y|Eval], AllMoves, BestMove), !.
+seekMin([X, _|Eval], [A, _|AllMoves], BestMove) :-
+    seekMin([X|Eval], [A|AllMoves], BestMove).
     
  
-%% Look on the '+Board' with the '+Pawn' whats the '-BestMove' to do
-%% In a '+Depth' according to a minmax function
-%% ----------------------------------------------------------------- %%
+% Look on the '+Board' with the '+Pawn' whats the '-BestMove' to do
+% In a '+Depth' according to a minmax function
+% ----------------------------------------------------------------- %
 findPlay(Board, Pawn, Depth, BestMove, AI) :-
     findAllMove(Board, Pawn, AllMoves),
     simulate(Board, Pawn, AllMoves, Depth, Eval, AI),
-    seekMax(Eval, AllMoves, BestMove),!.
+    writeDebug(Eval),
+    writeDebug(AllMoves),
+    seekMin(Eval, AllMoves, BestMove),!.
 
-%% Simulate a '+Move' on a '+Board' 
-%% with the '+Pawn' and complete the '-Eval'
-%% ----------------------------------------- %%
+% Simulate a '+Move' on a '+Board' 
+% with the '+Pawn' and complete the '-Eval'
+% ----------------------------------------- %
 simulate(_, _, [], _, [], _) :- !.
 
 simulate(Board, Pawn, [Move|AllMoves], Depth, [EvalBis|Eval], AI) :-
@@ -130,9 +133,9 @@ simulate(Board, Pawn, [Move|AllMoves], Depth, [EvalBis|Eval], AI) :-
     ),
     simulate(Board, Pawn, AllMoves, Depth, Eval, AI).
 
-%% Min on the '+Board'
-%% Simulate a move on the '+Board' 
-%% ------------------------------ %%
+% Min on the '+Board'
+% Simulate a move on the '+Board' 
+% ------------------------------ %
 min(Board, Pawn, 0, Eval, AI) :-
     eval(Board, Eval, Pawn, AI), !.
 
@@ -145,8 +148,8 @@ min(Board, Pawn, Depth, Eval, AI) :-
     simulate(Board, Pawn, AllMoves, Depth, EvalList, AI),
     min_list(EvalList, Eval).
 
-%% Max part of the minmax 
-%% ---------------------- %%
+% Max part of the minmax 
+% ---------------------- %
 max(Board, Pawn, 0, Eval, AI) :-
     eval(Board, Eval, Pawn, AI), !.
     
@@ -160,17 +163,17 @@ max(Board, Pawn, Depth, Eval, AI) :-
     max_list(EvalList, Eval).
 
 
-%% Find all available move for a '+Pawn'
-%% on the '+Board' and complet the '-AllMoves'
-%% ------------------------------------------ %%
+% Find all available move for a '+Pawn'
+% on the '+Board' and complet the '-AllMoves'
+% ------------------------------------------ %
 findAllMove(Board, Pawn, AllMoves) :-
     findall(Place, nth1(Place, Board, '   '), BlankSpace),
     findAllQueenMoves(Board, Pawn, AllQueenMoves, BlankSpace),
     seekMoves(Board, BlankSpace, Pawn, AllRegularMoves),
     append(AllRegularMoves, AllQueenMoves, AllMoves).
 
-%% Predicate that actually found all the move
-%% ------------------------------------------ %%
+% Predicate that actually found all the move
+% ------------------------------------------ %
 seekMoves(_, [], _, []).
 seekMoves(Board, [To|BlankSpace], Pawn, AllMoves) :-
     findall([Place, Between], existValideEat(Board, Place, Between, To, Pawn), ResultEat),
@@ -181,9 +184,9 @@ seekMoves(Board, [To|BlankSpace], Pawn, AllMoves) :-
     seekMoves(Board, BlankSpace, Pawn, AllMovesSeek),
     append(AllMovesGlobale, AllMovesSeek, AllMoves), !.
 
-%% Look for allMove 
-%% then appply them and complet the '-All' result  
-%% ---------------------------------------------- %%
+% Look for allMove 
+% then appply them and complet the '-All' result  
+% ---------------------------------------------- %
 allMovesEat(_, _, [], _, []).
 
 allMovesEat(Board, Pawn, [[From, Between]|Result], To, All) :-
@@ -193,8 +196,8 @@ allMovesEat(Board, Pawn, [[From, Between]|Result], To, All) :-
     allMovesEat(Board, Pawn, Result, To, AllMoves), 
     append(AllMoves, [MultiEat], All), !.
 
-%% Look for all move after a given move
-%% ------------------------------------ %%
+% Look for all move after a given move
+% ------------------------------------ %
 seekMultiMove(Board, From, Pawn, [[From, Between, To]|MultiMove]) :-
     existValideEatFrom(Board, From, Between, To, Pawn),
     multiMove(Board, [[From, Between, To]], NewBoard),
@@ -202,22 +205,32 @@ seekMultiMove(Board, From, Pawn, [[From, Between, To]|MultiMove]) :-
     
 seekMultiMove(_, _, _, []).
 
-%% Complet the '-AllMoves' array
-%% ----------------------------- %%
+% Complet the '-AllMoves' array
+% ----------------------------- %
 allMovesVal([], _, []).
 allMovesVal([From|Result], To, [[From, To]|AllMoves]) :-
     allMovesVal(Result, To, AllMoves).
-    
+
+% Given a '+Pawn' find '-AllQueenMoves' associate to Queen on the '+Board'
+% ------------------------------------------------------------------------ %
 findAllQueenMoves(Board, Pawn, AllQueenMoves, BlankSpace) :-
     queen(Pawn, Queen),
     findall(Place, nth(Place, Board, Queen), AllQueen),
     allMovesQueen(Board, AllQueen, BlankSpace, Queen, AllQueenMoves).
-    
+
+% Predicate who call test for all Queen
+% ------------------------------------- %
 allMovesQueen(_, [], _, _, []) :- !.
 allMovesQueen(Board, [From|AllQueen], BlankSpace, Queen, AllQueenMoves) :-
     seekAllMovesQueen(Board, From, BlankSpace, Queen, AllQMoves),
     append(AllQMoves, AQM, AllQueenMoves), 
     allMovesQueen(Board, AllQueen, BlankSpace, Queen, AQM).
+
+% This predicate actually do the test by looking the moove
+% If is a value one between From and To then it add it to '-AllQueenMoves'
+% ----------------------------------------------------------------------- %
+
+%% This one do ths for Normal move
 
 seekAllMovesQueen(_, _, [], _, []) :- !.
 seekAllMovesQueen(Board, From, [To|BlankSpace], Queen, [[From, To]|AllQueenMoves]) :-
@@ -230,6 +243,8 @@ seekAllMovesQueen(Board, From, [To|BlankSpace], Queen, [[From, To]|AllQueenMoves
     isValideSpecial(Board, From, To, Queen),
     seekAllMovesQueen(Board, From, BlankSpace, Queen, AllQueenMoves), !.
     
+%% This one for Eat done by a queen
+
 seekAllMovesQueen(Board, From, [To|BlankSpace], Queen, [[[From, Between, To]]|AllQueenMoves]) :-
     Distance is abs(From - To),
     (
@@ -239,6 +254,8 @@ seekAllMovesQueen(Board, From, [To|BlankSpace], Queen, [[[From, Between, To]]|Al
     ),
     isValideEat(Board, From, Between, To, Queen),
     seekAllMovesQueen(Board, From, BlankSpace, Queen, AllQueenMoves), !.
-    
+
+%% If no move had been found from From to To then try next one
+
 seekAllMovesQueen(Board, From, [_|BlankSpace], Queen, AllQueenMoves) :- 
     seekAllMovesQueen(Board, From, BlankSpace, Queen, AllQueenMoves).   

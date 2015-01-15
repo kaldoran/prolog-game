@@ -108,12 +108,25 @@ Nous avons implémenté dans un premier temps l'affichage, les mouvements et les
 		Les cases les plus intéressantes sont celles du haut, pour créer des dames, et celles du bas, pour empêcher l'adversaire de le faire. Ensuite viennent les bordures permettant aux pions d'être hors d'atteinte de l'adversaire. Après on décrémente en se rapprochant du centre du plateau où il est plus facile de se faire prendre un pion.
 		L'évaluation d'un instant du jeu se fait alors en ajoutant les valeurs des cases des pions de l'ordinateur, auxquelles on soustrait 10 pour chaque pion adverse pour respecter la règle de la prise obligatoire.
 	\subsection{Avantage sur la fragilité défensive adverse }
-	Celle là malheureuse si !
+	Cette heuristique se base sur le nombre de prises possible : cela suppose que plus il y a de prises possibles (voir de rafles) dans le camp adverse, plus celui-ci est en difficulté car celui-ci ne peut que défendre qu'une prise au prochain tour.\\
+	L'évaluation d'un instant du jeu se fait alors en dénombrant le nombre de prises possible de l'IA et le nombre de prises possible de l'adversaire, et soustraire les deux valeurs suivants celui qui à le "trait" ( c'est-à-dire celui qui doit jouer le tour).
+	Pour cela, l'IA tente de reconnaitre un "pattern" d'une prise pour chacun de ses pions. Par exemple un pattern de prise (diagonale bas gauche) peut etre la suivante :\\
+	\\
+	$\mid n \mid b \mid x \mid b \mid\\
+	------\\
+	\mid b \mid o \mid b \mid n \mid\\
+	------\\
+	\mid n \mid b \mid n \mid b \mid\\
+	------\\ $
+	\\
+	b : case blanche.\\
+	n : case noire.\\
+	x : le pion que joue l'IA.\\
+	o : le pion qui va être pris.\\
 \section{Remarques et difficulté}
 	\begin{itemize}
 		\item Les bases du jeu de dames étant assez complexes et ardue à coder en prolog, leur création nous a occupé pour la moitié de la durée du projet.
 	\end{itemize}
-	
 \section{Conclusion}
 
 
