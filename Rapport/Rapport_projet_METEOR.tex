@@ -99,6 +99,12 @@ Nous avons implémenté dans un premier temps l'affichage, les mouvements et les
 		\item Le déplacement des dames peut se faire dans les 2 sens. 
 		\end{itemize}
 \section{Algorithme du MinMax}
+	Pour implémenter notre IA nous avons utilisé la méthode MinMax, universellement sollicitée dans les programmes comme les jeu d'échec, d'othello...
+
+Le MinMax schématise le processus décisionnel que devrait suivre tout joueur : supposer que chaque joueur va, à chaque moment, prendre la décision qui est la meilleure pour lui (ceci est l'axiome de base de toute la théorie des jeux). 
+Ainsi, le processus utilisé par le programme correspond à l'alternance des décisions (IA/adversaire), et alterne les niveaux dits "maximisants", où le choix du coup à jouer appartient à l'IA, et les niveaux dits "minimisants", où le choix du coup appartient à son adversaire. La solution remontant au sommet est, avec certitude, le meilleur choix initial, compte tenu des meilleures réponses possibles de l'adversaire dans chaque cas.
+
+Seules les évaluations de fin de branche sont nécessaires, les résultats remontant ensuite au sommet par alternance de maximisations et de minimisations.
 
 \section{Heuristiques}
 
