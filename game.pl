@@ -82,10 +82,10 @@ play(Board, Pawn) :-
             )
         )
 	    ; 
-        findPlay(Board, Pawn, 3, Moves),
+        findPlay(Board, Pawn, 1, Moves),
         write('IA had done her move.'), nl, 
         write('Move : '), write(Moves),
-        multiMove(Board, Moves, Pawn, NewBoard),
+        multiMove(Board, Moves, NewBoard),
         play(NewBoard, EnemyPawn), !;
         
         write('L\'ia ne peux pas jouer'), nl, 
