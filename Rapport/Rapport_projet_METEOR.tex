@@ -78,12 +78,27 @@ Nous avons implémenté dans un premier temps l'affichage, les mouvements et les
 	\end{itemize}
 	
 	\subsection{Spécificités et règles de jeu implémentées}
-		\subsection{Spécificités}
+		\subsubsection{Spécificités}
+		
+		\begin{itemize}[label = $\blacktriangleright$]
+		\item Déplacement de pions.
+		\item Déplacement de reines.
+		\item Transformation de pions en reines.
+		\end{itemize}
+		
+		\subsubsection{Règles de jeu implémentées}
+		
+		\begin{itemize}[label = $\blacktriangleright$]
+		\item Les prises se font à l'avant et à l'arrière.
+		\item La dame prend à quelque distance que ce soit, toute pièce suivie d'une ou plusieurs cases vides.
+		\item Le deplacement des pions et reines ne sont autorisé que sur des cases colorées.
+		\end{itemize}
 \section{Algorithme du MinMax}
 
 \section{Heuristiques}
 
 	\subsection{Avantage du nombre de pions}
+	 C'est pas ma guerre !
 
 	\subsection{Avantage des positions stratégiques}
 		Dans cette heuristique nous avons choisi de donner des valeurs aux cases en fonction de leurs emplacement sur le damier. Les valeurs sont distribuées de la façon suivante:
@@ -92,9 +107,8 @@ Nous avons implémenté dans un premier temps l'affichage, les mouvements et les
 		\end{center}
 		Les cases les plus intéressantes sont celles du haut, pour créer des dames, et celles du bas, pour empêcher l'adversaire de le faire. Ensuite viennent les bordures permettant aux pions d'être hors d'atteinte de l'adversaire. Après on décrémente en se rapprochant du centre du plateau où il est plus facile de se faire prendre un pion.
 		L'évaluation d'un instant du jeu se fait alors en ajoutant les valeurs des cases des pions de l'ordinateur, auxquelles on soustrait 10 pour chaque pion adverse pour respecter la règle de la prise obligatoire.
-
 	\subsection{Avantage sur la fragilité défensive adverse }
-
+	Celle là malheureuse si !
 \section{Remarques et difficulté}
 
 \section{Conclusion}
