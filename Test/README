@@ -1,4 +1,4 @@
 Pour les jeux de test : 
 
-Allez dans base.pl, puis remplacer le prédicat : 
+Allez dans base.pl, puis remplacez le prédicat : 
 " initialize_game " ( ligne 82 ) par ceux fournis dans les exemples
