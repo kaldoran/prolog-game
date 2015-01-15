@@ -111,11 +111,11 @@ play(Board, Pawn, AI) :-
             (existNextEat(NewBoard, To, PawnMove) ->  
                 play(NewBoard, Pawn, AI), !;
                 
-                write(' Tu m\'a pris pour un jambon ? tu as plus de coup possible'), nl
+                write('You try to fool me ? I see that there is no more jump possible.'), nl
             )
         )
 	    ; 
-        findPlay(Board, Pawn, 1, Moves, AI),
+        findPlay(Board, Pawn, 3, Moves, AI),
         printIaMove(Moves),
         multiMove(Board, Moves, NewBoard),
         write('AI had done her move.'), nl,
