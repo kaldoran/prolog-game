@@ -20,7 +20,7 @@
 \rfoot{\thepage}
 
 \author{Kevin BASCOL, Kevin LAOUSSING, Nicolas REYNAUD}
-\title{METEOR : \\Le jeu de Dames}
+\title{METEOR : \\ \vspace*{0.5cm} Le jeu de Dames}
 
 \makeatletter
 \renewcommand{\thesection}{\@arabic\c@section}
@@ -79,6 +79,12 @@
 	\subsection{Avantage du nombre de pions}
 
 	\subsection{Avantage des positions stratégiques}
+		Dans cette heuristique nous avons choisi de donner des valeurs aux cases en fonction de leurs emplacement sur le damier. Les valeurs sont distribuées de la façon suivante:
+		\begin{center}
+			\includegraphics[scale=0.2]{valeursDamier.png}
+		\end{center}
+		Les cases les plus intéressantes sont celles du haut, pour créer des dames, et celles du bas, pour empêcher l'adversaire de le faire. Ensuite viennent les bordures permettant aux pions d'être hors d'atteinte de l'adversaire. Après on décrémente en se rapprochant du centre du plateau où il est plus facile de se faire prendre un pion.
+		L'évaluation d'un instant du jeu se fait alors en ajoutant les valeurs des cases des pions de l'ordinateur, auxquelles on soustrait 10 pour chaque pion adverse pour respecter la règle de la prise obligatoire.
 
 	\subsection{Avantage sur la fragilité défensive adverse }
 

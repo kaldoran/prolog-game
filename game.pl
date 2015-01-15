@@ -58,19 +58,15 @@ playAIs(Board, AIB, AIW):-
     write('Black AI had done her move.'), nl, 
     write('Move : '), write(Moves),
     multiMove(Board, Moves, NewBoard),
-    clearO,
-    
-    printBoard(NewBoard),
-    
+    clearO,   
+    printBoard(NewBoard),    
 	asserta(iPlay(' x ')),   
     findPlay(NewBoard, ' o ', 1, Moves, AIW),
     write('White AI had done her move.'), nl, 
     write('Move : '), write(Moves),
     multiMove(NewBoard, Moves, NewBoard2),
-    clearX,
-    
-    printBoard(NewBoard2),
-    
+    clearX,    
+    printBoard(NewBoard2),    
     playAIs(NewBoard2, AIB,AIW), !.
     
     
