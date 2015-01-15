@@ -51,4 +51,5 @@ printFT(From, To) :-
     write('] To : ['),
     write(RowTo),
     write(','),
-    write(ColumnTo), nl.
+    write(ColumnTo), 
+    write(']'), nl.
