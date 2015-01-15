@@ -84,7 +84,6 @@ play(Board, Pawn) :-
 	    ; 
         findPlay(Board, Pawn, 1, Moves),
         write('IA had done her move.'), nl, 
-        write('Move : '), write(Moves),
         multiMove(Board, Moves, NewBoard),
         play(NewBoard, EnemyPawn), !;
         
