@@ -112,8 +112,7 @@ play(Board, Pawn, AI) :-
 	    ; 
         findPlay(Board, Pawn, 1, Moves, AI),
 
-        write('AI had done her move.'), nl, 
-        write('Move : '), write(Moves),
+        write('AI had done her move.'), nl,
         multiMove(Board, Moves, NewBoard),
         play(NewBoard, EnemyPawn, AI), !;
         

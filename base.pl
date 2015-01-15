@@ -13,7 +13,7 @@ writeDebug(X) :-
 writeDebug(_).
 
 % Check if '+X' is a Pawn
-% I.E if its a regular Pawn or a Queen
+% I.E if it's a regular Pawn or a Queen
 % ------------------------------------- %
 isPawn(X) :-
 	isRegularPawn(X); isQueen(X).
@@ -39,7 +39,7 @@ isSameColor(Pawn,Color):-isO(Pawn),isO(Color).
 invert_player(' x ', ' o ').
 invert_player(' o ', ' x ').
 
-% Transforme a Pawn into Queen Pawn
+% Transform a Pawn into Queen Pawn
 % --------------------------------- %
 queen(' o ', ' O ').
 queen(' x ', ' X ').

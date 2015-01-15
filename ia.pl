@@ -50,7 +50,7 @@ valueBoard([Sqr|RestBoard], Pos, Value, Pawn):-
     valueBoard(RestBoard, Pos2, Value2, Pawn), 
     Value is Value2 + ValueSqr, !.
     
-valueBoard([Sqr|RestBoard], Pos, Value, Pawn):-
+valueBoard([_|RestBoard], Pos, Value, Pawn):-
     Pos2 is Pos + 1, 
     valueSqr(Pos,ValueSqr), 
     valueBoard(RestBoard, 
