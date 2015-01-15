@@ -27,6 +27,7 @@ eval(Board, Value, Pawn, 1) :-
     length(ResultO, LRO),
     Value is LRO - LRX, !.
 
+
 eval(Board, Value, Pawn, 2) :- 
     valueBoard(Board, 1, Value, Pawn).
 
@@ -92,11 +93,11 @@ valueSqr(Pos,1):-
 %% Matching the '+Eval' best move with his '+AllMove' move
 %% And put it into '-BestMove'
 %% ------------------------------------------------------- %%
-seekMax(_, [BestMove], BestMove) :- !.
-seekMax([X, Y|Eval], [_|AllMoves], BestMove) :-
-    X > Y, seekMax([X|Eval], AllMoves, BestMove), !.
-seekMax([_, Y|Eval], [A, _|AllMoves], BestMove) :-
-    seekMax([Y|Eval], [A|AllMoves], BestMove).
+seekMin(_, [BestMove], BestMove) :- !.
+seekMin([X, Y|Eval], [_|AllMoves], BestMove) :-
+    X > Y, seekMin([Y|Eval], AllMoves, BestMove), !.
+seekMin([X, _|Eval], [A, _|AllMoves], BestMove) :-
+    seekMin([X|Eval], [A|AllMoves], BestMove).
     
  
 %% Look on the '+Board' with the '+Pawn' whats the '-BestMove' to do
@@ -105,7 +106,9 @@ seekMax([_, Y|Eval], [A, _|AllMoves], BestMove) :-
 findPlay(Board, Pawn, Depth, BestMove, AI) :-
     findAllMove(Board, Pawn, AllMoves),
     simulate(Board, Pawn, AllMoves, Depth, Eval, AI),
-    seekMax(Eval, AllMoves, BestMove),!.
+    writeDebug(Eval),
+    writeDebug(AllMoves),
+    seekMin(Eval, AllMoves, BestMove),!.
 
 %% Simulate a '+Move' on a '+Board' 
 %% with the '+Pawn' and complete the '-Eval'
@@ -200,17 +203,27 @@ seekMultiMove(_, _, _, []).
 allMovesVal([], _, []).
 allMovesVal([From|Result], To, [[From, To]|AllMoves]) :-
     allMovesVal(Result, To, AllMoves).
-    
+
+%% Given a '+Pawn' find '-AllQueenMoves' associate to Queen on the '+Board'
+%% ------------------------------------------------------------------------ %%
 findAllQueenMoves(Board, Pawn, AllQueenMoves, BlankSpace) :-
     queen(Pawn, Queen),
     findall(Place, nth(Place, Board, Queen), AllQueen),
     allMovesQueen(Board, AllQueen, BlankSpace, Queen, AllQueenMoves).
-    
+
+%% Predicate who call test for all Queen
+%% ------------------------------------- %%
 allMovesQueen(_, [], _, _, []) :- !.
 allMovesQueen(Board, [From|AllQueen], BlankSpace, Queen, AllQueenMoves) :-
     seekAllMovesQueen(Board, From, BlankSpace, Queen, AllQMoves),
     append(AllQMoves, AQM, AllQueenMoves), 
     allMovesQueen(Board, AllQueen, BlankSpace, Queen, AQM).
+
+%% This predicate actually do the test by looking the moove
+%% If is a value one between From and To then it add it to '-AllQueenMoves'
+%% ----------------------------------------------------------------------- %%
+
+%% This one do ths for Normal move
 
 seekAllMovesQueen(_, _, [], _, []) :- !.
 seekAllMovesQueen(Board, From, [To|BlankSpace], Queen, [[From, To]|AllQueenMoves]) :-
@@ -223,6 +236,8 @@ seekAllMovesQueen(Board, From, [To|BlankSpace], Queen, [[From, To]|AllQueenMoves
     isValideSpecial(Board, From, To, Queen),
     seekAllMovesQueen(Board, From, BlankSpace, Queen, AllQueenMoves), !.
     
+%% This one for Eat done by a queen
+
 seekAllMovesQueen(Board, From, [To|BlankSpace], Queen, [[[From, Between, To]]|AllQueenMoves]) :-
     Distance is abs(From - To),
     (
@@ -232,6 +247,8 @@ seekAllMovesQueen(Board, From, [To|BlankSpace], Queen, [[[From, Between, To]]|Al
     ),
     isValideEat(Board, From, Between, To, Queen),
     seekAllMovesQueen(Board, From, BlankSpace, Queen, AllQueenMoves), !.
-    
+
+%% If no move had been found from From to To then try next one
+
 seekAllMovesQueen(Board, From, [_|BlankSpace], Queen, AllQueenMoves) :- 
     seekAllMovesQueen(Board, From, BlankSpace, Queen, AllQueenMoves).   

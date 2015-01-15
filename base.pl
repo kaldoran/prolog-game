@@ -60,13 +60,25 @@ revertConvert([0, Column], Square) :-
     Square =< 10,
     Column is mod(Square, 10), !.
     
+    
+%% Given a '+Square' 
+%% Output the '[-Row, -Column]' associate to the Square
+%% ---------------------------------------------------- %%
 revertConvert([Row, Column], Square) :-
     char_code('a', CodeA),
-    Column is mod(Square, 10),
-    CodeRow is (Square - Column * 10) + CodeA - 1,
-    char_code(Row, CodeRow).
+    ColumnVal is mod(Square, 10),
+    (
+        ColumnVal \= 0,
+        Column = ColumnVal,
+        RowCode is Square // 10 + CodeA, !;
+        
+        Column is ColumnVal + 10,
+        RowCode is Square // 10 + CodeA
+    ),
+    char_code(Row, RowCode).
 
-% the grid
+%% the default grid
+%% ---------------- %%
 initialize_game([ ' w ',' x ',' w ',' x ',' w ',' x ',' w ',' x ',' w ',' x ',
 				  ' x ',' w ',' x ',' w ',' x ',' w ',' x ',' w ',' x ',' w ',
 			 	  ' w ',' x ',' w ',' x ',' w ',' x ',' w ',' x ',' w ',' x ',

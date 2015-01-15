@@ -41,7 +41,14 @@ printLinePawn([X|L], Line, Pawn) :-
 	NewPawn is Pawn + 1,
 	printLinePawn(L, Line, NewPawn).
 	
-printFT(From, To) :-
+printIaMove([]) :- 
+    write('Multi Move Done'), nl.
+    
+printIaMove([[From, _, To]|Moves]) :-
+    printIaMove([From, To]),
+    printIaMove(Moves), !.
+    
+printIaMove([From, To]) :-
     revertConvert([RowFrom, ColumnFrom], From),
     revertConvert([RowTo, ColumnTo], To),
     write('Move From : ['),

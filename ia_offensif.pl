@@ -62,7 +62,6 @@ findAllRaidBRDiagonal(	Pawn,
 						[I1, _, _, _, _ , _, _, _, _, _, _, I2, _, _, _ , _, _, _, I3|_],
 						Value, 
 						ResultBRD) :-
-	write("hello"),
 	isX(Pawn),
 	isX(I1),
 	isO(I2),
