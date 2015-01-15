@@ -1,11 +1,11 @@
 
-eval(Board, Value, Pawn) :-
+eval(Board, Value, Pawn, 3) :-
     isX(Pawn),
     findAllRaid(Pawn, Board, Value, ResultRX),
     findAllRaid((X, isO(X)), Board, Value, ResultRO),
     Value is ResultRX - ResultRO, !.
     
-eval(Board, Value, Pawn) :-
+eval(Board, Value, Pawn, 3) :-
     isO(Pawn),
     findAllRaid(Pawn, Board, Value, ResultRX),
     findAllRaid((O, isO(O)), Board, Value, ResultRO),
@@ -26,7 +26,7 @@ findAllRaid(Pawn, Board, Value, ResultR) :-
 findAllRaidBLDiagonal(Pawn, Board, Board, Value, ResultBLD) :-
 	length(Board, len),
 	len < 22,
-	ResultBLD is Value.			
+	ResultBLD is Value.
 
 findAllRaidBLDiagonal(	Pawn,
 						[Head|Board],
