@@ -28,6 +28,8 @@ isRegularPawn(' o ').
 isQueen(' O ').
 isQueen(' X ').
 
+isSameColor(Pawn,Color):-isX(Pawn),isX(Color),!.
+isSameColor(Pawn,Color):-isO(Pawn),isO(Color).
 
 % Invert the current player
 % ------------------------- %
