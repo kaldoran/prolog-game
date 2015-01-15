@@ -22,6 +22,7 @@ isX(' x ').
 isX(' X ').
 isO(' o ').
 isO(' O ').
+isBlankSpace('   ').
     
 isRegularPawn(' x ').
 isRegularPawn(' o ').
