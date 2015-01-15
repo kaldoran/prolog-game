@@ -40,3 +40,15 @@ printLinePawn([X|L], Line, Pawn) :-
 	write('|'),
 	NewPawn is Pawn + 1,
 	printLinePawn(L, Line, NewPawn).
+	
+printFT(From, To) :-
+    revertConvert([RowFrom, ColumnFrom], From),
+    revertConvert([RowTo, ColumnTo], To),
+    write('Move From : ['),
+    write(RowFrom),
+    write(','),
+    write(ColumnFrom),
+    write('] To : ['),
+    write(RowTo),
+    write(','),
+    write(ColumnTo), nl.

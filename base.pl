@@ -13,7 +13,7 @@ writeDebug(X) :-
 writeDebug(_).
 
 % Check if '+X' is a Pawn
-% I.E if it's a regular Pawn or a Queen
+% I.E if its a regular Pawn or a Queen
 % ------------------------------------- %
 isPawn(X) :-
 	isRegularPawn(X); isQueen(X).
@@ -22,6 +22,7 @@ isX(' x ').
 isX(' X ').
 isO(' o ').
 isO(' O ').
+isBlankSpace('   ').
     
 isRegularPawn(' x ').
 isRegularPawn(' o ').
@@ -43,15 +44,28 @@ invert_player(' o ', ' x ').
 queen(' o ', ' O ').
 queen(' x ', ' X ').
 
-%% --------------------------------------------- %%
-%% Convert column and Row into the square number %%
-%% --------------------------------------------- %%
+
+%% Convert '+[Row, Column]' into '-Square' 
+%% -------------------------------------- %%
 
 convert([Row, Column], Square) :-
 	char_code(Row, Code),
 	char_code('a', CodeA),
 	RowMove is Code - CodeA,
 	Square is RowMove * 10 + Column.
+	
+%% Convert '+Square' into '-[Row, Column]'
+%% -------------------------------------- %%
+revertConvert([0, Column], Square) :-
+    Square =< 10,
+    Column is mod(Square, 10), !.
+    
+revertConvert([Row, Column], Square) :-
+    char_code('a', CodeA),
+    Column is mod(Square, 10),
+    CodeRow is (Square - Column * 10) + CodeA - 1,
+    write(CodeRow),
+    char_code(Row, CodeRow).
 
 % the grid
 initialize_game([ ' w ',' x ',' w ',' x ',' w ',' x ',' w ',' x ',' w ',' x ',
