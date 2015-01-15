@@ -22,7 +22,7 @@ play :-
     asserta(iPlay(' x ')), asserta(iPlay(' o ')),
     play(Board, ' x ', 0).
 
-% Launch this predicate to play Vs IA, Ia play ' o ', you play ' x '
+% Launch this predicate to play Vs AI, AI plays ' o ', you play ' x '
 % ----------------------------------------------------------------- %
 playX :-
 	initialize_game(Board),
@@ -31,7 +31,7 @@ playX :-
 	askAI(AI),
 	play(Board, ' x ', AI).
 
-% Launch this predicate to play Vs IA, Ia play ' x ', you play ' o '
+% Launch this predicate to play Vs AI, AI plays ' x ', you play ' o '
 % ----------------------------------------------------------------- %
 playO :-
 	initialize_game(Board), 
@@ -40,6 +40,33 @@ playO :-
 	askAI(AI),
 	play(Board, ' x ', AI).
 
+% Launch this predicate to watch a match AI vs AI
+% ----------------------------------------------- %
+playAIs:-
+	initialize_game(Board), 
+	clear,
+    write('For the black pawns. '), askAI(AIB), nl,
+    write('For the white pawns. '), askAI(AIW), nl,
+	printBoard(Board), 
+    findPlay(Board, ' x ', 1, Moves, AIB),
+    write('Black AI had done her move.'), nl, 
+    write('Move : '), write(Moves),
+    multiMove(Board, Moves, NewBoard),
+    play(NewBoard, ' o ', AIB), !;
+        
+    write('Black AI cannot play'), nl, 
+    play(Board, ' o ', AIB), !;
+    
+    findPlay(Board, ' o ', 1, Moves, AIW),
+    write('White AI had done her move.'), nl, 
+    write('Move : '), write(Moves),
+    multiMove(Board, Moves, NewBoard),
+    play(NewBoard, ' x ', AIW), !;
+        
+    write('White AI cannot play'), nl, 
+    play(Board, ' x ', AIW), !.
+    
+    
 % Check if there is a winner on the '+Board', if there is, write the winner
 % ------------------------------------------------------------------------- %
 play(Board, _, _) :-
@@ -50,7 +77,6 @@ play(Board, _, _) :-
 % Alternative predicate if there is no winner then play on the '+Board' with '+Pawn'
 % --------------------------------------------------------------------------------- %
 play(Board, Pawn, AI) :-
-	printBoard(Board),
     invert_player(Pawn, EnemyPawn), 
 	( 
 	    (
@@ -58,7 +84,7 @@ play(Board, Pawn, AI) :-
 	        queen(Pawn, Queen), moveLeft(Board, Queen)
 	    ) -> 
 	        write('Time to play : '), write(Pawn), nl;
-	        write(Pawn), write(' ne peux pas jouer.'), nl, play(Board, EnemyPawn, AI), !, nl
+	        write(Pawn), write(' cannot play.'), nl, play(Board, EnemyPawn, AI), !, nl
 	),
 	( 
 	    iPlay(Pawn),
@@ -85,12 +111,12 @@ play(Board, Pawn, AI) :-
         )
 	    ; 
         findPlay(Board, Pawn, 1, Moves, AI),
-        write('IA had done her move.'), nl, 
+        write('AI had done her move.'), nl, 
         write('Move : '), write(Moves),
         multiMove(Board, Moves, NewBoard),
         play(NewBoard, EnemyPawn, AI), !;
         
-        write('L\'ia ne peux pas jouer'), nl, 
+        write('AI cannot play'), nl, 
         play(Board, EnemyPawn, AI), !
     ),
     play(NewBoard, EnemyPawn, AI), !.
