@@ -4,6 +4,8 @@ elle choisira d'en manger 3.
 
 A noter :
     elle prend le cas ou elle ne se fait pas manger apres.
+    
+Lancez playO. pour voir le résultat.
 
 initialize_game([ ' w ',' x ',' w ',' x ',' w ',' x ',' w ',' x ',' w ',' x ',
 				  ' x ',' w ',' x ',' w ',' x ',' w ',' x ',' w ',' x ',' w ',
