@@ -5,6 +5,7 @@
 :- include('interaction.pl').
 :- include('verif.pl').
 :- include('ia.pl').
+:- include('ia_offensif.pl').
 
 % Clear the assert prédicate
 % -------------------------- %

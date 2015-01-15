@@ -29,6 +29,18 @@ eval(Board, Value, Pawn, 1) :-
 
 eval(Board, Value, Pawn, 2) :- 
     valueBoard(Board, 1, Value, Pawn).
+
+eval(Board, Value, Pawn, 3) :-
+    isX(Pawn),
+    findAllRaid(Pawn, Board, Value, ResultRX),
+    findAllRaid((X, isO(X)), Board, Value, ResultRO),
+    Value is ResultRX - ResultRO, !.
+    
+eval(Board, Value, Pawn, 3) :-
+    isO(Pawn),
+    findAllRaid(Pawn, Board, ResultRX),
+    findAllRaid((O, isO(O)), Board, ResultRO),
+    Value is ResultRO - ResultRX, !.
     
 %% Evaluate the '+Board' according to the sqares' values
 %% And output the evaluation of the board in '-Value'
