@@ -30,19 +30,47 @@ eval(Board, Value, Pawn) :-
 eval(Board, Value, Pawn, 2) :- 
     valueBoard(Board, 1, Value, Pawn).
 
-valueBoard([Sqr], _, 0, _):- \+isPawn(Sqr),!.    
-valueBoard([Sqr], _, 6, Pawn):-isSameColor(Sqr,Pawn), !.
+valueBoard([Sqr], _, 0, _):- 
+    \+isPawn(Sqr),!.    
+    
+valueBoard([Sqr], _, 6, Pawn):-
+    isSameColor(Sqr,Pawn), !.
+    
 valueBoard([_], _, -6, _):-!.
-valueBoard([Sqr|RestBoard], Pos, Value, Pawn):- \+isPawn(Sqr),Pos2 is Pos + 1, valueBoard(RestBoard, Pos2, Value, Pawn), !.
-valueBoard([Sqr|RestBoard], Pos, Value, Pawn):-isSameColor(Sqr,Pawn),Pos2 is Pos + 1, valueSqr(Pos,ValueSqr), valueBoard(RestBoard, Pos2, Value2, Pawn), Value is Value2 + ValueSqr, !.
-valueBoard([Sqr|RestBoard], Pos, Value, Pawn):-Pos2 is Pos + 1, valueSqr(Pos,ValueSqr), valueBoard(RestBoard, Pos2, Value2, Pawn), Value is Value2 - ValueSqr,!.
+valueBoard([Sqr|RestBoard], Pos, Value, Pawn):- 
+    \+isPawn(Sqr),Pos2 is Pos + 1, 
+    valueBoard(RestBoard, Pos2, Value, Pawn), !.
+    
+valueBoard([Sqr|RestBoard], Pos, Value, Pawn):-
+    isSameColor(Sqr,Pawn),Pos2 is Pos + 1, 
+    valueSqr(Pos,ValueSqr), 
+    valueBoard(RestBoard, Pos2, Value2, Pawn), 
+    Value is Value2 + ValueSqr, !.
+    
+valueBoard([Sqr|RestBoard], Pos, Value, Pawn):-
+    Pos2 is Pos + 1, 
+    valueSqr(Pos,ValueSqr), 
+    valueBoard(RestBoard, 
+    Pos2, Value2, Pawn), 
+    Value is Value2 - ValueSqr,!.
 
-valueSqr(Pos,6):-member(Pos,[2,4,6,8,10,91,93,95,97,99]),!.
-valueSqr(Pos,5):-member(Pos,[11,30,31,50,51,70,71,90]),!.
-valueSqr(Pos,4):-member(Pos,[13,15,17,19,22,39,42,59,62,79,82,84,86,88]),!.
-valueSqr(Pos,3):-member(Pos,[24,26,28,33,48,53,68,73,75,77]),!.
-valueSqr(Pos,2):-member(Pos,[35,37,44,57,64,66]),!.
-valueSqr(Pos,1):-member(Pos,[46,55]).
+valueSqr(Pos,6):-
+    member(Pos,[2,4,6,8,10,91,93,95,97,99]),!.
+    
+valueSqr(Pos,5):-
+    member(Pos,[11,30,31,50,51,70,71,90]),!.
+    
+valueSqr(Pos,4):-
+    member(Pos,[13,15,17,19,22,39,42,59,62,79,82,84,86,88]),!.
+    
+valueSqr(Pos,3):-
+    member(Pos,[24,26,28,33,48,53,68,73,75,77]),!.
+    
+valueSqr(Pos,2):-
+    member(Pos,[35,37,44,57,64,66]),!.
+    
+valueSqr(Pos,1):-
+    member(Pos,[46,55]).
         
 
 %% Look for the max of '+Eval' and '+AllMove'
