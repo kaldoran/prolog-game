@@ -1,9 +1,9 @@
 
 findAllRaid(Pawn, Board, ResultR) :-
-	findAllRaidBRDiagonal(Pawn, Board, Board, ResultBRD),
-	findAllRaidBLDiagonal(Pawn, Board, Board, ResultBLD),
-	findAllRaidHRDiagonal(Pawn, Board, Board, ResultHRD),
-	findAllRaidHLDiagonal(Pawn, Board, Board, ResultHLD),
+	findAllRaidBRDiagonal(Pawn, Board, Board, 0, ResultBRD),
+	findAllRaidBLDiagonal(Pawn, Board, Board, 0, ResultBLD),
+	findAllRaidHRDiagonal(Pawn, Board, Board, 0, ResultHRD),
+	findAllRaidHLDiagonal(Pawn, Board, Board, 0, ResultHLD),
 	ResultR is ResultBRD + ResultBLD + ResultHRD + ResultHLD.
 
 
@@ -11,8 +11,8 @@ findAllRaid(Pawn, Board, ResultR) :-
 % finds all Raid in bottom left diagonal (+Pawn, +Board, +Value, -ResultBLD)%
 %--------------------------------------------------------------------------%
 findAllRaidBLDiagonal(_Pawn, Board, Board, Value, ResultBLD) :-
-	length(Board, len),
-	len < 22,
+	length(Board, Len),
+	Len #< 22,
 	ResultBLD is Value.
 
 findAllRaidBLDiagonal(	Pawn,
@@ -53,8 +53,8 @@ findAllRaidBLDiagonal(	Pawn,
 % finds all Raid in bottom right diagonal (+Pawn, +Board, +Value, -ResultBRD)%
 %---------------------------------------------------------------------------%
 findAllRaidBRDiagonal(	_Pawn, Board, Board, Value, ResultBRD) :-
-	length(Board, len),
-	len < 24,
+	length(Board, Len),
+	Len < 24,
 	ResultBRD is Value.			
 
 findAllRaidBRDiagonal(	Pawn, 
@@ -62,7 +62,7 @@ findAllRaidBRDiagonal(	Pawn,
 						[I1, _, _, _, _ , _, _, _, _, _, _, I2, _, _, _ , _, _, _, I3|_],
 						Value, 
 						ResultBRD) :-
-	
+	write("hello"),
 	isX(Pawn),
 	isX(I1),
 	isO(I2),
@@ -94,8 +94,8 @@ findAllRaidBRDiagonal(	Pawn,
 % finds all Raid in bottom left diagonal (+Pawn, +Board, +Value, -ResultHLD)%
 %--------------------------------------------------------------------------%
 findAllRaidHLDiagonal(_Pawn, Board, Board, Value, ResultHLD) :-
-	length(Board, len),
-	len < 24,
+	length(Board, Len),
+	Len < 24,
 	ResultHLD is Value.			
 
 findAllRaidHLDiagonal(	Pawn, 
@@ -135,8 +135,8 @@ findAllRaidHLDiagonal(	Pawn,
 % finds all Raid in hight right diagonal (+Pawn, +Board, +Value, -ResultHRD)%
 %---------------------------------------------------------------------------%
 findAllRaidHRDiagonal( _Pawn, Board,  Board, Value, ResultHRD) :-
-	length(Board, len),
-	len < 24,
+	length(Board, Len),
+	Len < 24,
 	ResultHRD is Value.			
 
 findAllRaidHRDiagonal(	Pawn, 
