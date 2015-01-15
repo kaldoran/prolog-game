@@ -5,6 +5,7 @@
 :- include('interaction.pl').
 :- include('verif.pl').
 :- include('ia.pl').
+:- include('ia_offensif.pl').
 
 % Clear the assert prédicate
 % -------------------------- %
@@ -22,7 +23,7 @@ play :-
     asserta(iPlay(' x ')), asserta(iPlay(' o ')),
     play(Board, ' x ', 0).
 
-% Launch this predicate to play Vs IA, Ia play ' o ', you play ' x '
+% Launch this predicate to play Vs AI, AI plays ' o ', you play ' x '
 % ----------------------------------------------------------------- %
 playX :-
 	initialize_game(Board),
@@ -31,7 +32,7 @@ playX :-
 	askAI(AI),
 	play(Board, ' x ', AI).
 
-% Launch this predicate to play Vs IA, Ia play ' x ', you play ' o '
+% Launch this predicate to play Vs AI, AI plays ' x ', you play ' o '
 % ----------------------------------------------------------------- %
 playO :-
 	initialize_game(Board), 
@@ -40,17 +41,49 @@ playO :-
 	askAI(AI),
 	play(Board, ' x ', AI).
 
+% Launch this predicate to watch a match AI vs AI
+% ----------------------------------------------- %
+playAIvsAI:-
+	initialize_game(Board), 
+	clear,
+    write('For the black pawns. '), askAI(AIB), nl,
+    write('For the white pawns. '), askAI(AIW), nl,
+	printBoard(Board),
+	playAIs(Board, AIB, AIW).
+	
+	
+playAIs(Board, AIB, AIW):-   
+	asserta(iPlay(' o ')),   
+    findPlay(Board, ' x ', 1, Moves, AIB),
+    write('Black AI had done her move.'), nl, 
+    write('Move : '), write(Moves),
+    multiMove(Board, Moves, NewBoard),
+    clearO,
+    
+    printBoard(NewBoard),
+    
+	asserta(iPlay(' x ')),   
+    findPlay(NewBoard, ' o ', 1, Moves, AIW),
+    write('White AI had done her move.'), nl, 
+    write('Move : '), write(Moves),
+    multiMove(NewBoard, Moves, NewBoard2),
+    clearX,
+    
+    printBoard(NewBoard2),
+    
+    playAIs(NewBoard2, AIB,AIW), !.
+    
+    
 % Check if there is a winner on the '+Board', if there is, write the winner
 % ------------------------------------------------------------------------- %
 play(Board, _, _) :-
 	isEndGame(Board, Winner),
 	write('The Winner Is : '),
-	write(Winner), nl, halt.
+	write(Winner), nl,break.
 	
 % Alternative predicate if there is no winner then play on the '+Board' with '+Pawn'
 % --------------------------------------------------------------------------------- %
 play(Board, Pawn, AI) :-
-	printBoard(Board),
     invert_player(Pawn, EnemyPawn), 
 	( 
 	    (
@@ -58,7 +91,7 @@ play(Board, Pawn, AI) :-
 	        queen(Pawn, Queen), moveLeft(Board, Queen)
 	    ) -> 
 	        write('Time to play : '), write(Pawn), nl;
-	        write(Pawn), write(' ne peux pas jouer.'), nl, play(Board, EnemyPawn, AI), !, nl
+	        write(Pawn), write(' cannot play.'), nl, play(Board, EnemyPawn, AI), !, nl
 	),
 	( 
 	    iPlay(Pawn),
@@ -85,11 +118,13 @@ play(Board, Pawn, AI) :-
         )
 	    ; 
         findPlay(Board, Pawn, 1, Moves, AI),
-        write('IA had done her move.'), nl, 
+
+        write('AI had done her move.'), nl,
         multiMove(Board, Moves, NewBoard),
+        printBoard(NewBoard), 
         play(NewBoard, EnemyPawn, AI), !;
         
-        write('L\'ia ne peux pas jouer'), nl, 
+        write('AI cannot play'), nl, 
         play(Board, EnemyPawn, AI), !
     ),
     play(NewBoard, EnemyPawn, AI), !.

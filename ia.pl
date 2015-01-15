@@ -29,6 +29,18 @@ eval(Board, Value, Pawn, 1) :-
 
 eval(Board, Value, Pawn, 2) :- 
     valueBoard(Board, 1, Value, Pawn).
+
+eval(Board, Value, Pawn, 3) :-
+    isX(Pawn),
+    findAllRaid(Pawn, Board, ResultRX),
+    findAllRaid((X, isO(X)), Board, ResultRO),
+    Value is ResultRX - ResultRO, !.
+    
+eval(Board, Value, Pawn, 3) :-
+    isO(Pawn),
+    findAllRaid(Pawn, Board, ResultRX),
+    findAllRaid((O, isO(O)), Board, ResultRO),
+    Value is ResultRO - ResultRX, !.
     
 %% Evaluate the '+Board' according to the sqares' values
 %% And output the evaluation of the board in '-Value'
@@ -39,7 +51,7 @@ valueBoard([Sqr], _, 0, _):-
 valueBoard([Sqr], _, 6, Pawn):-
     isSameColor(Sqr,Pawn), !.
     
-valueBoard([_], _, -6, _):-!.
+valueBoard([_], _, -10, _):-!.
 valueBoard([Sqr|RestBoard], Pos, Value, Pawn):- 
     \+isPawn(Sqr),Pos2 is Pos + 1, 
     valueBoard(RestBoard, Pos2, Value, Pawn), !.
@@ -50,12 +62,10 @@ valueBoard([Sqr|RestBoard], Pos, Value, Pawn):-
     valueBoard(RestBoard, Pos2, Value2, Pawn), 
     Value is Value2 + ValueSqr, !.
     
-valueBoard([Sqr|RestBoard], Pos, Value, Pawn):-
-    Pos2 is Pos + 1, 
-    valueSqr(Pos,ValueSqr), 
-    valueBoard(RestBoard, 
-    Pos2, Value2, Pawn), 
-    Value is Value2 - ValueSqr,!.
+valueBoard([_|RestBoard], Pos, Value, Pawn):-
+    Pos2 is Pos + 1,
+    valueBoard(RestBoard, Pos2, Value2, Pawn),
+    Value is Value2 - 10,!.
 
 %% Associate values to the squares
 %% ------------------------------- %%
@@ -95,7 +105,7 @@ seekMax([_, Y|Eval], [A, _|AllMoves], BestMove) :-
 findPlay(Board, Pawn, Depth, BestMove, AI) :-
     findAllMove(Board, Pawn, AllMoves),
     simulate(Board, Pawn, AllMoves, Depth, Eval, AI),
-    seekMax(Eval, AllMoves, BestMove), !.
+    seekMax(Eval, AllMoves, BestMove),!.
 
 %% Simulate a '+Move' on a '+Board' 
 %% with the '+Pawn' and complete the '-Eval'

@@ -1,0 +1,92 @@
+\documentclass[10pt,a4paper]{report}
+
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{graphicx}
+\usepackage{color}
+\usepackage{enumitem}
+\usepackage[top=1cm, bottom=2cm, left=2cm, right=2cm]{geometry}
+
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+
+\fancyhead{}
+\fancyfoot{} 
+\lhead{ \hspace{0.1cm} M1 WI 2014-2015  \hspace{0.4cm} \vline}
+\chead{METEOR}
+\rhead{K.B - K.L - N.R}
+\rfoot{\thepage}
+
+\author{Kevin BASCOL, Kevin LAOUSSING, Nicolas REYNAUD}
+\title{METEOR : \\Le jeu de Dames}
+
+\makeatletter
+\renewcommand{\thesection}{\@arabic\c@section}
+\makeatother
+
+\begin{document}
+
+\makeatletter
+	\begin{titlepage}
+	
+	\centering
+		{
+		\vspace*{5cm}
+		\hrule height 2pt
+		\vspace{0.7cm}
+		\Huge \textbf{\@title}}\\
+		\vspace{0.7cm}
+		\hrule height 2pt
+		
+		\vfill
+		\vspace{1cm}
+		\@author\\
+		\end{titlepage}
+\makeatother
+\setcounter{secnumdepth}{4}
+\setcounter{tocdepth}{3}
+\renewcommand{\contentsname}{Sommaire}
+\begingroup\makeatletter
+\def\@makeschapterhead#1{%
+  {\parindent \z@ \raggedright
+    \normalfont
+    \interlinepenalty\@M
+    \Huge \bfseries  #1\par\nobreak
+    \vskip 20pt% <---- à réduire pour avoir plus de place
+  }}\makeatother
+\tableofcontents
+\endgroup
+\thispagestyle{empty}
+\setcounter{page}{0}
+\newpage
+
+\newgeometry{top=2cm, bottom=2cm, left=2cm, right=2cm}
+
+\section{Introduction}
+	Notre projet de METEOR consister à implémenter un jeu à 2 joueurs. Nous avons choisi d'implémenter le jeu de Dames, un jeu suffisamment complexe et qui nous laisse apprécier l'efficacité de nos algorithmes.
+Nous avons implémenter dans un premier temps l'affichage, les mouvements et les actions du jeu. Puis dans un second temps les règles et spécificité du jeu. Enfin une intelligence artificielle qui se base sur l'algorithme du MinMax, et de 3 fonctions heuristiques.
+\section{Le jeu de Dame}
+	
+	\subsection{Configuration du jeu}
+	
+	\subsection{Spécificités et règles de jeu implémentées}
+
+\section{Algorithme du MinMax}
+
+\section{Heuristiques}
+
+	\subsection{Avantage du nombre de pions}
+
+	\subsection{Avantage des positions stratégiques}
+
+	\subsection{Avantage sur la fragilité défensive adverse }
+
+\section{Remarques et difficulté}
+
+\section{Conclusion}
+
+
+
+\end{document}
