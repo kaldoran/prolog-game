@@ -1,0 +1,14 @@
+Ce prédicat montre juste que l'ia prend toujours les pions, quitte a se faire hypothétiquement
+manger par le joueur humain apres.
+
+initialize_game([ ' w ',' x ',' w ',' x ',' w ',' x ',' w ',' x ',' w ',' x ',
+				  ' x ',' w ',' x ',' w ',' x ',' w ',' x ',' w ',' x ',' w ',
+			 	  ' w ',' x ',' w ',' x ',' w ',' x ',' w ',' x ',' w ',' x ',
+				  ' x ',' w ','   ',' w ','   ',' w ',' x ',' w ',' x ',' w ',
+				  ' w ',' o ',' w ',' o ',' w ',' o ',' w ','   ',' w ','   ',
+				  '   ',' w ','   ',' w ','   ',' w ','   ',' w ','   ',' w ',
+				  ' w ',' o ',' w ',' o ',' w ',' o ',' w ',' o ',' w ',' o ',
+				  ' o ',' w ',' o ',' w ',' o ',' w ',' o ',' w ',' o ',' w ',
+				  ' w ',' o ',' w ',' o ',' w ',' o ',' w ',' o ',' w ',' o ',
+				  ' o ',' w ',' o ',' w ',' o ',' w ',' o ',' w ',' o ',' w '
+				 ] ).
