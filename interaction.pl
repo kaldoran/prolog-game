@@ -25,7 +25,23 @@ askEndMove :-
     write('Do you have any extra move ? [y]es or [N]o or [e]xit.'), nl,
     read(Answer),
     ( Answer = 'y', true; Answer = 'e', halt; fail).
-    
+
+% Ask player which AI he wants to fight
+% ------------------------------------- %
+askAI(AI):-
+    write('Which AI do you want to fight ?'),nl,
+    write('1- Nicolas\' one.'),nl,
+    write('2- Kevin B\'s one.'),nl,
+    write('3- Kevin L\'s one.'),nl,
+    read(TmpAI),
+    testAI(TmpAI,AI).
+
+% Tests if AI exists
+% ------------------ %
+testAI(AI,AI):-
+    AI > 0, AI < 4,!.
+
+testAI(_,AI):-write('Error number AI'),nl,askAI(AI).
 
 % Do a multi move
 % --------------- %

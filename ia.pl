@@ -11,7 +11,7 @@ evalEndGame(-100, _).
 %% Evaluate the '+Board' according to the '+Pawn'
 %% And output the evaluation of the board in '-Value'
 %% ------------------------------------------------- %%
-eval(Board, Value, Pawn) :-
+eval(Board, Value, Pawn, 1) :-
     isX(Pawn),
     findall(X, (member(X, Board), isX(X)), ResultX),
     findall(O, (member(O, Board), isO(O)), ResultO),
@@ -19,7 +19,7 @@ eval(Board, Value, Pawn) :-
     length(ResultO, LRO),
     Value is LRX - LRO, !.
     
-eval(Board, Value, Pawn) :-
+eval(Board, Value, Pawn, 1) :-
     isO(Pawn),
     findall(X, (member(X, Board), isX(X)), ResultX),
     findall(O, (member(O, Board), isO(O)), ResultO),
@@ -29,14 +29,20 @@ eval(Board, Value, Pawn) :-
 
 eval(Board, Value, Pawn, 2) :- 
     valueBoard(Board, 1, Value, Pawn).
-
+    
+%% Evaluate the '+Board' according to the sqares' values
+%% And output the evaluation of the board in '-Value'
+%% ----------------------------------------------------- %%
 valueBoard([Sqr], _, 0, _):- \+isPawn(Sqr),!.    
 valueBoard([Sqr], _, 6, Pawn):-isSameColor(Sqr,Pawn), !.
 valueBoard([_], _, -6, _):-!.
 valueBoard([Sqr|RestBoard], Pos, Value, Pawn):- \+isPawn(Sqr),Pos2 is Pos + 1, valueBoard(RestBoard, Pos2, Value, Pawn), !.
 valueBoard([Sqr|RestBoard], Pos, Value, Pawn):-isSameColor(Sqr,Pawn),Pos2 is Pos + 1, valueSqr(Pos,ValueSqr), valueBoard(RestBoard, Pos2, Value2, Pawn), Value is Value2 + ValueSqr, !.
-valueBoard([Sqr|RestBoard], Pos, Value, Pawn):-Pos2 is Pos + 1, valueSqr(Pos,ValueSqr), valueBoard(RestBoard, Pos2, Value2, Pawn), Value is Value2 - ValueSqr,!.
+valueBoard([_|RestBoard], Pos, Value, Pawn):-Pos2 is Pos + 1, valueSqr(Pos,ValueSqr), valueBoard(RestBoard, Pos2, Value2, Pawn), Value is Value2 - ValueSqr.
 
+
+%% Associate values to the squares
+%% ------------------------------- %%
 valueSqr(Pos,6):-member(Pos,[2,4,6,8,10,91,93,95,97,99]),!.
 valueSqr(Pos,5):-member(Pos,[11,30,31,50,51,70,71,90]),!.
 valueSqr(Pos,4):-member(Pos,[13,15,17,19,22,39,42,59,62,79,82,84,86,88]),!.
@@ -59,53 +65,54 @@ seekMax([_, Y|Eval], [A, _|AllMoves], BestMove) :-
 %% Look on the '+Board' with the '+Pawn' whats the '-BestMove' to do
 %% In a '+Depth' according to a minmax function
 %% ----------------------------------------------------------------- %%
-findPlay(Board, Pawn, Depth, BestMove) :-
+findPlay(Board, Pawn, Depth, BestMove, AI) :-
     findAllMove(Board, Pawn, AllMoves),
-    simulate(Board, Pawn, AllMoves, Depth, Eval),
+    simulate(Board, Pawn, AllMoves, Depth, Eval, AI),
     seekMax(Eval, AllMoves, BestMove), !.
 
 %% Simulate a '+Move' on a '+Board' 
 %% with the '+Pawn' and complete the '-Eval'
 %% ----------------------------------------- %%
-simulate(_, _, [], _, []) :- !.
-simulate(Board, Pawn, [Move|AllMoves], Depth, [EvalBis|Eval]) :-
+simulate(_, _, [], _, [], _) :- !.
+
+simulate(Board, Pawn, [Move|AllMoves], Depth, [EvalBis|Eval], AI) :-
     multiMove(Board, Move, NewBoard),
     NewDepth is Depth - 1,
     invert_player(Pawn, EnemyPawn),
     (
-        iPlay(Pawn), min(NewBoard, EnemyPawn, NewDepth, EvalBis);       %% If its the human turn to simulate
+        iPlay(Pawn), min(NewBoard, EnemyPawn, NewDepth, EvalBis, AI);       %% If its the human turn to simulate
 
-        max(NewBoard, EnemyPawn, NewDepth, EvalBis)
+        max(NewBoard, EnemyPawn, NewDepth, EvalBis, AI)
     ),
-    simulate(Board, Pawn, AllMoves, Depth, Eval).
+    simulate(Board, Pawn, AllMoves, Depth, Eval, AI).
 
 %% Min on the '+Board'
 %% Simulate a move on the '+Board' 
 %% ------------------------------ %%
-min(Board, Pawn, 0, Eval) :-
-    eval(Board, Eval, Pawn), !.
+min(Board, Pawn, 0, Eval, AI) :-
+    eval(Board, Eval, Pawn, AI), !.
 
-min(Board, _, _, Eval) :-
+min(Board, _, _, Eval, _) :-
     isEndGame(Board, Winner),
     evalEndGame(Eval, Winner), !.
 
-min(Board, Pawn, Depth, Eval) :-
+min(Board, Pawn, Depth, Eval, AI) :-
     findAllMove(Board, Pawn, AllMoves),
-    simulate(Board, Pawn, AllMoves, Depth, EvalList),
+    simulate(Board, Pawn, AllMoves, Depth, EvalList, AI),
     min_list(EvalList, Eval).
 
 %% Max part of the minmax 
 %% ---------------------- %%
-max(Board, Pawn, 0, Eval) :-
-    eval(Board, Eval, Pawn), !.
+max(Board, Pawn, 0, Eval, AI) :-
+    eval(Board, Eval, Pawn, AI), !.
     
-max(Board, _, _, Eval) :-
+max(Board, _, _, Eval, _) :-
     isEndGame(Board, Winner),
     evalEndGame(Eval, Winner).
 
-max(Board, Pawn, Depth, Eval) :-
+max(Board, Pawn, Depth, Eval, AI) :-
     findAllMove(Board, Pawn, AllMoves),
-    simulate(Board, Pawn, AllMoves, Depth, EvalList), 
+    simulate(Board, Pawn, AllMoves, Depth, EvalList, AI), 
     max_list(EvalList, Eval).
 
 
