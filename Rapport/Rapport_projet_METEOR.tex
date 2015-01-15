@@ -125,9 +125,9 @@ Nous avons implémenté dans un premier temps l'affichage, les mouvements et les
 		Les cases les plus intéressantes sont celles du haut, pour créer des dames, et celles du bas, pour empêcher l'adversaire de le faire. Ensuite viennent les bordures permettant aux pions d'être hors d'atteinte de l'adversaire. Après on décrémente en se rapprochant du centre du plateau où il est plus facile de se faire prendre un pion.
 		L'évaluation d'un instant du jeu se fait alors en ajoutant les valeurs des cases des pions de l'ordinateur, auxquelles on soustrait 10 pour chaque pion adverse pour respecter la règle de la prise obligatoire.
 	\subsection{Avantage sur la fragilité défensive adverse }
-	Cette heuristique se base sur le nombre de prises possible : cela suppose que plus il y a de prises possibles (voir de rafles) dans le camp adverse, plus celui-ci est en difficulté car celui-ci ne peut que défendre qu'une prise au prochain tour.\\
-	L'évaluation d'un instant du jeu se fait alors en dénombrant le nombre de prises possible de l'IA et le nombre de prises possible de l'adversaire, et soustraire les deux valeurs suivants celui qui à le "trait" ( c'est-à-dire celui qui doit jouer le tour).
-	Pour cela, l'IA tente de reconnaitre un "pattern" d'une prise pour chacun de ses pions. Par exemple un pattern de prise (diagonale bas gauche) peut etre la suivante :\\
+	Cette heuristique se base sur le nombre de prises possibles : cela suppose que plus il y a de prises possibles (voir de rafles) dans le camp adverse, plus celui-ci est en difficulté car celui-ci ne peut défendre qu'une prise au prochain tour.\\
+	L'évaluation d'un instant du jeu se fait alors en dénombrant le nombre de prises possibles de l'IA et le nombre de prises possibles de l'adversaire, et soustrayant les deux valeurs suivant celui qui a le "trait" ( c'est-à-dire celui qui doit jouer le tour).
+	Pour cela, l'IA tente de reconnaître un "pattern" d'une prise pour chacun de ses pions. Par exemple un pattern de prise (diagonale bas gauche) peut être le suivant :\\
 	\\
 	$\mid n \mid b \mid x \mid b \mid\\
 	------\\
@@ -142,7 +142,7 @@ Nous avons implémenté dans un premier temps l'affichage, les mouvements et les
 	o : le pion qui va être pris.\\
 \section{Remarques et difficultés}
 
-L'une des difficultés principale du jeu de dames est son nombre de coup possible partant d'un plateau de jeu. Ainsi avec une profondeur de 3 ou 4 il est courant de surcharger la pile d'exécution. \\
+L'une des difficultés principales du jeu de dames est son nombre de coups possibles partant d'un plateau de jeu. Ainsi avec une profondeur de 3 ou 4 il est courant de surcharger la pile d'exécution. \\
 
 Autre remarque, le jeu implique énormément de règles et vérifications qui ont pris énormément de temps.
 ( déplacement d'un pion, ou saut d'un pion; déplacement d'une dame ou saut avec une dame). \\
