@@ -32,8 +32,8 @@ eval(Board, Value, Pawn, 2) :-
 
 eval(Board, Value, Pawn, 3) :-
     isX(Pawn),
-    findAllRaid(Pawn, Board, Value, ResultRX),
-    findAllRaid((X, isO(X)), Board, Value, ResultRO),
+    findAllRaid(Pawn, Board, ResultRX),
+    findAllRaid((X, isO(X)), Board, ResultRO),
     Value is ResultRX - ResultRO, !.
     
 eval(Board, Value, Pawn, 3) :-
