@@ -63,7 +63,6 @@ revertConvert([Row, Column], Square) :-
     char_code('a', CodeA),
     Column is mod(Square, 10),
     CodeRow is (Square - Column * 10) + CodeA - 1,
-    write(CodeRow),
     char_code(Row, CodeRow).
 
 % the grid
