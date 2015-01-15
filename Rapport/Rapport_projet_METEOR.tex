@@ -81,8 +81,11 @@ Nous avons implémenté dans un premier temps l'affichage, les mouvements et les
 		\subsubsection{Spécificités}
 		
 		\begin{itemize}[label = $\blacktriangleright$]
+		\item Vérification des déplacements d'un pions/dame.
+		\item Vérification des entrées utilisateurs.
 		\item Déplacement de pions.
 		\item Déplacement de reines.
+		\item Saut de pion(s).
 		\item Transformation de pions en reines.
 		\end{itemize}
 		
@@ -92,14 +95,28 @@ Nous avons implémenté dans un premier temps l'affichage, les mouvements et les
 		\item Les prises se font en avant et en arrière.
 		\item La dame prend, à une distance quelconque, toute pièce suivie d'une ou plusieurs cases vides.
 		\item Le déplacement des pions et reines se fait exclusivement en diagonale.
+		\item Le déplacement des pions s'effectue uniquement dans un sens.
+		\item Le déplacement des dames peut se faire dans les 2 sens. 
 		\end{itemize}
 \section{Algorithme du MinMax}
 
 \section{Heuristiques}
 
-	\subsection{Avantage du nombre de pions}
-	 C'est pas ma guerre !
-
+	\subsection{Avantage du nombre de pions (La meilleurs défense est l'attaque) }
+	
+	Cette heuristique par du principe que plus le joueur à un grand nombre de pion. Plus ses chances de gagner sont élevée. Ainsi sont but est de manger le plus de pion possible parmi ceux ennemies.
+	Cette stratégie est donc purement agressive. Qui plus est, si aucun coup pour manger n'est possible alors l'I.A. essayera de "creuser" un trou dans la défense ennemie en cherchant toujours à avancer vers la possibilitée de faire une dame. \\
+	
+	Ceci implique également que l'I.A. essayera tout de même de diminuer le nombre de pion perdu.
+	Car comme dit ci-dessus, moins nous avons de pions, plus nous nous approchons d'une défaite. \\
+	
+	Si 2 actions se présentent : 
+	\begin{itemize}
+		\item 1 - Nous pouvons prendre 3 pions.
+		\item 2 - Nous pouvons prendre 2 pions.
+	\end{itemize}
+	l'I.A. prendra l'option numéro 1, même si sont pions disparait après.
+	Ainsi cette stratégie essai de rapprocher l'adversaire de la défaire en mangeant un maximum de ses pions ou a défaut en essayant d'attaquer l'ennemie.
 	\subsection{Avantage des positions stratégiques}
 		Dans cette heuristique nous avons choisi de donner des valeurs aux cases en fonction de leurs emplacement sur le damier. Les valeurs sont distribuées de la façon suivante:
 		\begin{center}
@@ -125,8 +142,10 @@ Nous avons implémenté dans un premier temps l'affichage, les mouvements et les
 	o : le pion qui va être pris.\\
 \section{Remarques et difficulté}
 
-Langage de merde + cours de merde = difficulté accrue.
+L'une des difficultés principale du jeu de dame est sont nombre de coup possible partant d'un plateau de jeu. Ainsi avec une profondeur de 3 ou 4 il est courant de dépasser la pile. \\
 
+Autre remarque, le jeu implique énormément de règle et vérifications qui ont pris énormément de temps.
+( déplacement d'un pion, ou saut d'un pion; déplacement d'une dame ou saut avec une dame). \\
 \section{Conclusion}
 
 
