@@ -8,8 +8,8 @@ findAllRaid(Pawn, Board, ResultR) :-
 
 
 
-% finds all Raid in bottom left diagonal (+Pawn, +Board, +Value, -ResultBLD)%
-%--------------------------------------------------------------------------%
+% finds all Raid in bottom left diagonal (+Pawn, +Board, +Value, -ResultBLD) 
+% -------------------------------------------------------------------------- %
 findAllRaidBLDiagonal(_Pawn, Board, Board, Value, ResultBLD) :-
 	length(Board, Len),
 	Len #< 22,
@@ -50,8 +50,8 @@ findAllRaidBLDiagonal(	Pawn,
 
 
 
-% finds all Raid in bottom right diagonal (+Pawn, +Board, +Value, -ResultBRD)%
-%---------------------------------------------------------------------------%
+% finds all Raid in bottom right diagonal (+Pawn, +Board, +Value, -ResultBRD)
+% --------------------------------------------------------------------------- %
 findAllRaidBRDiagonal(	_Pawn, Board, Board, Value, ResultBRD) :-
 	length(Board, Len),
 	Len < 24,
@@ -90,8 +90,8 @@ findAllRaidBRDiagonal(	Pawn,
 	
 	findAllRaidBRDiagonal(Pawn, Board, Board, Value, ResultBRD).
 
-% finds all Raid in bottom left diagonal (+Pawn, +Board, +Value, -ResultHLD)%
-%--------------------------------------------------------------------------%
+% finds all Raid in bottom left diagonal (+Pawn, +Board, +Value, -ResultHLD) 
+% -------------------------------------------------------------------------- %
 findAllRaidHLDiagonal(_Pawn, Board, Board, Value, ResultHLD) :-
 	length(Board, Len),
 	Len < 24,
@@ -131,8 +131,8 @@ findAllRaidHLDiagonal(	Pawn,
 	
 	findAllRaidHLDiagonal(Pawn, Board, Board, Value, ResultHLD).
 
-% finds all Raid in hight right diagonal (+Pawn, +Board, +Value, -ResultHRD)%
-%---------------------------------------------------------------------------%
+% finds all Raid in hight right diagonal (+Pawn, +Board, +Value, -ResultHRD)
+% --------------------------------------------------------------------------- %
 findAllRaidHRDiagonal( _Pawn, Board,  Board, Value, ResultHRD) :-
 	length(Board, Len),
 	Len < 24,

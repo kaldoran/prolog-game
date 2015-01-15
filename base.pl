@@ -45,8 +45,8 @@ queen(' o ', ' O ').
 queen(' x ', ' X ').
 
 
-%% Convert '+[Row, Column]' into '-Square' 
-%% -------------------------------------- %%
+% Convert '+[Row, Column]' into '-Square' 
+% -------------------------------------- %
 
 convert([Row, Column], Square) :-
 	char_code(Row, Code),
@@ -54,16 +54,16 @@ convert([Row, Column], Square) :-
 	RowMove is Code - CodeA,
 	Square is RowMove * 10 + Column.
 	
-%% Convert '+Square' into '-[Row, Column]'
-%% -------------------------------------- %%
+% Convert '+Square' into '-[Row, Column]'
+% -------------------------------------- %
 revertConvert([0, Column], Square) :-
     Square =< 10,
     Column is mod(Square, 10), !.
     
     
-%% Given a '+Square' 
-%% Output the '[-Row, -Column]' associate to the Square
-%% ---------------------------------------------------- %%
+% Given a '+Square' 
+% Output the '[-Row, -Column]' associate to the Square
+% ---------------------------------------------------- %
 revertConvert([Row, Column], Square) :-
     char_code('a', CodeA),
     ColumnVal is mod(Square, 10),
@@ -77,8 +77,8 @@ revertConvert([Row, Column], Square) :-
     ),
     char_code(Row, RowCode).
 
-%% the default grid
-%% ---------------- %%
+% the default grid
+% ---------------- %
 initialize_game([ ' w ',' x ',' w ',' x ',' w ',' x ',' w ',' x ',' w ',' x ',
 				  ' x ',' w ',' x ',' w ',' x ',' w ',' x ',' w ',' x ',' w ',
 			 	  ' w ',' x ',' w ',' x ',' w ',' x ',' w ',' x ',' w ',' x ',

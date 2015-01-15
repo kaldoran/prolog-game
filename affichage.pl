@@ -41,6 +41,9 @@ printLinePawn([X|L], Line, Pawn) :-
 	NewPawn is Pawn + 1,
 	printLinePawn(L, Line, NewPawn).
 	
+% Give a '+Moves' 
+% print the Move, in human style (e.g [a, 1]) , that going to append
+% ------------------------------------------------------------------ %
 printIaMove([]) :- 
     write('Multi Move Done'), nl.
     
