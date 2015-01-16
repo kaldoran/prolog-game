@@ -1,13 +1,12 @@
-% Ce prédicat montre juste que l'ia prend toujours les pions, quitte a se faire hypothétiquement
-% manger par le joueur humain apres.
+% Ce test montre qu'au départ, sans pion adverse à prendre, l'ordinateur vas chercher à augmenter la valeur totale de ses cases.
 
-% Lancez test3. pour voir le résultat.
+% Lancez test4. pour voir le résultat.
 
-initialize_game_test3([ ' w ',' x ',' w ',' x ',' w ',' x ',' w ',' x ',' w ',' x ',
+initialize_game_test4([ ' w ',' X ',' w ',' x ',' w ',' x ',' w ',' x ',' w ',' x ',
 				       ' x ',' w ',' x ',' w ',' x ',' w ',' x ',' w ',' x ',' w ',
 			 	       ' w ',' x ',' w ',' x ',' w ',' x ',' w ',' x ',' w ',' x ',
-				       ' x ',' w ','   ',' w ','   ',' w ',' x ',' w ',' x ',' w ',
-				       ' w ',' o ',' w ',' o ',' w ',' o ',' w ','   ',' w ','   ',
+				       ' x ',' w ',' x ',' w ','   ',' w ',' x ',' w ',' x ',' w ',
+				       ' w ','   ',' w ','   ',' w ','   ',' w ','   ',' w ','   ',
 				       '   ',' w ','   ',' w ','   ',' w ','   ',' w ','   ',' w ',
 				       ' w ',' o ',' w ',' o ',' w ',' o ',' w ',' o ',' w ',' o ',
 				       ' o ',' w ',' o ',' w ',' o ',' w ',' o ',' w ',' o ',' w ',
@@ -15,12 +14,12 @@ initialize_game_test3([ ' w ',' x ',' w ',' x ',' w ',' x ',' w ',' x ',' w ',' 
 				       ' o ',' w ',' o ',' w ',' o ',' w ',' o ',' w ',' o ',' w '
 				      ] ).
 
-test3 :-
-    asserta(iPlay(' o ')), 
-    initialize_game_test3(Board), 
+test4 :-
+    asserta(iPlay(' x ')),
+    initialize_game_test4(Board), 
     printBoard(Board),
-    findPlay(Board, ' x ', 1, Moves, 1), 
+    findPlay(Board, ' o ', 3, Moves, 2), 
     printIaMove(Moves),
     multiMove(Board, Moves, NewBoard),
     printBoard(NewBoard), 
-    retract(iPlay(' o ')), !.
+    retract(iPlay(' x ')), !.
