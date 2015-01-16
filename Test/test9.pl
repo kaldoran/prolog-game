@@ -2,7 +2,7 @@
 
 % Lancez test5. pour voir le résultat.
 
-initialize_game_test5([ ' w ','   ',' w ','   ',' w ',' x ',' w ','   ',' w ',' O ',
+initialize_game_test9([ ' w ','   ',' w ','   ',' w ',' x ',' w ','   ',' w ',' O ',
 				       ' o ',' w ',' x ',' w ','   ',' w ','   ',' w ','   ',' w ',
 			 	       ' w ',' o ',' w ',' x ',' w ','   ',' w ',' x ',' w ','   ',
 				       ' o ',' w ',' x ',' w ',' x ',' w ',' x ',' w ','   ',' w ',
@@ -16,7 +16,7 @@ initialize_game_test5([ ' w ','   ',' w ','   ',' w ',' x ',' w ','   ',' w ',' 
 
 test5 :-
     asserta(iPlay(' x ')),
-    initialize_game_test5(Board), 
+    initialize_game_test9(Board), 
     printBoard(Board),
     findPlay(Board, ' o ', 2, Moves, 3), 
     printIaMove(Moves),
