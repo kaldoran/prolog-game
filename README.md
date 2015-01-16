@@ -13,3 +13,6 @@ A noter :
     - Les X commencent toujours.
     - Les input utilisateurs sont de la forme :
             [a, 5] - [d, 6].
+
+Adresse du projet : 
+     - https://github.com/kaldoran/prolog
