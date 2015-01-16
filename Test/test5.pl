@@ -15,9 +15,11 @@ initialize_game_test5([ ' w ',' X ',' w ',' x ',' w ',' x ',' w ',' x ',' w ',' 
 				      ] ).
 
 test5 :-
+    asserta(iPlay(' x ')),
     initialize_game_test5(Board), 
     printBoard(Board),
     findPlay(Board, ' o ', 3, Moves, 2), 
     printIaMove(Moves),
     multiMove(Board, Moves, NewBoard),
-    printBoard(NewBoard), !.
+    printBoard(NewBoard), 
+    retract(iPlay(' x ')), !.

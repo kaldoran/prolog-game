@@ -5,9 +5,9 @@
 % A noter :
 %    elle prend le cas ou elle ne se fait pas manger apres.
     
-% Lancez test. pour voir le résultat.
+% Lancez test2. pour voir le résultat.
 
-initialize_game_test([ ' w ',' x ',' w ',' x ',' w ',' x ',' w ',' x ',' w ',' x ',
+initialize_game_test2([ ' w ',' x ',' w ',' x ',' w ',' x ',' w ',' x ',' w ',' x ',
 				       ' x ',' w ',' x ',' w ',' x ',' w ',' x ',' w ',' x ',' w ',
 			 	       ' w ',' x ',' w ',' x ',' w ',' x ',' w ',' x ',' w ',' x ',
 				       ' x ',' w ','   ',' w ','   ',' w ',' x ',' w ',' x ',' w ',
@@ -21,9 +21,11 @@ initialize_game_test([ ' w ',' x ',' w ',' x ',' w ',' x ',' w ',' x ',' w ',' x
 
 
 test2 :-
-    initialize_game_test(Board), 
+    retract(iPlay(' o ')),
+    initialize_game_test2(Board), 
     printBoard(Board),
     findPlay(Board, ' x ', 1, Moves, 1), 
     printIaMove(Moves),
     multiMove(Board, Moves, NewBoard),
-    printBoard(NewBoard), !.
+    printBoard(NewBoard), 
+    retract(iPlay(' o ')), !.
