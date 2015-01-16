@@ -21,7 +21,7 @@ initialize_game_test2([ ' w ',' x ',' w ',' x ',' w ',' x ',' w ',' x ',' w ',' 
 
 
 test2 :-
-    retract(iPlay(' o ')),
+    asserta(iPlay(' o ')),
     initialize_game_test2(Board), 
     printBoard(Board),
     findPlay(Board, ' x ', 1, Moves, 1), 
