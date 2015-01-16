@@ -1,3 +1,5 @@
+%% Author : Bascol Kevin (Vanelric)
+
 % Ce test montre qu'au départ, sans pion adverse à prendre, l'ordinateur vas chercher à augmenter la valeur totale de ses cases.
 
 % Lancez test4. pour voir le résultat.

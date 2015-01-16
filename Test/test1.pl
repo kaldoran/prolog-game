@@ -1,3 +1,5 @@
+%% Author : Reynaud Nicolas (Kaldoran)
+
 % Ce prédicat cherche juste a montrer que l'ia peut déplacer la reine,
 % et Qu'elle peut également manger un pion
 % ( ici les 2 sont fait a la fois )

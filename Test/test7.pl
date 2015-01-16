@@ -1,3 +1,5 @@
+%% Author : Laoussing Kevin (KevL974)
+
 % Ce test montre que lors que l'ordinateur a le choix entre 2 pions pour manger un même pion adverse il va choisir la destination de plus haute valeur.
 
 % Lancez test5. pour voir le résultat.

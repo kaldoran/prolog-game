@@ -1,3 +1,5 @@
+%% Author : Bascol Kevin (Vanelric)
+
 % Ce test montre que lors que l'ordinateur a plus de choix de pions à prendre alors il prendra le coup le menant à la case de plus haute valeur.
 
 % Lancez test6. pour voir le résultat.

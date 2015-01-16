@@ -1,3 +1,5 @@
+%% Author : Reynaud Nicolas (Kaldoran)
+
 % Ce prédicat montre juste que l'ia prend toujours les pions, quitte a se faire hypothétiquement
 % manger par le joueur humain apres.
 

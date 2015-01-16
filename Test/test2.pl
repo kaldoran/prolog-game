@@ -1,3 +1,5 @@
+%% Author : Reynaud Nicolas (Kaldoran)
+
 % Dans ce cas, l'ia a le choix entre manger 2 pions
 % Ou en manger 3, étant donné la statégie aggresive de manger le plus de pion,
 % elle choisira d'en manger 3.
