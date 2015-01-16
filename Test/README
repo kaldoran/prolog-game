@@ -6,10 +6,11 @@ les tests de 7 à 10 correspondent a l'ia N°3 [ Celle de Kevin L ]
 
 
 Pour faire un test :
-    - charger le fichier a l'ai d'un consult 
+    - charger le fichier a l'aide d'un consult 
         ex : consult('Test/test1.pl').
         
-    - Puis lancez le prédicat test.
+    - Puis lancez le prédicat testX.
+    Où X est le numéro du test que vous avez chargé.
         Vous verrez alors le résultat.
         
 Pour savoir ce que montrai le fichier, ouvrez le les commentaires indiquerons le but du test.
