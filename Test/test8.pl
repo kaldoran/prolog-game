@@ -4,7 +4,7 @@
 % et Qu'elle peut également manger un pion
 % ( ici les 2 sont fait a la fois )
 
-% Lancez test. pour voir le résultat.
+% Lancez test8. pour voir le résultat.
 
 initialize_game_test8([ ' w ',' X ',' w ',' x ',' w ',' x ',' w ',' x ',' w ','   ',
 				       ' o ',' w ','   ',' w ',' o ',' w ',' x ',' w ',' x ',' w ',
@@ -18,7 +18,7 @@ initialize_game_test8([ ' w ',' X ',' w ',' x ',' w ',' x ',' w ',' x ',' w ',' 
 				       '   ',' w ','   ',' w ','   ',' w ',' X ',' w ',' o ',' w '
 				      ] ).
 
-test10 :-
+test8 :-
     asserta(iPlay(' o ')),
     initialize_game_test8(Board), 
     printBoard(Board),

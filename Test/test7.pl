@@ -16,7 +16,7 @@ initialize_game_test7([ ' w ','   ',' w ','   ',' w ','   ',' w ','   ',' w ',' 
 				       ' X ',' w ',' o ',' w ','   ',' w ',' X ',' w ',' X ',' w '
 				      ] ).
 
-test5 :-
+test7 :-
     asserta(iPlay(' x ')),
     initialize_game_test7(Board), 
     printBoard(Board),
